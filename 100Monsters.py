@@ -1,4 +1,4 @@
-#------------------------------------------#
+##------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
 # Last Updated: 10/7/14
@@ -12,8 +12,9 @@ import sys
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
+from player import Player
 
-class 100Monsters(object):
+class Monsters(object):
 
     def __init__(self):
         
@@ -36,5 +37,5 @@ class 100Monsters(object):
     def initPlayer(self):
         self.node = Player()
 
-100Monsters()
+Monsters()
 run()
