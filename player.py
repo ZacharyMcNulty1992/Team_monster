@@ -18,10 +18,10 @@ class Player(object):
         Player is the main actor in the fps game
     """
     speed = .75
-    FORWARD = Vec3(0,.13,0)
-    BACK = Vec3(0,-.13,0)
-    LEFT = Vec3(-2,0,0)
-    RIGHT = Vec3(2,0,0)
+    FORWARD = Vec3(0,1,0)
+    BACK = Vec3(0,-1,0)
+    LEFT = Vec3(-9,0,0)
+    RIGHT = Vec3(9,0,0)
     STOP = Vec3(0)
     walk = STOP
     strafe = STOP
@@ -44,7 +44,7 @@ class Player(object):
         self.node = NodePath("resources/models/player1v2.egg")
         self.node.reparentTo(render)
         self.node.setPos(20,-9,5)
-        self.node.setScale(1.5)
+        self.node.setScale(.5)
 
     def setUpCamera(self):
         """ puts camera at the players node """
