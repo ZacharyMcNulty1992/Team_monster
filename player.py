@@ -20,8 +20,8 @@ class Player(object):
     speed = .75
     FORWARD = Vec3(0,1,0)
     BACK = Vec3(0,-1,0)
-    LEFT = Vec3(-9,0,0)
-    RIGHT = Vec3(9,0,0)
+    LEFT = Vec3(-10,0,0)
+    RIGHT = Vec3(10,0,0)
     STOP = Vec3(0)
     walk = STOP
     strafe = STOP
