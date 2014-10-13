@@ -28,6 +28,7 @@ class Monsters(object):
 
         #used for debugging
         self.initMonster()
+        self.initMusic()
 
     def initCollision(self):
         base.cTrav = CollisionTraverser()
@@ -45,5 +46,10 @@ class Monsters(object):
 
     def initMonster(self):
         self.node = Monster()
+
+    def initMusic(self):
+        music = base.loader.loadSfx("resources/music/Loose Spirits.ogg")
+        music.play()
+        
 Monsters()
 run()
