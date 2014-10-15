@@ -43,8 +43,8 @@ class Player(object):
         """ make the nodepath for player """
         self.node = NodePath("resources/models/player1v2.egg")
         self.node.reparentTo(render)
-        self.node.setPos(20,-9,5)
-        self.node.setScale(.5)
+        self.node.setPos(0,0,.5)
+        self.node.setScale(1)
 
     def setUpCamera(self):
         """ puts camera at the players node """
