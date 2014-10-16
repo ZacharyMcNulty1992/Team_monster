@@ -21,9 +21,23 @@ class MainGame(ShowBase):
 
     def __init__(self):
         ShowBase.__init__(self)
+        
+        # Creates the window properties
+        winProps = WindowProperties()
+        # Sets the cursor so that it's hidden
+        winProps.setCursorHidden(True)
+        # Changes the window name
+        winProps.setTitle("100 Monsters")
+        # Sets the game so it's fullscreen
+        winProps.setFullscreen(True)
+        # Gives the set properties to the window
+        base.win.requestProperties(winProps)
 
-        base.accept("escape", sys.exit)
+        # Disables the mouse from moving the camera (can still look around) 
         base.disableMouse()
+
+        # Sets escape as the quit button
+        base.accept("escape", sys.exit)
 
         self.initCollision()
         self.loadLevel()
