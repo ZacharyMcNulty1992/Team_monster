@@ -7,7 +7,7 @@
 # the monster and its ai
 #------------------------------------------#
 
-import direct.directbase.DirectStart
+#import direct.directbase.DirectStart
 import sys
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor

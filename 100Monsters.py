@@ -7,18 +7,21 @@
 # 100 Monsters, implementing other classes
 #------------------------------------------#
 
-import direct.directbase.DirectStart
+from direct.showbase.ShowBase import ShowBase
+from panda3d.core import WindowProperties
 import sys
+
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
 from player import Player
 from monster import Monster
 
-class Monsters(object):
+class MainGame(ShowBase):
 
     def __init__(self):
-        
+        ShowBase.__init__(self)
+
         base.accept("escape", sys.exit)
         base.disableMouse()
 
@@ -48,8 +51,9 @@ class Monsters(object):
         self.node = Monster()
 
     def initMusic(self):
-        music = base.loader.loadSfx("resources/music/Loose Spirits.ogg")
+        music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.play()
         
-Monsters()
-run()
+
+game = MainGame()
+game.run()
