@@ -32,7 +32,7 @@ class MainGame(ShowBase):
         # Changes the window name
         winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        winProps.setFullscreen(True)
+        # winProps.setFullscreen(True)
         # Gives the set properties to the window
         base.win.requestProperties(winProps)
 
