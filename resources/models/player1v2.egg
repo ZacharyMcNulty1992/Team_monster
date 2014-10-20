@@ -1,16 +1,4 @@
 <CoordinateSystem> { Z-up } 
-<Material> Material {
-  <Scalar> diffr { 0.640000 }
-  <Scalar> diffg { 0.640000 }
-  <Scalar> diffb { 0.640000 }
-  <Scalar> specr { 0.500000 }
-  <Scalar> specg { 0.500000 }
-  <Scalar> specb { 0.500000 }
-  <Scalar> shininess { 12.5 }
-  <Scalar> emitr { 0.000000 }
-  <Scalar> emitg { 0.000000 }
-  <Scalar> emitb { 0.000000 }
-}
 
   <Group> Cube {
     <Collide> { Polyset keep descend }
