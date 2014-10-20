@@ -8,8 +8,11 @@
 #------------------------------------------#
 
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import WindowProperties
-import sys
+from direct.gui.OnscreenText import OnscreenText
+from panda3d.core import WindowProperties, Filename
+import sys, os
+
+
 
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
@@ -42,10 +45,21 @@ class MainGame(ShowBase):
         self.initCollision()
         self.loadLevel()
         self.initPlayer()
+        
+        self.showSubs()
 
         #used for debugging
         self.initMonster()
         self.initMusic()
+
+    def showSubs(self):
+        
+        subFile = open("subs.txt", "r")
+        subline = subFile.read()
+
+        #font = loader.loadFont("resources/fonts/Zccara.tff")
+
+        OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1), align = TextNode.ACenter, wordwrap = 50)
 
     def initCollision(self):
         base.cTrav = CollisionTraverser()
