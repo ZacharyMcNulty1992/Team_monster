@@ -16,7 +16,7 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
 from player import Player
-from monster import Monster
+from jorogumo import Jorogumo
 
 class MainGame(ShowBase):
 
@@ -50,8 +50,10 @@ class MainGame(ShowBase):
         self.showSubs()
 
         #used for debugging
-        self.initMonster()
+        #self.initMonster()
         self.initMusic()
+
+        self.joro = Jorogumo()
 
     def welcomeMessage(self):
 	print("\n\n\nWelcome to 100 Monsters. Below please enter a preferred style of controls for movement within the game. The two types available are using WASD or arrow keys. (Please type your answer in a string with quotes).\n\n")	
