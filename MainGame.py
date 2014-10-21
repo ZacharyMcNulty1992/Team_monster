@@ -23,7 +23,6 @@ class MainGame(ShowBase):
     def __init__(self):
         
         controlStyle = self.welcomeMessage()
-	print(controlStyle)
 
         ShowBase.__init__(self)
         
@@ -46,7 +45,7 @@ class MainGame(ShowBase):
 
         self.initCollision()
         self.loadLevel()
-        self.initPlayer()
+        self.initPlayer(controlStyle)
         
         self.showSubs()
 
@@ -55,7 +54,7 @@ class MainGame(ShowBase):
         self.initMusic()
 
     def welcomeMessage(self):
-	print("\n\n\n\n\nWelcome to 100 Monsters. Below please enter a preferred style of controls for movement within the game. The two types available are using WASD or arrow keys. (Please type your answer in a string with quotes).\n\n\n\n\n")	
+	print("\n\n\nWelcome to 100 Monsters. Below please enter a preferred style of controls for movement within the game. The two types available are using WASD or arrow keys. (Please type your answer in a string with quotes).\n\n")	
 	controls = input("Enter Style of Controls (WASD / Arrows): ")
         controls = controls.lower()
 
@@ -84,8 +83,8 @@ class MainGame(ShowBase):
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
 
-    def initPlayer(self):
-        self.node = Player()
+    def initPlayer(self, controlStyle):
+        self.node = Player(controlStyle)
 
     def initMonster(self):
         self.node = Monster()

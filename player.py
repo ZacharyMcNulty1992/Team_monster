@@ -28,12 +28,13 @@ class Player(object):
     readyToJump = False
     jump = 0
 
-    def __init__(self):
+    def __init__(self, controlStyle):
+	
         """ inits the player """
         self.loadModel()
         self.setUpCamera()
         self.createCollisions()
-        self.attachControls()
+        self.attachControls(controlStyle)
         # init mouse update task
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
@@ -74,29 +75,49 @@ class Player(object):
         base.cTrav.addCollider(solid, self.nodeGroundHandler)
 
     # Attaches events to key presses and if the key is lifted
-    def attachControls(self):
+    def attachControls(self, controlStyle):
         
         # These are the tenative jump commands, will be taken out, being used for debugging
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
         
-        # WASD Controls
-        # Move backwards / stop
-        base.accept("s", self.__setattr__, ["walk",self.STOP])
-        base.accept("s", self.__setattr__, ["walk",self.BACK])
-    	base.accept("s-up", self.__setattr__, ["walk",self.STOP])
+        if (controlStyle == "wasd"):
+            # WASD Controls
+            # Move backwards / stop
+            base.accept("s", self.__setattr__, ["walk",self.STOP])
+            base.accept("s", self.__setattr__, ["walk",self.BACK])
+    	    base.accept("s-up", self.__setattr__, ["walk",self.STOP])
         
-        # Move forward
-    	base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
-    	base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
+            # Move forward
+    	    base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
+    	    base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
 
-        # Move left
-        base.accept( "a" , self.__setattr__,["strafe",self.LEFT])
-        base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )        
+            # Move left
+            base.accept( "a" , self.__setattr__,["strafe",self.LEFT])
+            base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )        
 
-        # Move right
-        base.accept( "d" , self.__setattr__,["strafe",self.RIGHT] )
-        base.accept( "d-up" , self.__setattr__,["strafe",self.STOP] )
+            # Move right
+            base.accept( "d" , self.__setattr__,["strafe",self.RIGHT] )
+            base.accept( "d-up" , self.__setattr__,["strafe",self.STOP] )
+
+	else:
+            # Arrow Controls
+            # Move backwards / stop
+            base.accept("arrow_down", self.__setattr__, ["walk",self.STOP])
+            base.accept("arrow_down", self.__setattr__, ["walk",self.BACK])
+    	    base.accept("arrow_down-up", self.__setattr__, ["walk",self.STOP])
+        
+            # Move forward
+    	    base.accept( "arrow_up" , self.__setattr__,["walk",self.FORWARD])
+    	    base.accept( "arrow_up-up" , self.__setattr__,["walk",self.STOP] )
+
+            # Move left
+            base.accept( "arrow_left" , self.__setattr__,["strafe",self.LEFT])
+            base.accept( "arrow_left-up" , self.__setattr__,["strafe",self.STOP] )        
+
+            # Move right
+            base.accept( "arrow_right" , self.__setattr__,["strafe",self.RIGHT] )
+            base.accept( "arrow_right-up" , self.__setattr__,["strafe",self.STOP] )
 
     def mouseUpdate(self,task):
         """ this task updates the mouse """
