@@ -79,7 +79,7 @@ class MainGame(ShowBase):
         base.cTrav.showCollisions(render)
 
     def loadLevel(self):
-        self.level = loader.loadModel("resources/levels/DemoRoomv3.egg")
+        self.level = loader.loadModel("resources/levels/first_floor.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
 
