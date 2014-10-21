@@ -1,18 +1,16 @@
-##------------------------------------------#
+#-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
 # Last Updated: 10/16/14
 # Updated By: Rachael
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
-#------------------------------------------#
+#-------------------------------------------#
 
 from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import WindowProperties, Filename
 import sys, os
-
-
 
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
@@ -23,6 +21,10 @@ from monster import Monster
 class MainGame(ShowBase):
 
     def __init__(self):
+        
+        controlStyle = self.welcomeMessage()
+	print(controlStyle)
+
         ShowBase.__init__(self)
         
         # Creates the window properties
@@ -32,7 +34,7 @@ class MainGame(ShowBase):
         # Changes the window name
         winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        # winProps.setFullscreen(True)
+        winProps.setFullscreen(True)
         # Gives the set properties to the window
         base.win.requestProperties(winProps)
 
@@ -51,6 +53,16 @@ class MainGame(ShowBase):
         #used for debugging
         self.initMonster()
         self.initMusic()
+
+    def welcomeMessage(self):
+	print("\n\n\n\n\nWelcome to 100 Monsters. Below please enter a preferred style of controls for movement within the game. The two types available are using WASD or arrow keys. (Please type your answer in a string with quotes).\n\n\n\n\n")	
+	controls = input("Enter Style of Controls (WASD / Arrows): ")
+        controls = controls.lower()
+
+        while (controls != "wasd" and controls != "arrows"):
+            controls = input("That wasn't an option, try again. Please enter either 'WASD' or 'Arrows'")
+	
+	return controls
 
     def showSubs(self):
         

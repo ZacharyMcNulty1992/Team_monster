@@ -73,18 +73,29 @@ class Player(object):
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(solid, self.nodeGroundHandler)
 
+    # Attaches events to key presses and if the key is lifted
     def attachControls(self):
-        """ attach key events """
-        base.accept( "space" , self.__setattr__,["readyToJump",True])
-        base.accept( "space-up" , self.__setattr__,["readyToJump",False])
-        base.accept( "s" , self.__setattr__,["walk",self.STOP] )
-        base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
-        base.accept( "s" , self.__setattr__,["walk",self.BACK] )
-        base.accept( "s-up" , self.__setattr__,["walk",self.STOP] )
-        base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
+        
+        # These are the tenative jump commands, will be taken out, being used for debugging
+        base.accept("space", self.__setattr__, ["readyToJump",True])
+        base.accept("space-up", self.__setattr__, ["readyToJump",False])
+        
+        # WASD Controls
+        # Move backwards / stop
+        base.accept("s", self.__setattr__, ["walk",self.STOP])
+        base.accept("s", self.__setattr__, ["walk",self.BACK])
+    	base.accept("s-up", self.__setattr__, ["walk",self.STOP])
+        
+        # Move forward
+    	base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
+    	base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
+
+        # Move left
         base.accept( "a" , self.__setattr__,["strafe",self.LEFT])
+        base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )        
+
+        # Move right
         base.accept( "d" , self.__setattr__,["strafe",self.RIGHT] )
-        base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )
         base.accept( "d-up" , self.__setattr__,["strafe",self.STOP] )
 
     def mouseUpdate(self,task):
