@@ -13,7 +13,7 @@
 }
 
 <Texture> SpiderTex {
-  "./tex/spidertex1.png"
+  "../textures/spidertex1.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
