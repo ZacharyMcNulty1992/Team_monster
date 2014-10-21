@@ -51,6 +51,7 @@ class Player(object):
         pl =  base.cam.node().getLens()
         pl.setFov(90)
         base.cam.node().setLens(pl)
+        base.camera.setPos(0,0,3)
         base.camera.reparentTo(self.node)
 
     def createCollisions(self):
