@@ -1,8 +1,8 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 10/16/14
-# Updated By: Rachael
+# Last Updated: 10/21/14
+# Updated By: Kevin
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
@@ -16,10 +16,11 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
 from player import Player
-from jorogumo import Jorogumo
+from monster import Monster
 
 class MainGame(ShowBase):
 
+    # These are default settings
     controlStyle = "wasd"
     fullscreen = False
     winXSize = 1024
@@ -62,12 +63,10 @@ class MainGame(ShowBase):
         
         self.showSubs()
 
-        #used for debugging
-        #self.initMonster()
+        self.initMonster()
         self.initMusic()
-
-        self.joro = Jorogumo()
         
+    # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
         for line in cfgFile:
             if line[0] == "#" or len(line) == 1:
@@ -89,14 +88,13 @@ class MainGame(ShowBase):
             elif option == "yres":
                 self.winYSize = int(value)
 
+    # Shows subtitles at the bottom of the screen
     def showSubs(self):
-        
         subFile = open("subs.txt", "r")
         subline = subFile.read()
-
         #font = loader.loadFont("resources/fonts/Zccara.tff")
-
-        OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1), align = TextNode.ACenter, wordwrap = 50)
+        OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1),
+        align = TextNode.ACenter, wordwrap = 50)
 
     def initCollision(self):
         base.cTrav = CollisionTraverser()
@@ -110,12 +108,11 @@ class MainGame(ShowBase):
         self.level.setTwoSided(True)
 
     def initMonster(self):
-        self.node = Monster()
+        jumogoro = Monster("Jumogoro", "spiderlady.egg", 10, 30, 5, 5)
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.play()
-        
 
 game = MainGame()
 game.run()
