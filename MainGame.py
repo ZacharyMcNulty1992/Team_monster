@@ -20,20 +20,33 @@ from jorogumo import Jorogumo
 
 class MainGame(ShowBase):
 
+    controlStyle = "wasd"
+    fullscreen = False
+    winXSize = 1024
+    winYSize = 768
+
     def __init__(self):
+        if not os.path.isfile("settings.cfg"):
+            cfgFile = open("settings.cfg", "w")
+            cfgFile.close()
+        else:
+            cfgFile = open("settings.cfg", "r+")
         
-        controlStyle = self.welcomeMessage()
+        self.getSettings(cfgFile)
+        #controlStyle = self.welcomeMessage()
 
         ShowBase.__init__(self)
         
         # Creates the window properties
         winProps = WindowProperties()
+        # Set the window's resolution
+        winProps.setSize(self.winXSize, self.winYSize)
         # Sets the cursor so that it's hidden
         winProps.setCursorHidden(True)
         # Changes the window name
         winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        winProps.setFullscreen(True)
+        winProps.setFullscreen(self.fullscreen)
         # Gives the set properties to the window
         base.win.requestProperties(winProps)
 
@@ -45,7 +58,7 @@ class MainGame(ShowBase):
 
         self.initCollision()
         self.loadLevel()
-        self.initPlayer(controlStyle)
+        self.node = Player(self.controlStyle)
         
         self.showSubs()
 
@@ -54,16 +67,27 @@ class MainGame(ShowBase):
         self.initMusic()
 
         self.joro = Jorogumo()
-
-    def welcomeMessage(self):
-	print("\n\n\nWelcome to 100 Monsters. Below please enter a preferred style of controls for movement within the game. The two types available are using WASD or arrow keys. (Please type your answer in a string with quotes).\n\n")	
-	controls = input("Enter Style of Controls (WASD / Arrows): ")
-        controls = controls.lower()
-
-        while (controls != "wasd" and controls != "arrows"):
-            controls = input("That wasn't an option, try again. Please enter either 'WASD' or 'Arrows'")
-	
-	return controls
+        
+    def getSettings(self, cfgFile):
+        for line in cfgFile:
+            if line[0] == "#" or len(line) == 1:
+                continue
+            option, value = line.split(" = ", 2)
+            option = option.lower()
+            value = value.lower()
+            if value[-1:] == '\n':
+                value = value[:-1]
+            if option == "control":
+                self.controlStyle = value
+            elif option == "fullscreen":
+                if value == "true":
+                    self.fullscreen = True
+                else:
+                    self.fullscreen = False
+            elif option == "xres":
+                self.winXSize = int(value)
+            elif option == "yres":
+                self.winYSize = int(value)
 
     def showSubs(self):
         
@@ -84,9 +108,6 @@ class MainGame(ShowBase):
         self.level = loader.loadModel("resources/levels/first_floor.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
-
-    def initPlayer(self, controlStyle):
-        self.node = Player(controlStyle)
 
     def initMonster(self):
         self.node = Monster()
