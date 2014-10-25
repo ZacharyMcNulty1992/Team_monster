@@ -39,6 +39,7 @@ class Player(object):
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
         taskMgr.add(self.jumpUpdate, 'jump-task')
+        taskMgr.add(self.respawnUpdate, 'respawn-task')
 
     def loadModel(self):
         """ make the nodepath for player """
@@ -160,5 +161,12 @@ class Player(object):
             self.node.setZ(highestZ+.3) #dont change this value if changed to .2 then you cant jump if changed to .4 you constantly jump or bounce
         if self.readyToJump:
                 self.jump = 5 # This is the value for jump power.
+        return task.cont
+
+    def respawnUpdate(self, task):
+        """ Will place player back at spawn if Z is below -10 """
+        if self.node.getZ() <= -10:
+            self.node.setPos(0,0,.5)
+            base.camera.setPos(0,0,3)
         return task.cont
 
