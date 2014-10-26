@@ -11,12 +11,12 @@ from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import WindowProperties, Filename
 import sys, os
-
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
 from player import Player
 from monster import Monster
+
 
 class MainGame(ShowBase):
 
@@ -47,7 +47,7 @@ class MainGame(ShowBase):
         # Changes the window name
         winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        winProps.setFullscreen(self.fullscreen)
+        #winProps.setFullscreen(self.fullscreen)
         # Gives the set properties to the window
         base.win.requestProperties(winProps)
 
@@ -61,11 +61,19 @@ class MainGame(ShowBase):
         self.loadLevel()
         self.node = Player(self.controlStyle)
         
-        self.showSubs()
+        # Shows subtitles at the bottom of the screen
 
         self.initMonster()
         self.initMusic()
-        
+
+        text = TextNode('node')
+        text.setText("Every day in every way I'm getting better and better.")
+        textNodePath =  render2d.attachNewNode(text)
+        textNodePath.setScale(0.07)
+        text.setAlign(TextNode.ABoxedCenter)
+        Zccara = loader.loadFont('Zccara.ttf')
+        text.setFont(Zccara)
+    
     # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
         for line in cfgFile:
@@ -87,15 +95,7 @@ class MainGame(ShowBase):
                 self.winXSize = int(value)
             elif option == "yres":
                 self.winYSize = int(value)
-
-    # Shows subtitles at the bottom of the screen
-    def showSubs(self):
-        subFile = open("subs.txt", "r")
-        subline = subFile.read()
-        #font = loader.loadFont("resources/fonts/Zccara.tff")
-        OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1),
-        align = TextNode.ACenter, wordwrap = 50)
-
+    
     def initCollision(self):
         base.cTrav = CollisionTraverser()
         base.pusher = CollisionHandlerPusher()
@@ -113,6 +113,7 @@ class MainGame(ShowBase):
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.play()
+
 
 game = MainGame()
 game.run()
