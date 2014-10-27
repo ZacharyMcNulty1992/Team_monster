@@ -67,12 +67,16 @@ class MainGame(ShowBase):
         self.initMusic()
 
         text = TextNode('node')
-        text.setText("Every day in every way I'm getting better and better.")
+        text.setText("There's supposed to be a file reader. Will recreate soon!")
         textNodePath =  render2d.attachNewNode(text)
         textNodePath.setScale(0.07)
         text.setAlign(TextNode.ABoxedCenter)
-        Zccara = loader.loadFont('Zccara.ttf')
+        Zccara = loader.loadFont('resources/fonts/Zccara.ttf')
         text.setFont(Zccara)
+        textNodePath.setPos(0, 0, -.60)
+        text.setWordwrap(20)
+        text.setAlign(text.ACenter)
+       
     
     # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
