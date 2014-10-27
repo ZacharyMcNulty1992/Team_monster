@@ -26,6 +26,7 @@ class Player(object):
     walk = STOP
     strafe = STOP
     readyToJump = False
+    canJump = False
     jump = 0
 
     def __init__(self, controlStyle):
@@ -141,6 +142,12 @@ class Player(object):
         self.node.setPos(self.node,self.strafe*globalClock.getDt()*self.speed)
         self.node.setPos(self.node,(self.walk+self.strafe*globalClock.getDt())*self.speed)
         return task.cont
+        
+    def toggleJump(self):
+        if self.canJump:
+            self.canJump = False
+        else:
+            self.canJump = True
 
     def jumpUpdate(self,task):
         """ this task simulates gravity and makes the player jump """
@@ -159,13 +166,15 @@ class Player(object):
         if highestZ > self.node.getZ()-.3: #dont change this value if changed to .2 then you cant jump if changed to .4 you constantly jump or bounce
             self.jump = 0
             self.node.setZ(highestZ+.3) #dont change this value if changed to .2 then you cant jump if changed to .4 you constantly jump or bounce
+        if not self.canJump:
+            return task.cont
         if self.readyToJump:
                 self.jump = 5 # This is the value for jump power.
         return task.cont
 
     def respawnUpdate(self, task):
         """ Will place player back at spawn if Z is below -10 """
-        if self.node.getZ() <= -10:
+        if self.node.getZ() <= -100:
             self.node.setPos(0,0,.5)
             base.camera.setPos(0,0,3)
         return task.cont

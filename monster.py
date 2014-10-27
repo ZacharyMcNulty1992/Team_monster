@@ -23,6 +23,7 @@ class Monster(object):
     STOP = Vec3(0)
     walk = STOP
     strafe = STOP
+    targetPos = (0, 40, 0)
 
     def __init__(self, name, model, posX, posY, posZ, collisionSize):
         self.name = name
@@ -37,7 +38,7 @@ class Monster(object):
 
     def loadMonster(self): #need to test to see what model to load for what type of monster
         self.node = NodePath("")
-        self.node.reparentTo(render)
+        self.node.reparentTo(base.render)
         self.model.reparentTo(self.node)
         self.node.setPos(self.posX, self.posY, self.posZ)
         self.node.setScale(1)
@@ -47,7 +48,7 @@ class Monster(object):
         mn = CollisionNode('Monster')
         mn.addSolid(CollisionSphere(0, 0, 0, self.collisionSize))
         Solid = self.node.attachNewNode(mn)
-        base.cTrav.addCollider(Solid, base.pusher)
+        #base.cTrav.addCollider(Solid, base.pusher)
         base.pusher.addCollider(Solid, self.node, base.drive.node())
 
         #ray for monster
@@ -75,3 +76,10 @@ class Monster(object):
             # gravity effects and jumps
         self.node.setZ(self.node.getZ()*globalClock.getDt())
         return task.cont
+    
+    def anim(self, anim, loop):
+        if loop:
+            self.model.loop(anim)
+        else:
+            self.model.play(anim)
+    

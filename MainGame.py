@@ -20,11 +20,12 @@ from monster import Monster
 
 class MainGame(ShowBase):
 
-    # These are default settings
+    # These are default settings in case they are not specified in the config file
     controlStyle = "wasd"
     fullscreen = False
     winXSize = 1024
     winYSize = 768
+    debug = False
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -60,6 +61,8 @@ class MainGame(ShowBase):
         self.initCollision()
         self.loadLevel()
         self.node = Player(self.controlStyle)
+        if self.debug:
+            self.node.toggleJump()
         
         self.showSubs()
 
@@ -87,6 +90,11 @@ class MainGame(ShowBase):
                 self.winXSize = int(value)
             elif option == "yres":
                 self.winYSize = int(value)
+            elif option == "debugmode":
+                if value == "true":
+                    self.debug = True
+                else:
+                    self.debug = False
 
     # Shows subtitles at the bottom of the screen
     def showSubs(self):
@@ -100,7 +108,8 @@ class MainGame(ShowBase):
         base.cTrav = CollisionTraverser()
         base.pusher = CollisionHandlerPusher()
         #for debugging purposes
-        base.cTrav.showCollisions(render)
+        if self.debug:
+            base.cTrav.showCollisions(render)
 
     def loadLevel(self):
         self.level = loader.loadModel("resources/levels/first_floor.egg")
@@ -108,7 +117,9 @@ class MainGame(ShowBase):
         self.level.setTwoSided(True)
 
     def initMonster(self):
-        jumogoro = Monster("Jumogoro", "spiderlady.egg", 10, 30, 5, 5)
+        path = "resources/models/"
+        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 5)
+        jumogoro.anim("Walk", True)
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
