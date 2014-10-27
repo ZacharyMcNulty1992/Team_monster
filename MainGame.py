@@ -48,7 +48,7 @@ class MainGame(ShowBase):
         # Changes the window name
         winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        #winProps.setFullscreen(self.fullscreen)
+        winProps.setFullscreen(self.fullscreen)
         # Gives the set properties to the window
         base.win.requestProperties(winProps)
 
@@ -130,8 +130,10 @@ class MainGame(ShowBase):
 
     def initMonster(self):
         path = "resources/models/"
-        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 5)
+        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 5, 0.85)
         jumogoro.anim("Walk", True)
+        kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 3, 0.80)
+        kappa.anim("Idle", True)
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")

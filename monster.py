@@ -24,13 +24,14 @@ class Monster(object):
     walk = STOP
     strafe = STOP
 
-    def __init__(self, name, model, posX, posY, posZ, collisionSize):
+    def __init__(self, name, model, posX, posY, posZ, collisionSize, scale):
         self.name = name
         self.model = Actor("resources/models/" + model)
         self.posX = posX
         self.posY = posY
         self.posZ = posZ
         self.collisionSize = collisionSize
+        self.scale = scale
         self.loadMonster()
         self.monsterCollision()
         taskMgr.add(self.GravityUpdate, 'gravity-task')
@@ -40,7 +41,7 @@ class Monster(object):
         self.node.reparentTo(base.render)
         self.model.reparentTo(self.node)
         self.node.setPos(self.posX, self.posY, self.posZ)
-        self.node.setScale(1)
+        self.node.setScale(self.scale)
 
     def monsterCollision(self):
         #mn for monster node

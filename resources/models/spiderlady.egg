@@ -1,5 +1,5 @@
 <CoordinateSystem> { Z-up } 
-<Material> SpiderUV {
+<Material> SpiderUV.005 {
   <Scalar> diffr { 0.480000 }
   <Scalar> diffg { 0.480000 }
   <Scalar> diffb { 0.480000 }
@@ -12,7 +12,7 @@
   <Scalar> emitb { 0.000000 }
 }
 
-<Texture> SpiderTex {
+<Texture> SpiderTex.005 {
   "./tex/spidertex1.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
@@ -20,7 +20,7 @@
   <Scalar> wrap { REPEAT }
 }
 
-  <Group> Spider {
+> Spider {
     <Dart> { 1 }
     <VertexPool> Spider {
     
