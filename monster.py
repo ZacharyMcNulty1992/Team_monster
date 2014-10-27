@@ -23,7 +23,6 @@ class Monster(object):
     STOP = Vec3(0)
     walk = STOP
     strafe = STOP
-    targetPos = (0, 40, 0)
 
     def __init__(self, name, model, posX, posY, posZ, collisionSize):
         self.name = name

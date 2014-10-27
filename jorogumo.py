@@ -16,7 +16,7 @@ class Jorogumo(object):
     def __init__(self):
 
         self.joro = Actor("resources/models/spiderlady.egg")
-        self.joro.setScale(1.75) 
+        self.joro.setScale(1) 
         self.joro.setHpr(-90, 0, 0)
         self.joro.reparentTo(base.render)
 
@@ -27,4 +27,4 @@ class Jorogumo(object):
 
         self.joroWalk = Sequence(posInterval1, hprInterval1, posInterval2, hprInterval2, name = "joroWalk")
 
-        #self.joroWalk.loop()
+        self.joroWalk.loop()
