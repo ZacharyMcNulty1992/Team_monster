@@ -129,7 +129,6 @@ class MainGame(ShowBase):
         self.level.setTwoSided(True)
 
     def initMonster(self):
-        path = "resources/models/"
         jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 5, 0.85)
         jumogoro.anim("Walk", True)
         kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 3, 0.80)
