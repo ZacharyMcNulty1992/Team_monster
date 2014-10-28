@@ -1,8 +1,8 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 10/26/14
-# Updated By: Kevin
+# Last Updated: 10/27/14
+# Updated By: Michael
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
