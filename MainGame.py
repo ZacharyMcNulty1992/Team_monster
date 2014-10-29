@@ -1,8 +1,8 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 10/27/14
-# Updated By: Michael
+# Last Updated: 10/29/14
+# Updated By: Kevin
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
@@ -112,7 +112,7 @@ class MainGame(ShowBase):
     def showSubs(self):
         subFile = open("subs.txt", "r")
         subline = subFile.read()
-        #font = loader.loadFont("resources/fonts/Zccara.tff")
+        font = loader.loadFont("resources/fonts/Zccara.tff")
         OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1),
         align = TextNode.ACenter, wordwrap = 50)
 
@@ -129,9 +129,9 @@ class MainGame(ShowBase):
         self.level.setTwoSided(True)
 
     def initMonster(self):
-        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 5, 0.85)
+        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25)
         jumogoro.anim("Walk", True)
-        kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 3, 0.80)
+        kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25)
         kappa.anim("Idle", True)
 
     def initMusic(self):

@@ -1,8 +1,8 @@
 #------------------------------------------#
 # Class Name: Player
 # Created By: Team Monster
-# Last Updated: 10/7/14
-# Updated By: Rachael
+# Last Updated: 10/29/14
+# Updated By: Kevin
 # Notes: This class will be in charge of
 # the player/camera "object"
 #------------------------------------------#
@@ -28,6 +28,7 @@ class Player(object):
     readyToJump = False
     canJump = False
     jump = 0
+    cameraHeight = 5
 
     def __init__(self, controlStyle):
 	
@@ -54,7 +55,7 @@ class Player(object):
         pl =  base.cam.node().getLens()
         pl.setFov(90)
         base.cam.node().setLens(pl)
-        base.camera.setPos(0,0,5)
+        base.camera.setPos(0,0,self.cameraHeight)
         base.camera.reparentTo(self.node)
 
     def createCollisions(self):
@@ -175,7 +176,7 @@ class Player(object):
     def respawnUpdate(self, task):
         """ Will place player back at spawn if Z is below -10 """
         if self.node.getZ() <= -100:
-            self.node.setPos(0,0,.5)
-            base.camera.setPos(0,0,3)
+            self.node.setPos(0,0,self.cameraHeight)
+            base.camera.setPos(0,0,self.cameraHeight)
         return task.cont
 

@@ -1,7 +1,7 @@
 #------------------------------------------#
 # Class Name: Player
 # Created By: Team Monster
-# Last Updated: 10/21/14
+# Last Updated: 10/29/14
 # Updated By: Kevin
 # Notes: This class will be in charge of
 # the monster and its ai
@@ -24,13 +24,14 @@ class Monster(object):
     walk = STOP
     strafe = STOP
 
-    def __init__(self, name, model, posX, posY, posZ, collisionSize, scale):
+    def __init__(self, name, model, posX, posY, posZ, height, width, scale):
         self.name = name
         self.model = Actor("resources/models/" + model)
         self.posX = posX
         self.posY = posY
         self.posZ = posZ
-        self.collisionSize = collisionSize
+        self.height = height
+        self.width = width
         self.scale = scale
         self.loadMonster()
         self.monsterCollision()
@@ -46,7 +47,7 @@ class Monster(object):
     def monsterCollision(self):
         #mn for monster node
         mn = CollisionNode('Monster')
-        mn.addSolid(CollisionSphere(0, 0, 0, self.collisionSize))
+        mn.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
         Solid = self.node.attachNewNode(mn)
         #base.cTrav.addCollider(Solid, base.pusher)
         base.pusher.addCollider(Solid, self.node, base.drive.node())
