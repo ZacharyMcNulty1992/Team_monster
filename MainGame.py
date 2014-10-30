@@ -84,7 +84,12 @@ class MainGame(ShowBase):
         textNodePath.setPos(0, 0, -.60)
         text.setWordwrap(20)
         text.setAlign(text.ACenter)
-       
+        
+        #Lighting Test
+        alight = AmbientLight('alight')
+        alight.setColor(VBase4(0.1, 0.1, 0.1, .5))
+        alnp = render.attachNewNode(alight)
+        render.setLight(alnp)      
     
     # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
