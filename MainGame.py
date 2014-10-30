@@ -27,7 +27,7 @@ class MainGame(ShowBase):
     winYSize = 768
     debug = False
     isPaused = False
-
+    alreadyRemoved = False
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -149,7 +149,18 @@ class MainGame(ShowBase):
             self.isPaused = True
 
     def PauseUpdate(self, task):
-        self.node.removeTasks()
+        if self.isPaused == True and self.alreadyRemoved == False:
+            self.node.removeTasks()
+            self.alreadyRemoved = True
+        elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
+            self.node.addTasks()
+            self.alreadyRemoved = False
+        elif self.isPaused == True and self.alreadyRemoved == True:
+            return task.cont
+        elif self.isPaused == False and self.alreadyRemoved == False:
+            return task.cont
+
+        return task.cont
 
 game = MainGame()
 game.run()
