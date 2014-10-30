@@ -187,11 +187,11 @@ class Player(object):
         return task.cont
 
     def removeTasks(self):
-        taskMgr.remove(self.mouseUpdate, 'mouse-task')
-        taskMgr.remove(self.moveUpdate, 'move-task')
-        taskMgr.remove(self.jumpUpdate, 'jump-task')
+        """used for pausing it removes the tasks that keep track of moving and looking around"""
+        taskMgr.remove('mouse-task')
+        taskMgr.remove('move-task')
 
     def addTasks(self):
+        """used fro resuming play, it adds the tasks back to the task Manager"""
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
-        taskMgr.add(self.jumpUpdate, 'jump-task')
