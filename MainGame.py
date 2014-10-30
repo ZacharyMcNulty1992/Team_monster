@@ -143,13 +143,18 @@ class MainGame(ShowBase):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.play()
 
+
     def togglePause(self):
+        #used to toggle the pausing so the player can use the same button to pause and unpause
         if self.isPaused == True:
             self.isPaused = False
         elif self.isPaused == False:
             self.isPaused = True
 
     def PauseUpdate(self, task):
+        #pausing task this will remove all tasks it needs to and then when the player
+        #decides to unpause the task will add the tasks it removed back to the task manager
+
         if self.isPaused == True and self.alreadyRemoved == False:
             self.node.removeTasks()
             self.alreadyRemoved = True
