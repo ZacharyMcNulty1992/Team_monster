@@ -83,7 +83,7 @@ class Player(object):
         # These are the tenative jump commands, will be taken out, being used for debugging
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
-        
+
         if (controlStyle == "wasd"):
             # WASD Controls
             # Move backwards / stop
@@ -150,6 +150,12 @@ class Player(object):
         else:
             self.canJump = True
 
+    def togglePause(self):
+        if self.ispaused:
+            self.isPaused = False
+        else:
+            self.isPaused = True
+
     def jumpUpdate(self,task):
         """ this task simulates gravity and makes the player jump """
         # get the highest Z from the down casting ray
@@ -180,3 +186,12 @@ class Player(object):
             base.camera.setPos(0,0,self.cameraHeight)
         return task.cont
 
+    def removeTasks(self):
+        taskMgr.remove(self.mouseUpdate, 'mouse-task')
+        taskMgr.remove(self.moveUpdate, 'move-task')
+        taskMgr.remove(self.jumpUpdate, 'jump-task')
+
+    def addTasks(self):
+        taskMgr.add(self.mouseUpdate, 'mouse-task')
+        taskMgr.add(self.moveUpdate, 'move-task')
+        taskMgr.add(self.jumpUpdate, 'jump-task')
