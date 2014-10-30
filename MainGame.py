@@ -61,6 +61,7 @@ class MainGame(ShowBase):
         base.accept("p", sys.exit)
         base.accept("escape", self.togglePause)
 
+        taskMgr.add(self.PauseUpdate, 'pause-task')
 
         self.initCollision()
         self.loadLevel()
