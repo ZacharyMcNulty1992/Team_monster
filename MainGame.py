@@ -87,10 +87,11 @@ class MainGame(ShowBase):
         
         #Lighting Test
         alight = AmbientLight('alight')
-        alight.setColor(VBase4(0.1, 0.1, 0.1, .5))
+        alight.setColor(VBase4(0.15, 0.15, 0.15, .75))
         alnp = render.attachNewNode(alight)
-        render.setLight(alnp)      
-    
+        render.setLight(alnp)
+        
+        
     # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
         for line in cfgFile:
