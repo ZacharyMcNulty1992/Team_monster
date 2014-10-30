@@ -26,6 +26,8 @@ class MainGame(ShowBase):
     winXSize = 1024
     winYSize = 768
     debug = False
+    isPaused = False
+
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -55,8 +57,10 @@ class MainGame(ShowBase):
         # Disables the mouse from moving the camera (can still look around) 
         base.disableMouse()
 
-        # Sets escape as the quit button
-        base.accept("escape", sys.exit)
+        # Sets p as the quit button and escape for pause
+        base.accept("p", sys.exit)
+        base.accept("escape", self.togglePause)
+
 
         self.initCollision()
         self.loadLevel()
@@ -138,6 +142,14 @@ class MainGame(ShowBase):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.play()
 
+    def togglePause(self):
+        if self.isPaused == True:
+            self.isPaused = False
+        elif self.isPaused == False:
+            self.isPaused = True
+
+    def PauseUpdate(self, task):
+        self.node.removeTasks()
 
 game = MainGame()
 game.run()
