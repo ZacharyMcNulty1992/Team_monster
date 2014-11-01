@@ -16,6 +16,7 @@ from direct.actor.Actor import Actor
 from math import fabs
 from player import Player
 from monster import Monster
+from item import Item
 
 
 class MainGame(ShowBase):
@@ -26,6 +27,7 @@ class MainGame(ShowBase):
     winXSize = 1024
     winYSize = 768
     debug = False
+    lighting = True
     isPaused = False
     alreadyRemoved = False
 
@@ -68,10 +70,8 @@ class MainGame(ShowBase):
         self.node = Player(self.controlStyle)
         if self.debug:
             self.node.toggleJump()
-        
-        # Shows subtitles at the bottom of the screen
 
-        self.initMonster()
+        self.initObjects()
         self.initMusic()
 
         text = TextNode('node')
@@ -86,10 +86,11 @@ class MainGame(ShowBase):
         text.setAlign(text.ACenter)
         
         #Lighting Test
-        #alight = AmbientLight('alight')
-        #alight.setColor(VBase4(0.15, 0.15, 0.15, .75))
-        #alnp = render.attachNewNode(alight)
-        #render.setLight(alnp)
+        if self.lighting:
+            alight = AmbientLight('alight')
+            alight.setColor(VBase4(0.15, 0.15, 0.15, .75))
+            alnp = render.attachNewNode(alight)
+            render.setLight(alnp)
         
         
     # This method sets options according to the settings.cfg file in the root folder
@@ -118,6 +119,11 @@ class MainGame(ShowBase):
                     self.debug = True
                 else:
                     self.debug = False
+            elif option == "lighting":
+                if value == "true":
+                    self.lighting = True
+                else:
+                    self.lighting = False
 
     # Shows subtitles at the bottom of the screen
     def showSubs(self):
@@ -139,11 +145,13 @@ class MainGame(ShowBase):
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
 
-    def initMonster(self):
+    def initObjects(self):
         jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25)
         jumogoro.anim("Walk", True)
         kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25)
         kappa.anim("Idle", True)
+        cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
+        toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")

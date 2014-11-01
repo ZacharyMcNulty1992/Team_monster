@@ -1,5 +1,5 @@
 #------------------------------------------#
-# Class Name: Player
+# Class Name: Monster
 # Created By: Team Monster
 # Last Updated: 10/29/14
 # Updated By: Kevin
