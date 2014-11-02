@@ -1,8 +1,8 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 10/29/14
-# Updated By: Kevin
+# Last Updated: 11/02/14
+# Updated By: Joseph
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
@@ -155,8 +155,8 @@ class MainGame(ShowBase):
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
+        music.setLoop(True)
         music.play()
-
 
     def togglePause(self):
         #used to toggle the pausing so the player can use the same button to pause and unpause
