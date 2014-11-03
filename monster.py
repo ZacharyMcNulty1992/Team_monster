@@ -1,7 +1,7 @@
 #------------------------------------------#
 # Class Name: Monster
 # Created By: Team Monster
-# Last Updated: 10/29/14
+# Last Updated: 11/02/14
 # Updated By: Kevin
 # Notes: This class will be in charge of
 # the monster and its ai
@@ -14,17 +14,10 @@ from direct.actor.Actor import Actor
 from math import fabs
 
 class Monster(object):
-    #copied from player class may need to change
-    speed = .75
-    FORWARD = Vec3(0,1,0)
-    BACK = Vec3(0,-1,0)
-    LEFT = Vec3(-9,0,0)
-    RIGHT = Vec3(9,0,0)
-    STOP = Vec3(0)
-    walk = STOP
-    strafe = STOP
+    walking = False
+    turning = False
 
-    def __init__(self, name, model, posX, posY, posZ, height, width, scale):
+    def __init__(self, name, model, posX, posY, posZ, height, width, scale, speed):
         self.name = name
         self.model = Actor("resources/models/" + model)
         self.posX = posX
@@ -33,6 +26,7 @@ class Monster(object):
         self.height = height
         self.width = width
         self.scale = scale
+        self.speed = speed
         self.loadMonster()
         self.monsterCollision()
         taskMgr.add(self.GravityUpdate, 'gravity-task')
@@ -84,3 +78,39 @@ class Monster(object):
         else:
             self.model.play(anim)
     
+    def walkForward(self):
+        if not self.walking:
+            taskMgr.add(self.WalkForwardUpdate, 'walkforward-task')
+            self.walking = True
+    
+    def stop(self):
+        taskMgr.remove('walkforward-task')
+        self.walking = False
+    
+    def turn(self, angle, clockwise):
+        if not self.turning:
+            if clockwise:
+                taskMgr.add(self.TurnUpdateCW, 'turncwupdate-task', extraArgs = [angle], appendTask = True)
+            else:
+                taskMgr.add(self.TurnUpdateCCW, 'turnccwupdate-task', extraArgs = [angle], appendTask = True)
+            self.turning = True
+    
+    def WalkForwardUpdate(self, task):
+        self.node.setPos(self.node, self.speed, 0, 0)
+        return task.cont
+        
+    def TurnUpdateCW(self, angle, task):
+        self.node.setH(self.node.getH() - 1)
+        if self.node.getH() == angle:
+            self.turning = False
+            return task.done
+        else:
+            return task.cont
+    
+    def TurnUpdateCCW(self, angle, task):
+        self.node.setH(self.node.getH() + 1)
+        if self.node.getH() == angle:
+            self.turning = False
+            return task.done
+        else:
+            return task.cont

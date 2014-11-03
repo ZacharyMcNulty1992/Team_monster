@@ -2,7 +2,7 @@
 # Class Name: 100Monsters
 # Created By: Team Monster
 # Last Updated: 11/02/14
-# Updated By: Joseph
+# Updated By: Kevin
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
@@ -10,7 +10,7 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import WindowProperties, Filename
-import sys, os
+import sys, os, math
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
@@ -146,12 +146,24 @@ class MainGame(ShowBase):
         self.level.setTwoSided(True)
 
     def initObjects(self):
-        jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25)
-        jumogoro.anim("Walk", True)
-        kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25)
-        kappa.anim("Idle", True)
-        cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
-        toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
+        self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
+        self.jumogoro.anim("Walk", True)
+        self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
+        self.kappa.anim("Idle", True)
+        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
+        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
+        taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
+        
+    def MonsterUpdate(self, task):
+        if self.jumogoro.node.getPos().getX() == 0:
+            self.jumogoro.walkForward()
+        if (round(self.jumogoro.node.getPos().getX()) == 20 and round(self.jumogoro.node.getPos().getY()) == 30):
+            self.jumogoro.turn(90, False)
+        if (round(self.jumogoro.node.getPos().getX()) == 27 and round(self.jumogoro.node.getPos().getY()) == 50):
+            self.jumogoro.turn(180, False)
+        if round(self.jumogoro.node.getPos().getX()) == -50:
+            self.jumogoro.stop()
+        return task.cont
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
