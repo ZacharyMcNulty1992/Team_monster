@@ -208,13 +208,14 @@ class Player(object):
 
     def LightTask(self, task):
         slight = Spotlight('player light')
-        slight.setColor(Vec4(0.1, 0.1, 0.1, 1))
-        slight.setShadowCaster(True, 512, 512)
-        render.setShaderAuto()
+        slight.setColor(Vec4(1, 1, 1, 1))
+        #slight.setShadowCaster(True, 512, 512)
+        #render.setShaderAuto()
         dlnp = render.attachNewNode(slight)
-        #dlnp.reparentTo(base.cam)
-        dlnp.setHpr(0,-60, 0)
-        self.node.setLight(dlnp)
+        dlnp.reparentTo(base.cam)
+        dlnp.setHpr(0,-20, 0)
+        render.setLight(dlnp)
+        #self.node.setLight(dlnp)
         dlnp.setPos(0, 0, self.cameraHeight)
         if self.Light == True and self.firstLightPass == True:
             self.node.setLight(dlnp)
