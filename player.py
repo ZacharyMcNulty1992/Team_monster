@@ -50,7 +50,7 @@ class Player(object):
         self.slight.setShadowCaster(True, 1024, 1024)
         self.dlnp = render.attachNewNode(self.slight)
         self.dlnp.reparentTo(base.cam)
-        self.dlnp.setHpr(0,-20, 0)
+        self.dlnp.setHpr(0,-10, 0)
         render.setLight(self.dlnp)
         self.node.setLight(self.dlnp)
         taskMgr.add(self.LightTask, 'light-task')
@@ -99,7 +99,7 @@ class Player(object):
         if (controlStyle == "wasd"):
             # WASD Controls
             # Move backwards / stop
-            base.accept("s", self.__setattr__, ["walk",self.STOP])
+            #base.accept("s", self.__setattr__, ["walk",self.STOP])
             base.accept("s", self.__setattr__, ["walk",self.BACK])
     	    base.accept("s-up", self.__setattr__, ["walk",self.STOP])
         
@@ -162,7 +162,7 @@ class Player(object):
             self.canJump = True
 
     def togglePause(self):
-        if self.ispaused:
+        if self.isPaused:
             self.isPaused = False
         else:
             self.isPaused = True
@@ -216,7 +216,7 @@ class Player(object):
             self.firstLightPass = False
 
     def LightTask(self, task):
-        self.dlnp.setPos(0, 0, self.cameraHeight)
+        self.dlnp.setPos(0, 0, self.cameraHeight -2)
         if self.Light == True and self.firstLightPass == True:
             self.node.setLight(dlnp)
             self.firstLightPass = False
