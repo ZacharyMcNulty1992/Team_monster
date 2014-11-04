@@ -87,30 +87,12 @@ class MainGame(ShowBase):
         
         #Lighting Test
         if self.lighting:
-            
-            #Lighting Through Transparent Face
-            slight = Spotlight('slight')
-            slight.setColor(VBase4(0.15, 0.15, 0.15, .75))
-            lens = PerspectiveLens()
-            slight.setLens(lens)
-            slnp = render.attachNewNode(slight)
-            #Location: Center of Sun Window
-            slnp.setPos(-83.1,48,30)
-            slnp.lookAt(Point3(0, 0, 0))
-            render.setLight(slnp) 
-           
             alight = AmbientLight('alight')
             alight.setColor(VBase4(0.15, 0.15, 0.15, .75))
             alnp = render.attachNewNode(alight)
             render.setLight(alnp)
-<<<<<<< HEAD
-            
-            render.setLightOff()
-            render.setLight(alnp)
-=======
             render.setShaderAuto()
             self.node.initLight()
->>>>>>> 896d7b0af37b8b13fa48f29c83a8884a2c3a2573
         
         
     # This method sets options according to the settings.cfg file in the root folder
