@@ -29,9 +29,10 @@ class Player(object):
     canJump = False
     jump = 0
     cameraHeight = 5
+    Light = False
+    firstLightPass = False
 
     def __init__(self, controlStyle):
-	
         """ inits the player """
         self.loadModel()
         self.setUpCamera()
@@ -42,7 +43,18 @@ class Player(object):
         taskMgr.add(self.moveUpdate, 'move-task')
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
-
+        
+    def initLight(self):
+        self.slight = Spotlight('player light')
+        self.slight.setColor(Vec4(1, 1, 1, 1))
+        self.slight.setShadowCaster(True, 1024, 1024)
+        self.dlnp = render.attachNewNode(self.slight)
+        self.dlnp.reparentTo(base.cam)
+        self.dlnp.setHpr(0,-20, 0)
+        render.setLight(self.dlnp)
+        self.node.setLight(self.dlnp)
+        taskMgr.add(self.LightTask, 'light-task')
+        
     def loadModel(self):
         """ make the nodepath for player """
         self.node = NodePath("resources/models/player1v2.egg")
@@ -83,7 +95,7 @@ class Player(object):
         # These are the tenative jump commands, will be taken out, being used for debugging
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
-
+        base.accept("f", self.toggleFlashLight)
         if (controlStyle == "wasd"):
             # WASD Controls
             # Move backwards / stop
@@ -102,8 +114,7 @@ class Player(object):
             # Move right
             base.accept( "d" , self.__setattr__,["strafe",self.RIGHT] )
             base.accept( "d-up" , self.__setattr__,["strafe",self.STOP] )
-
-	else:
+        else:
             # Arrow Controls
             # Move backwards / stop
             base.accept("arrow_down", self.__setattr__, ["walk",self.STOP])
@@ -195,3 +206,27 @@ class Player(object):
         """used fro resuming play, it adds the tasks back to the task Manager"""
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
+
+    def toggleFlashLight(self):
+        if self.Light == False:
+            self.Light = True
+            self.firstLightPass = True
+        elif self.Light == True:
+            self.Light = False
+            self.firstLightPass = False
+
+    def LightTask(self, task):
+        self.dlnp.setPos(0, 0, self.cameraHeight)
+        if self.Light == True and self.firstLightPass == True:
+            self.node.setLight(dlnp)
+            self.firstLightPass = False
+            return task.cont
+        elif self.Light == False and self.firstLightPass == True:
+            self.node.clearLight(dlnp)
+            self.firstLightPass = False
+            return task.cont
+        elif self.Light == True and self.firstLightPass == False:
+            return task.cont
+        elif self.Light == False and self.firstLightPass == False:
+            return task.cont
+        return task.cont

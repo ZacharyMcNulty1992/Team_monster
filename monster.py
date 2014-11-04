@@ -29,6 +29,7 @@ class Monster(object):
         self.speed = speed
         self.loadMonster()
         self.monsterCollision()
+        self.node.setShaderAuto()
         taskMgr.add(self.GravityUpdate, 'gravity-task')
 
     def loadMonster(self): #need to test to see what model to load for what type of monster
