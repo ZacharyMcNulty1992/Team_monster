@@ -127,7 +127,7 @@ class Player(object):
         # These are the tenative jump commands, will be taken out, being used for debugging
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
-        base.accept("f", self.toggleFlashLight)
+        #base.accept("f", self.toggleFlashLight)
         base.accept("`", self.keyRespawn)
         
         if (controlStyle == "wasd"):
