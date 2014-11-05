@@ -7,8 +7,9 @@
 # the player/camera "object"
 #------------------------------------------#
 
-#import direct.directbase.DirectStart
+from direct.showbase.ShowBase import ShowBase
 import sys
+from direct.gui.OnscreenText import OnscreenText
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
@@ -31,6 +32,11 @@ class Player(object):
     cameraHeight = 5
     Light = False
     firstLightPass = False
+    onscreen = False
+    hasBeenRemoved = True
+    coordsAdded = False
+    Movement = False
+
 
     def __init__(self, controlStyle):
         """ inits the player """
@@ -38,12 +44,36 @@ class Player(object):
         self.setUpCamera()
         self.createCollisions()
         self.attachControls(controlStyle)
+        self.initCoords()
+        #self.initCoords()
         # init mouse update task
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
-        
+        taskMgr.add(self.CoordsTask, 'Coords-task')
+
+    def initCoords(self):
+        global playerX
+        global playerY
+        playerX  = OnscreenText(pos = (0.8, 0.8), scale = (0.07))
+        playerY  = OnscreenText(pos = (0.8, 0.7), scale = (0.07))
+
+
+    def CoordsTask(self, task):
+
+        if self.Movement == True:
+            playerX.setText("")
+            playerY.setText("")
+            return task.cont
+        elif self.Movement == False:
+            playerX.setText("X = " + str(self.node.getX()))
+            playerY.setText("Y = " + str(self.node.getY()))
+            return task.cont
+
+        return task.cont
+
+
     def initLight(self):
         self.slight = Spotlight('player light')
         self.slight.setColor(Vec4(1, 1, 1, 1))
@@ -102,14 +132,14 @@ class Player(object):
             #base.accept("s", self.__setattr__, ["walk",self.STOP])
             base.accept("s", self.__setattr__, ["walk",self.BACK])
     	    base.accept("s-up", self.__setattr__, ["walk",self.STOP])
-        
+
             # Move forward
     	    base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
-    	    base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
+            base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
 
             # Move left
             base.accept( "a" , self.__setattr__,["strafe",self.LEFT])
-            base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )        
+            base.accept( "a-up" , self.__setattr__,["strafe",self.STOP] )
 
             # Move right
             base.accept( "d" , self.__setattr__,["strafe",self.RIGHT] )
@@ -117,17 +147,17 @@ class Player(object):
         else:
             # Arrow Controls
             # Move backwards / stop
-            base.accept("arrow_down", self.__setattr__, ["walk",self.STOP])
+            #base.accept("arrow_down", self.__setattr__, ["walk",self.STOP])
             base.accept("arrow_down", self.__setattr__, ["walk",self.BACK])
-    	    base.accept("arrow_down-up", self.__setattr__, ["walk",self.STOP])
-        
+            base.accept("arrow_down-up", self.__setattr__, ["walk",self.STOP])
+
             # Move forward
     	    base.accept( "arrow_up" , self.__setattr__,["walk",self.FORWARD])
-    	    base.accept( "arrow_up-up" , self.__setattr__,["walk",self.STOP] )
+            base.accept( "arrow_up-up" , self.__setattr__,["walk",self.STOP] )
 
             # Move left
             base.accept( "arrow_left" , self.__setattr__,["strafe",self.LEFT])
-            base.accept( "arrow_left-up" , self.__setattr__,["strafe",self.STOP] )        
+            base.accept( "arrow_left-up" , self.__setattr__,["strafe",self.STOP] )
 
             # Move right
             base.accept( "arrow_right" , self.__setattr__,["strafe",self.RIGHT] )
@@ -150,9 +180,16 @@ class Player(object):
     def moveUpdate(self,task):
         """ this task makes the player move """
         #move where the keys set it
+
         self.node.setPos(self.node,self.walk*globalClock.getDt()*self.speed)
         self.node.setPos(self.node,self.strafe*globalClock.getDt()*self.speed)
         self.node.setPos(self.node,(self.walk+self.strafe*globalClock.getDt())*self.speed)
+
+        if self.walk == self.STOP:
+            self.Movement = False
+        else:
+            self.Movement = True
+
         return task.cont
         
     def toggleJump(self):
