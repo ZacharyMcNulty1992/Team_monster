@@ -66,11 +66,13 @@ class MainGame(ShowBase):
         taskMgr.add(self.PauseUpdate, 'pause-task')
 
         self.initCollision()
-        self.loadLevel()
-        self.node = Player(self.controlStyle)
+	
+        self.player = Player(self.controlStyle)
         if self.debug:
-            self.node.toggleJump()
-
+            self.player.toggleJump()
+	
+	self.loadSkybox()
+	self.loadLevel()
         self.initObjects()
         self.initMusic()
 
@@ -88,12 +90,20 @@ class MainGame(ShowBase):
         #Lighting Test
         if self.lighting:
             alight = AmbientLight('alight')
-            alight.setColor(VBase4(0.15, 0.15, 0.15, .75))
+            alight.setColor(VBase4(0.25, 0.25, 0.25, .75))
             alnp = render.attachNewNode(alight)
             render.setLight(alnp)
             render.setShaderAuto()
-            self.node.initLight()
+            self.player.initLight()
         
+
+    #Creates and Loads the Skybox
+    def loadSkybox(self):
+        self.skybox = loader.loadModel("resources/models/skybox.egg")
+	self.skybox.setScale(1000.0,1000.0,1000.0)
+        self.skybox.setPos(2,2,2)
+        self.skybox.reparentTo(base.cam)
+        self.skybox.setEffect(CompassEffect.make(self.render, CompassEffect.PRot))
         
     # This method sets options according to the settings.cfg file in the root folder
     def getSettings(self, cfgFile):
