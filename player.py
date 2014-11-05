@@ -56,19 +56,22 @@ class Player(object):
     def initCoords(self):
         global playerX
         global playerY
+        global playerZ
         playerX  = OnscreenText(pos = (0.8, 0.8), scale = (0.07))
         playerY  = OnscreenText(pos = (0.8, 0.7), scale = (0.07))
-
+        playerZ = OnscreenText(pos = (0.8, 0.6), scale = (0.07))
 
     def CoordsTask(self, task):
 
         if self.Movement == True:
             playerX.setText("")
             playerY.setText("")
+            playerZ.setText("")
             return task.cont
         elif self.Movement == False:
             playerX.setText("X = " + str(self.node.getX()))
             playerY.setText("Y = " + str(self.node.getY()))
+            playerZ.setText("Z = "+ str(self.node.getZ()))
             return task.cont
 
         return task.cont
