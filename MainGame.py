@@ -67,9 +67,9 @@ class MainGame(ShowBase):
 
         self.initCollision()
 	
-        self.player = Player(self.controlStyle)
+        self.node = Player(self.controlStyle)
         if self.debug:
-            self.player.toggleJump()
+            self.node.toggleJump()
 	
 	self.loadSkybox()
 	self.loadLevel()
@@ -94,7 +94,7 @@ class MainGame(ShowBase):
             alnp = render.attachNewNode(alight)
             render.setLight(alnp)
             render.setShaderAuto()
-            self.player.initLight()
+            self.node.initLight()
         
 
     #Creates and Loads the Skybox
