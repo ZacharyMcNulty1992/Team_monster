@@ -234,7 +234,7 @@ class Player(object):
 
     def respawnUpdate(self, task):
         """ Will place player back at spawn if Z is below -10 """
-        if self.node.getZ() <= -100:
+        if self.node.getZ() <= -7:
             self.node.setPos(0,0,self.cameraHeight)
             base.camera.setPos(0,0,self.cameraHeight)
         return task.cont

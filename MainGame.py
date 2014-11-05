@@ -199,6 +199,7 @@ class MainGame(ShowBase):
         elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
             self.node.addTasks()
             self.alreadyRemoved = False
+	    base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
         elif self.isPaused == True and self.alreadyRemoved == True:
             return task.cont
         elif self.isPaused == False and self.alreadyRemoved == False:
