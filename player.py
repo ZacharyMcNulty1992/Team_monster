@@ -57,9 +57,9 @@ class Player(object):
         global playerX
         global playerY
         global playerZ
-        playerX  = OnscreenText(pos = (0.8, 0.8), scale = (0.07))
-        playerY  = OnscreenText(pos = (0.8, 0.7), scale = (0.07))
-        playerZ = OnscreenText(pos = (0.8, 0.6), scale = (0.07))
+        playerX  = OnscreenText(pos = (0.8, 0.8), scale = (0.07), fg = (1.0, 1.0, 1.0, 1.0))
+        playerY  = OnscreenText(pos = (0.8, 0.7), scale = (0.07), fg = (1.0, 1.0, 1.0, 1.0))
+        playerZ = OnscreenText(pos = (0.8, 0.6), scale = (0.07), fg = (1.0, 1.0, 1.0, 1.0))
 
     def CoordsTask(self, task):
         if self.Movement == True:
@@ -128,6 +128,8 @@ class Player(object):
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
         base.accept("f", self.toggleFlashLight)
+        base.accept("`", self.keyRespawn)
+        
         if (controlStyle == "wasd"):
             # WASD Controls
             # Move backwards / stop
@@ -236,6 +238,10 @@ class Player(object):
             self.node.setPos(0,0,self.cameraHeight)
             base.camera.setPos(0,0,self.cameraHeight)
         return task.cont
+      
+    def keyRespawn(self):
+        self.node.setPos(0,0,self.cameraHeight)
+        base.camera.setPos(0,0,self.cameraHeight)
 
     def removeTasks(self):
         """used for pausing it removes the tasks that keep track of moving and looking around"""
