@@ -62,7 +62,6 @@ class Player(object):
         playerZ = OnscreenText(pos = (0.8, 0.6), scale = (0.07))
 
     def CoordsTask(self, task):
-
         if self.Movement == True:
             playerX.setText("")
             playerY.setText("")
@@ -73,17 +72,17 @@ class Player(object):
             playerY.setText("Y = " + str(self.node.getY()))
             playerZ.setText("Z = "+ str(self.node.getZ()))
             return task.cont
-
         return task.cont
-
 
     def initLight(self):
         self.slight = Spotlight('player light')
-        self.slight.setColor(Vec4(1, 1, 1, 1))
+        self.slight.setScene(render)
+        self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
+        self.slight.setAttenuation(Point3(0, 0, 0.001))
+        self.slight.getLens().setNearFar(1, 1000)
         self.slight.setShadowCaster(True, 1024, 1024)
-        self.dlnp = render.attachNewNode(self.slight)
-        self.dlnp.reparentTo(base.cam)
-        self.dlnp.setHpr(0,-10, 0)
+        self.dlnp = self.node.attachNewNode(self.slight)
+        self.dlnp.reparentTo(self.node)
         render.setLight(self.dlnp)
         self.node.setLight(self.dlnp)
         taskMgr.add(self.LightTask, 'light-task')
@@ -172,6 +171,7 @@ class Player(object):
         x = md.getX()
         y = md.getY()
         if base.win.movePointer(0, base.win.getXSize()/2, base.win.getYSize()/2):
+            self.dlnp.setHpr(0, (base.camera.getP() - (y - base.win.getYSize()/2)*0.1), 0)
             self.node.setH(self.node.getH() -  (x - base.win.getXSize()/2)*0.1)
             base.camera.setP(base.camera.getP() - (y - base.win.getYSize()/2)*0.1)
         if base.camera.getP() >= 90:
