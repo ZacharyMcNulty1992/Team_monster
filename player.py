@@ -276,3 +276,10 @@ class Player(object):
         elif self.Light == False and self.firstLightPass == False:
             return task.cont
         return task.cont
+
+    def getMyX(self):
+        return self.node.getX()
+    def getMyY(self):
+        return self.node.getY()
+    def getMyZ(self):
+        return self.node.getZ()
