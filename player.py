@@ -78,7 +78,7 @@ class Player(object):
         self.slight = Spotlight('player light')
         self.slight.setScene(render)
         self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
-        self.slight.setAttenuation(Point3(0, 0, 0.001))
+        self.slight.setAttenuation(Point3(0, 0, 0.0007))
         self.slight.getLens().setNearFar(1, 3)
         self.slight.setShadowCaster(True, 1024, 1024)
         self.dlnp = self.node.attachNewNode(self.slight)
