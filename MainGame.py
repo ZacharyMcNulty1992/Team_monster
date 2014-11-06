@@ -97,6 +97,7 @@ class MainGame(ShowBase):
             self.node.initLight()
         
 
+
     #Creates and Loads the Skybox
     def loadSkybox(self):
         self.skybox = loader.loadModel("resources/models/skybox.egg")
@@ -156,6 +157,10 @@ class MainGame(ShowBase):
         self.level = loader.loadModel("resources/levels/first_floor.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
+	self.clickable = loader.loadModel("resources/models/clickable_test.egg")
+	self.clickable.reparentTo(render)
+	self.level.setTwoSided(True)
+	self.clickable.setTag('myObjectTag', '1')
 
     def initObjects(self):
         self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
