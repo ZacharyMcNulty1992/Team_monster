@@ -1,207 +1,209 @@
 <CoordinateSystem> { Z-up } 
 <Material> Entry_Pillar {
-  <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.200000 }
+  <Scalar> diffg { 0.200000 }
+  <Scalar> diffb { 0.200000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Sea {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Walls2 {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.250000 }
+  <Scalar> diffg { 0.250000 }
+  <Scalar> diffb { 0.250000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Walls {
-  <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Pool_Floor {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Material {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 1.000000 }
+  <Scalar> diffg { 1.000000 }
+  <Scalar> diffb { 1.000000 }
+  <Scalar> diffa { 0.000000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> speca { 0.000000 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Wood_Boards {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Bathroom_Floor {
-    <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 1.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Moon {
-    <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Terrain {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Ceiling {
-  <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Bathroom_Walls {
-    <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.200000 }
+  <Scalar> diffg { 0.200000 }
+  <Scalar> diffb { 0.200000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Outside_Lower {
-  <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> MainFloor {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.800000 }
+  <Scalar> diffg { 0.800000 }
+  <Scalar> diffb { 0.800000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Sun_Base {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.800000 }
+  <Scalar> diffg { 0.800000 }
+  <Scalar> diffb { 0.800000 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
 }
 
 <Material> Sun_Edge {
-   <Scalar> diffr { 0.480000 }
-  <Scalar> diffg { 0.480000 }
-  <Scalar> diffb { 0.480000 }
+  <Scalar> diffr { 0.200000 }
+  <Scalar> diffg { 0.183100 }
+  <Scalar> diffb { 0.074638 }
   <Scalar> specr { 0.000000 }
   <Scalar> specg { 0.000000 }
   <Scalar> specb { 0.000000 }
-  <Scalar> shininess { 12.5 }
+  <Scalar> shininess { 0.25 }
   <Scalar> emitr { 0.000000 }
   <Scalar> emitg { 0.000000 }
   <Scalar> emitb { 0.000000 }
@@ -328,7 +330,6 @@
 }
 
   <Group> Floor {
-    
     <Collide> { Polyset keep descend }
     <Transform> {
       <Matrix4> {
@@ -68916,6 +68917,70 @@
         <UV>  {
           23.647911 9.997248
         }
+      }
+      <Vertex> 8572 {
+        -51.92955017089844 3.9928512573242188 3.520620346069336
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.009307 0.000000
+        }
+      }
+      <Vertex> 8573 {
+        -28.340103149414062 3.9928512573242188 -0.6381931304931641
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          1.000000 0.035934
+        }
+      }
+      <Vertex> 8574 {
+        -28.340103149414062 15.26015853881836 -0.6381931304931641
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          1.000000 0.475419
+        }
+      }
+      <Vertex> 8575 {
+        -51.92955017089844 15.26015853881836 3.520620346069336
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.009307 0.470539
+        }
+      }
+      <Vertex> 8576 {
+        -51.5560302734375 16.009601593017578 7.09016227722168
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.000000 0.499082
+        }
+      }
+      <Vertex> 8577 {
+        -29.04730796813965 16.009601593017578 -1.1022090911865234
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.967109 0.504943
+        }
+      }
+      <Vertex> 8578 {
+        -29.04730796813965 27.276905059814453 -1.1022090911865234
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.967109 0.941215
+        }
+      }
+      <Vertex> 8579 {
+        -51.5560302734375 27.276905059814453 7.09016227722168
+        <RGBA> { 1.000000 1.000000 1.000000 1.0 }
+        
+        <UV>  {
+          0.000000 1.000000
+        }
       }}
     
     
@@ -79532,5 +79597,17 @@
       <MRef> { Material }
       <Normal> {-0.707107 -0.707107 0.000000}
       <VertexRef> { 8568 8569 8570 8571 <Ref> { Floor }}
+    }
+    <Polygon> {
+      <TRef> { Texture.003 }
+      <MRef> { Bathroom_Walls }
+      <Normal> {0.973190 0.000000 0.230004}
+      <VertexRef> { 8572 8573 8574 8575 <Ref> { Floor }}
+    }
+    <Polygon> {
+      <TRef> { Texture.003 }
+      <MRef> { Bathroom_Walls }
+      <Normal> {0.993511 0.000000 0.113737}
+      <VertexRef> { 8576 8577 8578 8579 <Ref> { Floor }}
     }
   }
