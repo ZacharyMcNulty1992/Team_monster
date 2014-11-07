@@ -139,7 +139,7 @@ class MainGame(ShowBase):
 	    entry = self.mCollisionQue.getEntry(0)
 
 	    pickedObj = entry.getIntoNodePath()	
-	    pickedObj = pickedObj.findNetTag('MyTagObject')
+	    pickedObj = pickedObj.findNetTag('cucumber')
 	    
 	    if not pickedObj.isEmpty():
 		pos = entry.getSurfacePoint(self.render)
@@ -212,16 +212,19 @@ class MainGame(ShowBase):
     def initObjects(self):
         self.monsters = {}
         self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
+        self.jumogoro.model.setTag('jumogoro', '1')
         self.jumogoro.anim("Walk", True)
         self.monsters["jumogoro"] = self.jumogoro
         self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
+        self.kappa.model.setTag('kappa', '1')
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
 	#Mouse Tag
-	self.cucumber.model.setTag('MyTagObject','1')
+	self.cucumber.model.setTag('cucumber','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
+        self.toilet.model.setTag('toilet','1')
         
     def MonsterUpdate(self, task):
         if self.jumogoro.node.getPos().getX() == 0:
