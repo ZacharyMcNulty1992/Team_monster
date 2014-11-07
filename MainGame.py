@@ -10,7 +10,7 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenText import OnscreenText
 from panda3d.core import WindowProperties, Filename
-import sys, os, math, datetime
+import sys, os, math, datetime, Queue
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
@@ -71,14 +71,15 @@ class MainGame(ShowBase):
         if self.debug:
             self.node.toggleJump()
 	
-	self.loadSkybox()
-	self.loadLevel()
+        self.loadSkybox()
+        self.loadLevel()
         self.initObjects()
+        self.initScripts()
         self.initMusic()
 
         text = TextNode('node')
         text.setText("There's supposed to be a file reader. Will recreate soon!")
-        textNodePath =  render2d.attachNewNode(text)
+        textNodePath = render2d.attachNewNode(text)
         textNodePath.setScale(0.07)
         text.setAlign(TextNode.ABoxedCenter)
         Zccara = loader.loadFont('resources/fonts/Zccara.ttf')
@@ -157,16 +158,19 @@ class MainGame(ShowBase):
         self.level = loader.loadModel("resources/levels/first_floor.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
-	#self.clickable = loader.loadModel("resources/models/clickable_test.egg")
-	#self.clickable.reparentTo(render)
-	self.level.setTwoSided(True)
-	#self.clickable.setTag('myObjectTag', '1')
+        #self.clickable = loader.loadModel("resources/models/clickable_test.egg")
+        #self.clickable.reparentTo(render)
+        self.level.setTwoSided(True)
+        #self.clickable.setTag('myObjectTag', '1')
 
     def initObjects(self):
+        self.monsters = {}
         self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
         self.jumogoro.anim("Walk", True)
+        self.monsters["jumogoro"] = self.jumogoro
         self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
         self.kappa.anim("Idle", True)
+        self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
@@ -197,7 +201,6 @@ class MainGame(ShowBase):
     def PauseUpdate(self, task):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
-
         if self.isPaused == True and self.alreadyRemoved == False:
             self.node.removeTasks()
             self.alreadyRemoved = True
@@ -209,8 +212,44 @@ class MainGame(ShowBase):
             return task.cont
         elif self.isPaused == False and self.alreadyRemoved == False:
             return task.cont
-
         return task.cont
+
+    def initScripts(self):
+        self.scripts = {}
+        path = "./resources/scripts/"
+        dir = os.listdir(path)
+        # First pass reads the scripts file, turning each script into a queue of commands and
+        # places each of these into a dictionary keyed by script names
+        for filename in dir:
+            if filename.endswith(".sc"):
+                state = "start"
+                file = open(path + filename)
+                for line in file:
+                    if state == "start":
+                        if line == '\n':
+                            continue
+                        keyword, name = line.split(" ", 2)
+                        name = name[:-2]
+                        scriptBody = Queue.Queue()
+                        state = "read"
+                    elif state == "read":
+                        cmd = line.split(" ")
+                        # Just look at this next line. Is this not the coolest thing ever?
+                        # (If you're wondering, it takes the last element of the tuple
+                        # cmd and then strips off the last character from it so we drop the
+                        # '\n' from end of the line)
+                        cmd[-1] = cmd[-1][:-1]
+                        if cmd[0] == "end":
+                            self.scripts[name] = scriptBody
+                            state = "start"
+                        else:
+                            scriptBody.put(cmd)
+        for key in self.scripts:
+            print key
+            script = self.scripts[key]
+            while not script.empty():
+                print script.get()
+            print '\n'
 
 game = MainGame()
 game.run()
