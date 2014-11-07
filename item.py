@@ -39,6 +39,7 @@ class Item(object):
     def itemCollision(self):
         #itn for item node
         itn = CollisionNode('Item')
+	#itn.set_from_collide_mask(0)
         itn.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
         Solid = self.node.attachNewNode(itn)
         #base.cTrav.addCollider(Solid, base.pusher)
@@ -58,6 +59,7 @@ class Item(object):
         Solid = self.node.attachNewNode(itn)
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(Solid, self.nodeGroundHandler)
+	
 
     def GravityUpdate(self, task):
         highZ = -500 # do not make this a positive value it will spawn the camera outside of the map

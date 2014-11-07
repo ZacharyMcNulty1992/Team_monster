@@ -63,7 +63,7 @@ class MainGame(ShowBase):
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
 
-        taskMgr.add(self.PauseUpdate, 'pause-task')
+	taskMgr.add(self.PauseUpdate, 'pause-task')
 
         self.initCollision()
 	
@@ -76,6 +76,13 @@ class MainGame(ShowBase):
         self.initObjects()
         self.initScripts()
         self.initMusic()
+
+
+	#Add mouse Handler
+	self.accept('mouse1', self.onMouseTask)
+	#Add Mouse Collision to our world
+	self.setupMouseCollision()
+
 
         text = TextNode('node')
         text.setText("There's supposed to be a file reader. Will recreate soon!")
@@ -97,6 +104,50 @@ class MainGame(ShowBase):
             render.setShaderAuto()
             self.node.initLight()
 
+    #Mouse Collision
+    def setupMouseCollision(self):
+	self.mPickerTraverser = CollisionTraverser()
+	self.mCollisionQue = CollisionHandlerQueue()
+
+	#Creates a Collision Ray to detect Against
+	self.mPickRay = CollisionRay()
+	
+	self.mPickRay.setOrigin(self.camera.getPos(self.render))
+	self.mPickRay.setDirection(render.getRelativeVector(camera, Vec3(0,1,0)))
+
+	self.mPickNode = CollisionNode('pickRay')
+	self.mPickNode.addSolid(self.mPickRay)
+
+	self.mPickNP = self.camera.attachNewNode(self.mPickNode)
+
+	self.mPickNode.setFromCollideMask(GeomNode.getDefaultCollideMask())
+	self.mPickerTraverser.addCollider(self.mPickNP,self.mCollisionQue)
+
+    #Mouse Task
+    def onMouseTask(self):
+	""""""
+
+	if(self.mouseWatcherNode.hasMouse() == False):
+	    return
+	mpos = base.mouseWatcherNode.getMouse()
+	
+	self.mPickRay.setFromLens(self.camNode, mpos.getX(), mpos.getY())
+	self.mPickerTraverser.traverse(self.render)
+	
+	if(self.mCollisionQue.getNumEntries() > 0):
+	    self.mCollisionQue.sortEntries()
+	    entry = self.mCollisionQue.getEntry(0)
+
+	    pickedObj = entry.getIntoNodePath()	
+	    pickedObj = pickedObj.findNetTag('MyTagObject')
+	    
+	    if not pickedObj.isEmpty():
+		pos = entry.getSurfacePoint(self.render)
+		print pickedObj
+		pickedObj.reparentTo(self.node.node)
+		pickedObj.setPos(1, 1.5, 3)
+
+	
     #Creates and Loads the Skybox
     def loadSkybox(self):
         self.skybox = loader.loadModel("resources/models/skybox.egg")
@@ -166,6 +217,8 @@ class MainGame(ShowBase):
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
+	#Mouse Tag
+	self.cucumber.model.setTag('MyTagObject','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         
