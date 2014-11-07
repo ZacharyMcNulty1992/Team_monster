@@ -60,8 +60,8 @@ class MainGame(ShowBase):
         base.disableMouse()
 
         # Sets p as the quit button and escape for pause
-        base.accept("p", sys.exit)
-        base.accept("escape", self.togglePause)
+        base.accept("escape", sys.exit)
+        base.accept("p", self.togglePause)
 
         taskMgr.add(self.PauseUpdate, 'pause-task')
 
@@ -96,8 +96,6 @@ class MainGame(ShowBase):
             render.setLight(alnp)
             render.setShaderAuto()
             self.node.initLight()
-        
-
 
     #Creates and Loads the Skybox
     def loadSkybox(self):
