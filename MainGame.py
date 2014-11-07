@@ -141,12 +141,28 @@ class MainGame(ShowBase):
 	    pickedObj = entry.getIntoNodePath()	
 	    pickedObj = pickedObj.findNetTag('cucumber')
 	    
+	    hasCucumber = False
+	    
+	    pickedKappa = entry.getIntoNodePath()
+	    pickedKappa = pickedKappa.findNetTag('kappa')
+	    
 	    if not pickedObj.isEmpty():
 		pos = entry.getSurfacePoint(self.render)
 		print pickedObj
-		self.node.node.attachNewNode(pickedObj)
-		#pickedObj.reparentTo(self.node.node)
+		#self.node.node.attachNewNode(pickedObj)
+		pickedObj.reparentTo(self.node.node)
 		pickedObj.setPos(1, 1.5, 3)
+		hasCucumber = True
+		
+	    print hasCucumber
+	    if not pickedKappa.isEmpty():
+		pos = entry.getSurfacePoint(self.render)
+		
+		if hasCucumber:
+		    pickedObj.reparentTo(pickedKappa)
+		    pickedObj.setPos(0, 1, .5)
+		    hasCucumber = False
+		    
 
 	
     #Creates and Loads the Skybox
