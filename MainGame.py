@@ -144,7 +144,8 @@ class MainGame(ShowBase):
 	    if not pickedObj.isEmpty():
 		pos = entry.getSurfacePoint(self.render)
 		print pickedObj
-		pickedObj.reparentTo(self.node.node)
+		self.node.node.attachNewNode(pickedObj)
+		#pickedObj.reparentTo(self.node.node)
 		pickedObj.setPos(1, 1.5, 3)
 
 	
