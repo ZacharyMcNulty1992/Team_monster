@@ -1,14 +1,15 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 11/02/14
-# Updated By: Kevin
+# Last Updated: 11/08/14
+# Updated By: Joseph
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
 #-------------------------------------------#
 
 from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectFrame import DirectFrame
 from panda3d.core import WindowProperties, Filename
 import sys, os, math, datetime, Queue
 from pandac.PandaModules import *
@@ -30,6 +31,7 @@ class MainGame(ShowBase):
     lighting = True
     isPaused = False
     alreadyRemoved = False
+    monsterBookOpen = False
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -94,7 +96,13 @@ class MainGame(ShowBase):
         textNodePath.setPos(0, 0, -.60)
         text.setWordwrap(20)
         text.setAlign(text.ACenter)
-        
+
+        global monsterBook
+        monsterBook = DirectFrame()
+
+        base.accept("j", self.toggleMonsterBook)
+
+                                                                                
         #Lighting Test
         if self.lighting:
             alight = AmbientLight('alight')
@@ -257,6 +265,24 @@ class MainGame(ShowBase):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.setLoop(True)
         music.play()
+
+    def toggleMonsterBook(self):
+        """ set visiblity for monster book, currently rough """
+        if self.monsterBookOpen == True:
+            self.monsterBookOpen = False
+            monsterBook['image_scale'] = (0, 0, 0)
+            monsterBook['frameColor'] = (0, 0, 0, 0)
+            monsterBook['text'] = ""
+        else:
+            self.monsterBookOpen = True
+            monsterBook['frameColor'] = (0, 0, 0, 1)
+            monsterBook['frameSize'] = (1, -1, self.winYSize, -self.winYSize)
+            monsterBook['image'] = 'resources/GUI_Assets/Monster Book/PNG Files/Book.png'
+            monsterBook['image_scale'] = (1, 1, 1)
+            monsterBook['text'] = "Monster Book"
+            monsterBook['text_fg'] = (20, 0, 0, 1)
+            monsterBook['text_pos'] = (0, 0)
+            monsterBook['text_scale'] = (0.2, 0.2)
 
     def togglePause(self):
         #used to toggle the pausing so the player can use the same button to pause and unpause
