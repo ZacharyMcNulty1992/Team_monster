@@ -32,6 +32,7 @@ class MainGame(ShowBase):
     isPaused = False
     alreadyRemoved = False
     monsterBookOpen = False
+    brightness = .5
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -106,7 +107,7 @@ class MainGame(ShowBase):
         #Lighting Test
         if self.lighting:
             alight = AmbientLight('alight')
-            alight.setColor(VBase4(0.25, 0.25, 0.25, .75))
+            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
             alnp = render.attachNewNode(alight)
             render.setLight(alnp)
             render.setShaderAuto()
@@ -157,7 +158,7 @@ class MainGame(ShowBase):
 		pos = entry.getSurfacePoint(self.render)
 		print pickedObj
 		#self.node.node.attachNewNode(pickedObj)
-		pickedObj.reparentTo(self.node.node)
+		pickedObj.reparentTo(self.node.hand)
 		pickedObj.setPos(1, 1.5, 3)
 		hasCucumber = True
 		
@@ -170,7 +171,7 @@ class MainGame(ShowBase):
 		    pickedObj.setPos(0, 1, .5)
 		    hasCucumber = False
 		    
-
+	self.node.node.ls()
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
@@ -211,6 +212,8 @@ class MainGame(ShowBase):
                     self.lighting = True
                 else:
                     self.lighting = False
+	    elif option == "brightness":
+		    self.brightness = float(value)
 
     # Shows subtitles at the bottom of the screen
     def showSubs(self):
@@ -242,10 +245,10 @@ class MainGame(ShowBase):
         self.kappa.model.setTag('kappa', '1')
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
-        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False)
+        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True)
 	#Mouse Tag
 	self.cucumber.model.setTag('cucumber','1')
-        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False)
+        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('toilet','1')
         

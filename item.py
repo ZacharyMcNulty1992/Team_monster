@@ -15,7 +15,7 @@ from math import fabs
 
 class Item(object):
 
-    def __init__(self, name, model, posX, posY, posZ, height, width, scale, defiesGravity):
+    def __init__(self, name, model, posX, posY, posZ, height, width, scale, defiesGravity, isCollectable):
         self.name = name
         self.model = Actor("resources/models/" + model)
         self.posX = posX
@@ -24,6 +24,7 @@ class Item(object):
         self.height = height
         self.width = width
         self.scale = scale
+	self.isCollectable = isCollectable
         self.loadItem()
         self.itemCollision()
         if not defiesGravity:

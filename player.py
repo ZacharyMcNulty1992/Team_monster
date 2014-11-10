@@ -14,6 +14,7 @@ from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
 
+
 class Player(object):
     """
         Player is the main actor in the fps game
@@ -36,6 +37,7 @@ class Player(object):
     hasBeenRemoved = True
     coordsAdded = False
     Movement = False
+    isHolding = False
 
 
     def __init__(self, controlStyle):
@@ -45,6 +47,7 @@ class Player(object):
         self.createCollisions()
         self.attachControls(controlStyle)
         self.initCoords()
+	self.attachHand()
         #self.initCoords()
         # init mouse update task
         taskMgr.add(self.mouseUpdate, 'mouse-task')
@@ -52,6 +55,10 @@ class Player(object):
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
         taskMgr.add(self.CoordsTask, 'Coords-task')
+	
+    def attachHand(self):
+	self.hand = NodePath("Hand")
+	self.hand.reparentTo(self.node)
 
     def initCoords(self):
         global playerX
