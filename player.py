@@ -37,7 +37,7 @@ class Player(object):
     hasBeenRemoved = True
     coordsAdded = False
     Movement = False
-    isHolding = False
+    mouseOver = STOP
 
 
     def __init__(self, controlStyle):
@@ -187,6 +187,9 @@ class Player(object):
             base.camera.setP(90)
         if base.camera.getP() <= -90:
             base.camera.setP(-90)
+	
+	self.hitSomething()
+
         return task.cont
 
     def moveUpdate(self,task):
@@ -284,9 +287,28 @@ class Player(object):
             return task.cont
         return task.cont
 
+    def hitSomething(self):
+	#This method will continueously check for if you
+	#are around anything interavtable (including clicking)
+	global mouseOver
+	if(base.mouseWatcherNode.hasMouse() == False):
+	    return
+	mpos = base.mouseWatcherNode.getMouse()
+	
+	base.mPickRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
+	base.mPickerTraverser.traverse(base.render)
+	
+	if(base.mCollisionQue.getNumEntries() > 0):
+	    base.mCollisionQue.sortEntries()
+	    self.mouseOver = base.mCollisionQue.getEntry(0)
+	
     def getMyX(self):
         return self.node.getX()
     def getMyY(self):
         return self.node.getY()
     def getMyZ(self):
         return self.node.getZ()
+    def getMouseOver(self):
+	return self.mouseOver
+
+

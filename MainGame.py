@@ -80,9 +80,11 @@ class MainGame(ShowBase):
         self.initScripts()
         self.initMusic()
 
-
+	global looking
+	looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.05), fg = (1.0, 1.0, 1.0, 1.0))
 	#Add mouse Handler
 	self.accept('mouse1', self.onMouseTask)
+	self.accept('mouse1_up', self.onMouseUP)
 	#Add Mouse Collision to our world
 	self.setupMouseCollision()
 
@@ -134,44 +136,11 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
+	looking.setText(str(self.node.getMouseOver()))
+    def onMouseUP(self):
+	print "HERE"	
+	looking.setText("")
 
-	if(self.mouseWatcherNode.hasMouse() == False):
-	    return
-	mpos = base.mouseWatcherNode.getMouse()
-	
-	self.mPickRay.setFromLens(self.camNode, mpos.getX(), mpos.getY())
-	self.mPickerTraverser.traverse(self.render)
-	
-	if(self.mCollisionQue.getNumEntries() > 0):
-	    self.mCollisionQue.sortEntries()
-	    entry = self.mCollisionQue.getEntry(0)
-
-	    pickedObj = entry.getIntoNodePath()	
-	    pickedObj = pickedObj.findNetTag('cucumber')
-	    
-	    hasCucumber = False
-	    
-	    pickedKappa = entry.getIntoNodePath()
-	    pickedKappa = pickedKappa.findNetTag('kappa')
-	    
-	    if not pickedObj.isEmpty():
-		pos = entry.getSurfacePoint(self.render)
-		print pickedObj
-		#self.node.node.attachNewNode(pickedObj)
-		pickedObj.reparentTo(self.node.hand)
-		pickedObj.setPos(1, 1.5, 3)
-		hasCucumber = True
-		
-	    print hasCucumber
-	    if not pickedKappa.isEmpty():
-		pos = entry.getSurfacePoint(self.render)
-		
-		if hasCucumber:
-		    pickedObj.reparentTo(pickedKappa)
-		    pickedObj.setPos(0, 1, .5)
-		    hasCucumber = False
-		    
-	self.node.node.ls()
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
