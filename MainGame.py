@@ -133,7 +133,6 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
-	""""""
 
 	if(self.mouseWatcherNode.hasMouse() == False):
 	    return
@@ -277,7 +276,7 @@ class MainGame(ShowBase):
             self.monsterBookOpen = True
             monsterBook['frameColor'] = (0, 0, 0, 1)
             monsterBook['frameSize'] = (1, -1, self.winYSize, -self.winYSize)
-            monsterBook['image'] = 'resources/GUI_Assets/Monster Book/PNG Files/Book.png'
+            monsterBook['image'] = 'resources/GUI_Assets/Monster_Book/PNG_Files/Book.png'
             monsterBook['image_scale'] = (1, 1, 1)
             monsterBook['text'] = "Monster Book"
             monsterBook['text_fg'] = (20, 0, 0, 1)
