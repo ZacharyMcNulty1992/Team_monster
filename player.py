@@ -300,7 +300,8 @@ class Player(object):
 	
 	if(base.mCollisionQue.getNumEntries() > 0):
 	    base.mCollisionQue.sortEntries()
-	    self.mouseOver = base.mCollisionQue.getEntry(0)
+	    self.mouseOver = str(base.mCollisionQue.getEntry(0).getIntoNodePath()) + "\n" + str(base.mCollisionQue.getEntry(0).getInteriorPoint(self.node))
+		
 	
     def getMyX(self):
         return self.node.getX()

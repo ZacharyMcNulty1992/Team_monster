@@ -81,7 +81,7 @@ class MainGame(ShowBase):
         self.initMusic()
 
 	global looking
-	looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.05), fg = (1.0, 1.0, 1.0, 1.0))
+	looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
 	#Add mouse Handler
 	self.accept('mouse1', self.onMouseTask)
 	self.accept('mouse1_up', self.onMouseUP)
