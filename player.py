@@ -301,9 +301,14 @@ class Player(object):
 	
 	if(base.mCollisionQue.getNumEntries() > 0):
 	    base.mCollisionQue.sortEntries()
-	    
-	    self.mouseOver = "Node Path: --> " + str(base.mCollisionQue.getEntry(0).getIntoNodePath()) + "\nPoint: --> " + str(base.mCollisionQue.getEntry(0).getInteriorPoint(self.node))
-	    base.looking.setText(str(self.getMouseOver()))
+	    obj =  base.mCollisionQue.getEntry(0).getIntoNodePath()
+	    obj = obj.findNetTag('collectable')
+	    if not obj.isEmpty(): 
+	        self.mouseOver = "Left Click to PICK UP"
+		base.looking.setText(str(self.getMouseOver()))
+	    else:
+		self.mouseOver = ""
+		base.looking.setText(str(self.getMouseOver()))
 	    
 	
     def getMyX(self):

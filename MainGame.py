@@ -142,12 +142,11 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
-	render.ls()
-	
 	entry = self.mCollisionQue.getEntry(0)
 	pickedObj = entry.getIntoNodePath()
 	pickedObj = pickedObj.findNetTag('collectable')
 	if not pickedObj.isEmpty():
+	  
 	    if self.node.holding:
 		self.drop(self.node.hand.getChild(0))
 	    pickedObj.reparentTo(self.node.hand)
@@ -162,9 +161,7 @@ class MainGame(ShowBase):
 	    self.drop(self.node.hand.getChild(0))
 	
 	
-    def drop(self, child):
-      print "Come little Children"
-      
+    def drop(self, child):     
       child.reparentTo(render)
       child.setPos(self.node.getMyX(), self.node.getMyY(), self.node.getMyZ())
       self.node.holding = False
