@@ -290,6 +290,7 @@ class Player(object):
             return task.cont
         return task.cont
 
+    #This method will test what the camera is looking at.
     def hitSomething(self):
         #This method will continueously check for if you
         #are around anything interavtable (including clicking)
