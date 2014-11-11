@@ -190,6 +190,7 @@ class Player(object):
         if base.camera.getP() <= -90:
             base.camera.setP(-90)
 	
+	#This takes the camera and see if the player has hit anything
 	self.hitSomething()
         return task.cont
 
@@ -250,6 +251,7 @@ class Player(object):
             base.camera.setPos(0,0,self.cameraHeight)
         return task.cont
       
+    #By Pressing the '`' key the player will move back to the origin
     def keyRespawn(self):
         self.node.setPos(0,0,self.cameraHeight)
         base.camera.setPos(0,0,self.cameraHeight)
@@ -273,7 +275,7 @@ class Player(object):
             self.firstLightPass = False
 
     def LightTask(self, task):
-        self.dlnp.setPos(0, 0, self.cameraHeight -2)
+        self.dlnp.setPos(0, 0, self.cameraHeight -1)
         if self.Light == True and self.firstLightPass == True:
             self.node.setLight(dlnp)
             self.firstLightPass = False
@@ -305,7 +307,7 @@ class Player(object):
             obj = obj.findNetTag('collectable')
             if not obj.isEmpty(): 
                 self.mouseOver = "Left Click to PICK UP"
-            base.looking.setText(str(self.getMouseOver()))
+                base.looking.setText(str(self.getMouseOver()))
             else:
                 self.mouseOver = ""
             base.looking.setText(str(self.getMouseOver()))
@@ -313,7 +315,6 @@ class Player(object):
 	
     def getMyX(self):
         return self.node.getX()
-        
     def getMyY(self):
         return self.node.getY()
         

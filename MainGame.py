@@ -149,7 +149,7 @@ class MainGame(ShowBase):
         pickedObj = pickedObj.findNetTag('collectable')
         if not pickedObj.isEmpty():
             if self.node.holding:
-            self.drop(self.node.hand.getChild(0))
+                self.drop(self.node.hand.getChild(0))
             pickedObj.reparentTo(self.node.hand)
             pickedObj.setPos(1,1.5,3)
             self.node.holding = True
