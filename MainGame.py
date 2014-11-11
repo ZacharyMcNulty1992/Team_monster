@@ -33,6 +33,7 @@ class MainGame(ShowBase):
     alreadyRemoved = False
     monsterBookOpen = False
     brightness = .5
+    looking = None
 
     def __init__(self):
         if not os.path.isfile("settings.cfg"):
@@ -80,10 +81,10 @@ class MainGame(ShowBase):
         self.initScripts()
         self.initMusic()
 
-	global looking
-	looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
+	self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
 	#Add mouse Handler
-	#self.accept('mouse1', self.onMouseTask)
+	self.accept('mouse1', self.onMouseTask)
+	self.accept('mouse3', self.dropObject)
 	#Add Mouse Collision to our world
 	self.setupMouseCollision()
 
@@ -135,7 +136,32 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
-	looking.setText(str(self.node.getMouseOver()))
+	render.ls()
+	
+	entry = self.mCollisionQue.getEntry(0)
+	pickedObj = entry.getIntoNodePath()
+	pickedObj = pickedObj.findNetTag('collectable')
+	if not pickedObj.isEmpty():
+	    if self.node.holding:
+		self.drop(self.node.hand.getChild(0))
+	    pickedObj.reparentTo(self.node.hand)
+	    pickedObj.setPos(1,1.5,3)
+	    self.node.holding = True
+	#looking.setText(str(self.node.getMouseOver()))
+	
+    def dropObject(self):
+	if self.node.hand.getNumChildren() == 0:
+	    return
+	else:
+	    self.drop(self.node.hand.getChild(0))
+	
+	
+    def drop(self, child):
+      print "Come little Children"
+      
+      child.reparentTo(render)
+      child.setPos(self.node.getMyX(), self.node.getMyY(), self.node.getMyZ())
+      self.node.holding = False
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
@@ -211,7 +237,7 @@ class MainGame(ShowBase):
         self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True)
 	#Mouse Tag
-	self.cucumber.model.setTag('cucumber','1')
+	self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('toilet','1')

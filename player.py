@@ -37,7 +37,9 @@ class Player(object):
     hasBeenRemoved = True
     coordsAdded = False
     Movement = False
-    mouseOver = STOP
+    mouseOver = None
+    clickable = False
+    holding = False
 
 
     def __init__(self, controlStyle):
@@ -189,7 +191,6 @@ class Player(object):
             base.camera.setP(-90)
 	
 	self.hitSomething()
-	base.onMouseTask()
         return task.cont
 
     def moveUpdate(self,task):
@@ -300,8 +301,10 @@ class Player(object):
 	
 	if(base.mCollisionQue.getNumEntries() > 0):
 	    base.mCollisionQue.sortEntries()
+	    
 	    self.mouseOver = "Node Path: --> " + str(base.mCollisionQue.getEntry(0).getIntoNodePath()) + "\nPoint: --> " + str(base.mCollisionQue.getEntry(0).getInteriorPoint(self.node))
-		
+	    base.looking.setText(str(self.getMouseOver()))
+	    
 	
     def getMyX(self):
         return self.node.getX()
