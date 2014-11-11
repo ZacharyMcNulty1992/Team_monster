@@ -189,7 +189,7 @@ class Player(object):
             base.camera.setP(-90)
 	
 	self.hitSomething()
-
+	base.onMouseTask()
         return task.cont
 
     def moveUpdate(self,task):

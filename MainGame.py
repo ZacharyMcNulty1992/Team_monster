@@ -83,8 +83,7 @@ class MainGame(ShowBase):
 	global looking
 	looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
 	#Add mouse Handler
-	self.accept('mouse1', self.onMouseTask)
-	self.accept('mouse1_up', self.onMouseUP)
+	#self.accept('mouse1', self.onMouseTask)
 	#Add Mouse Collision to our world
 	self.setupMouseCollision()
 
@@ -137,10 +136,6 @@ class MainGame(ShowBase):
     #Mouse Task
     def onMouseTask(self):
 	looking.setText(str(self.node.getMouseOver()))
-    def onMouseUP(self):
-	print "HERE"	
-	looking.setText("")
-
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
@@ -271,7 +266,8 @@ class MainGame(ShowBase):
         elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
             self.node.addTasks()
             self.alreadyRemoved = False
-	    base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
+            base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
+	    
         elif self.isPaused == True and self.alreadyRemoved == True:
             return task.cont
         elif self.isPaused == False and self.alreadyRemoved == False:
