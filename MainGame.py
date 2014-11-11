@@ -36,6 +36,8 @@ class MainGame(ShowBase):
     looking = None
 
     def __init__(self):
+
+        #checks for the settings file and if it is found it uses the values in it
         if not os.path.isfile("settings.cfg"):
             cfgFile = open("settings.cfg", "w")
             cfgFile.close()
@@ -46,26 +48,14 @@ class MainGame(ShowBase):
         #controlStyle = self.welcomeMessage()
 
         ShowBase.__init__(self)
-        
-        # Creates the window properties
-        winProps = WindowProperties()
-        # Set the window's resolution
-        winProps.setSize(self.winXSize, self.winYSize)
-        # Sets the cursor so that it's hidden
-        winProps.setCursorHidden(True)
-        # Changes the window name
-        winProps.setTitle("100 Monsters")
-        # Sets the game so it's fullscreen
-        winProps.setFullscreen(self.fullscreen)
-        # Gives the set properties to the window
-        base.win.requestProperties(winProps)
+        self.windowProps()
 
-        # Disables the mouse from moving the camera (can still look around) 
-        base.disableMouse()
-
-        # Sets p as the quit button and escape for pause
+        # accepts for various tasks
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
+        base.accept("j", self.toggleMonsterBook)
+        base.accept('mouse1', self.onMouseTask)
+        base.accept('mouse3', self.dropObject)
 
 	taskMgr.add(self.PauseUpdate, 'pause-task')
 
@@ -81,14 +71,44 @@ class MainGame(ShowBase):
         self.initScripts()
         self.initMusic()
 
-	self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
-	#Add mouse Handler
-	self.accept('mouse1', self.onMouseTask)
-	self.accept('mouse3', self.dropObject)
-	#Add Mouse Collision to our world
-	self.setupMouseCollision()
+        self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
+        '''Add Mouse Collision to our world'''
+        self.setupMouseCollision()
 
+        #used to display the font and text on the bottom of the screen
+        self.displayFont()
 
+        #global variables
+        global monsterBook
+        monsterBook = DirectFrame()
+
+        #Lighting Test
+        if self.lighting:
+            alight = AmbientLight('alight')
+            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
+            alnp = render.attachNewNode(alight)
+            render.setLight(alnp)
+            render.setShaderAuto()
+            self.node.initLight()
+
+    def windowProps(self):
+    #sets up the window's properties
+        # Creates the window properties
+        winProps = WindowProperties()
+        # Set the window's resolution
+        winProps.setSize(self.winXSize, self.winYSize)
+        # Sets the cursor so that it's hidden
+        winProps.setCursorHidden(True)
+        # Changes the window name
+        winProps.setTitle("100 Monsters")
+        # Sets the game so it's fullscreen
+        winProps.setFullscreen(self.fullscreen)
+        # Gives the set properties to the window
+        base.win.requestProperties(winProps)
+        # Disables the mouse from moving the camera (can still look around)
+        base.disableMouse()
+
+    def displayFont(self):
         text = TextNode('node')
         text.setText("There's supposed to be a file reader. Will recreate soon!")
         textNodePath = render2d.attachNewNode(text)
@@ -100,20 +120,6 @@ class MainGame(ShowBase):
         text.setWordwrap(20)
         text.setAlign(text.ACenter)
 
-        global monsterBook
-        monsterBook = DirectFrame()
-
-        base.accept("j", self.toggleMonsterBook)
-
-                                                                                
-        #Lighting Test
-        if self.lighting:
-            alight = AmbientLight('alight')
-            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
-            alnp = render.attachNewNode(alight)
-            render.setLight(alnp)
-            render.setShaderAuto()
-            self.node.initLight()
 
     #Mouse Collision
     def setupMouseCollision(self):
