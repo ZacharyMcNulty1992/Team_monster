@@ -29,10 +29,12 @@ class MainGame(ShowBase):
     winYSize = 768
     debug = False
     lighting = True
+    brightness = .5
+    
+    # Global Variables
     isPaused = False
     alreadyRemoved = False
     monsterBookOpen = False
-    brightness = .5
     looking = None
 
     def __init__(self):
@@ -57,7 +59,7 @@ class MainGame(ShowBase):
         base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject)
 
-	taskMgr.add(self.PauseUpdate, 'pause-task')
+        taskMgr.add(self.PauseUpdate, 'pause-task')
 
         self.initCollision()
 	
@@ -72,10 +74,10 @@ class MainGame(ShowBase):
         self.initMusic()
 
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
-        '''Add Mouse Collision to our world'''
+        # Add Mouse Collision to our world
         self.setupMouseCollision()
 
-        #used to display the font and text on the bottom of the screen
+        # Displays text on the bottom of the screen
         self.displayFont()
 
         #global variables
@@ -123,53 +125,51 @@ class MainGame(ShowBase):
 
     #Mouse Collision
     def setupMouseCollision(self):
-	self.mPickerTraverser = CollisionTraverser()
-	self.mCollisionQue = CollisionHandlerQueue()
+        self.mPickerTraverser = CollisionTraverser()
+        self.mCollisionQue = CollisionHandlerQueue()
 
-	#Creates a Collision Ray to detect Against
-	self.mPickRay = CollisionRay()
-	
-	self.mPickRay.setOrigin(self.camera.getPos(self.render))
-	self.mPickRay.setDirection(render.getRelativeVector(camera, Vec3(0,1,0)))
+        #Creates a Collision Ray to detect Against
+        self.mPickRay = CollisionRay()
+        
+        self.mPickRay.setOrigin(self.camera.getPos(self.render))
+        self.mPickRay.setDirection(render.getRelativeVector(camera, Vec3(0,1,0)))
 
-	self.mPickNode = CollisionNode('pickRay')
-	self.mPickNode.addSolid(self.mPickRay)
+        self.mPickNode = CollisionNode('pickRay')
+        self.mPickNode.addSolid(self.mPickRay)
 
-	self.mPickNP = self.camera.attachNewNode(self.mPickNode)
+        self.mPickNP = self.camera.attachNewNode(self.mPickNode)
 
-	self.mPickNode.setFromCollideMask(GeomNode.getDefaultCollideMask())
-	self.mPickerTraverser.addCollider(self.mPickNP,self.mCollisionQue)
+        self.mPickNode.setFromCollideMask(GeomNode.getDefaultCollideMask())
+        self.mPickerTraverser.addCollider(self.mPickNP,self.mCollisionQue)
 
     #Mouse Task
     def onMouseTask(self):
-	entry = self.mCollisionQue.getEntry(0)
-	pickedObj = entry.getIntoNodePath()
-	pickedObj = pickedObj.findNetTag('collectable')
-	if not pickedObj.isEmpty():
-	  
-	    if self.node.holding:
-		self.drop(self.node.hand.getChild(0))
-	    pickedObj.reparentTo(self.node.hand)
-	    pickedObj.setPos(1,1.5,3)
-	    self.node.holding = True
-	#looking.setText(str(self.node.getMouseOver()))
-	
+        entry = self.mCollisionQue.getEntry(0)
+        pickedObj = entry.getIntoNodePath()
+        pickedObj = pickedObj.findNetTag('collectable')
+        if not pickedObj.isEmpty():
+            if self.node.holding:
+            self.drop(self.node.hand.getChild(0))
+            pickedObj.reparentTo(self.node.hand)
+            pickedObj.setPos(1,1.5,3)
+            self.node.holding = True
+        #looking.setText(str(self.node.getMouseOver()))
+
     def dropObject(self):
-	if self.node.hand.getNumChildren() == 0:
-	    return
-	else:
-	    self.drop(self.node.hand.getChild(0))
-	
-	
+        if self.node.hand.getNumChildren() == 0:
+            return
+        else:
+            self.drop(self.node.hand.getChild(0))
+
     def drop(self, child):     
-      child.reparentTo(render)
-      child.setPos(self.node.getMyX(), self.node.getMyY(), self.node.getMyZ())
-      self.node.holding = False
+        child.reparentTo(render)
+        child.setPos(self.node.getMyX(), self.node.getMyY(), self.node.getMyZ())
+        self.node.holding = False
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
         self.skybox = loader.loadModel("resources/models/skybox.egg")
-	self.skybox.setScale(1000.0,1000.0,1000.0)
+        self.skybox.setScale(1000.0,1000.0,1000.0)
         self.skybox.setPos(2,2,2)
         self.skybox.reparentTo(base.cam)
         self.skybox.setEffect(CompassEffect.make(self.render, CompassEffect.PRot))
@@ -205,8 +205,8 @@ class MainGame(ShowBase):
                     self.lighting = True
                 else:
                     self.lighting = False
-	    elif option == "brightness":
-		    self.brightness = float(value)
+            elif option == "brightness":
+                self.brightness = float(value)
 
     # Shows subtitles at the bottom of the screen
     def showSubs(self):
@@ -239,8 +239,8 @@ class MainGame(ShowBase):
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True)
-	#Mouse Tag
-	self.cucumber.model.setTag('collectable','1')
+        #Mouse Tag
+        self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('toilet','1')

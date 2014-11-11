@@ -49,7 +49,7 @@ class Player(object):
         self.createCollisions()
         self.attachControls(controlStyle)
         self.initCoords()
-	self.attachHand()
+        self.attachHand()
         #self.initCoords()
         # init mouse update task
         taskMgr.add(self.mouseUpdate, 'mouse-task')
@@ -59,8 +59,8 @@ class Player(object):
         taskMgr.add(self.CoordsTask, 'Coords-task')
 	
     def attachHand(self):
-	self.hand = NodePath("Hand")
-	self.hand.reparentTo(self.node)
+        self.hand = NodePath("Hand")
+        self.hand.reparentTo(self.node)
 
     def initCoords(self):
         global playerX
@@ -289,35 +289,38 @@ class Player(object):
         return task.cont
 
     def hitSomething(self):
-	#This method will continueously check for if you
-	#are around anything interavtable (including clicking)
-	global mouseOver
-	if(base.mouseWatcherNode.hasMouse() == False):
-	    return
-	mpos = base.mouseWatcherNode.getMouse()
-	
-	base.mPickRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
-	base.mPickerTraverser.traverse(base.render)
-	
-	if(base.mCollisionQue.getNumEntries() > 0):
-	    base.mCollisionQue.sortEntries()
-	    obj =  base.mCollisionQue.getEntry(0).getIntoNodePath()
-	    obj = obj.findNetTag('collectable')
-	    if not obj.isEmpty(): 
-	        self.mouseOver = "Left Click to PICK UP"
-		base.looking.setText(str(self.getMouseOver()))
-	    else:
-		self.mouseOver = ""
-		base.looking.setText(str(self.getMouseOver()))
+        #This method will continueously check for if you
+        #are around anything interavtable (including clicking)
+        global mouseOver
+        if(base.mouseWatcherNode.hasMouse() == False):
+            return
+        mpos = base.mouseWatcherNode.getMouse()
+        
+        base.mPickRay.setFromLens(base.camNode, mpos.getX(), mpos.getY())
+        base.mPickerTraverser.traverse(base.render)
+        
+        if(base.mCollisionQue.getNumEntries() > 0):
+            base.mCollisionQue.sortEntries()
+            obj =  base.mCollisionQue.getEntry(0).getIntoNodePath()
+            obj = obj.findNetTag('collectable')
+            if not obj.isEmpty(): 
+                self.mouseOver = "Left Click to PICK UP"
+            base.looking.setText(str(self.getMouseOver()))
+            else:
+                self.mouseOver = ""
+            base.looking.setText(str(self.getMouseOver()))
 	    
 	
     def getMyX(self):
         return self.node.getX()
+        
     def getMyY(self):
         return self.node.getY()
+        
     def getMyZ(self):
         return self.node.getZ()
+        
     def getMouseOver(self):
-	return self.mouseOver
+        return self.mouseOver
 
 
