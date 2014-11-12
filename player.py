@@ -57,7 +57,7 @@ class Player(object):
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
         taskMgr.add(self.CoordsTask, 'Coords-task')
-	
+
     def attachHand(self):
         self.hand = NodePath("Hand")
         self.hand.reparentTo(self.node)
@@ -144,10 +144,10 @@ class Player(object):
             # Move backwards / stop
             #base.accept("s", self.__setattr__, ["walk",self.STOP])
             base.accept("s", self.__setattr__, ["walk",self.BACK])
-    	    base.accept("s-up", self.__setattr__, ["walk",self.STOP])
+            base.accept("s-up", self.__setattr__, ["walk",self.STOP])
 
             # Move forward
-    	    base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
+            base.accept( "w" , self.__setattr__,["walk",self.FORWARD])
             base.accept( "w-up" , self.__setattr__,["walk",self.STOP] )
 
             # Move left
@@ -165,7 +165,7 @@ class Player(object):
             base.accept("arrow_down-up", self.__setattr__, ["walk",self.STOP])
 
             # Move forward
-    	    base.accept( "arrow_up" , self.__setattr__,["walk",self.FORWARD])
+            base.accept( "arrow_up" , self.__setattr__,["walk",self.FORWARD])
             base.accept( "arrow_up-up" , self.__setattr__,["walk",self.STOP] )
 
             # Move left
@@ -189,9 +189,9 @@ class Player(object):
             base.camera.setP(90)
         if base.camera.getP() <= -90:
             base.camera.setP(-90)
-	
-	#This takes the camera and see if the player has hit anything
-	self.hitSomething()
+
+        #This takes the camera and see if the player has hit anything
+        self.hitSomething()
         return task.cont
 
     def moveUpdate(self,task):
@@ -313,9 +313,11 @@ class Player(object):
                 self.mouseOver = ""
                 base.looking.setText(str(self.getMouseOver()))
             obj = obj.findNetTag('interactable')
+            if not obj.isEmpty():
+                print "interactable"
             
-	    
-	
+    
+
     def getMyX(self):
         return self.node.getX()
     def getMyY(self):

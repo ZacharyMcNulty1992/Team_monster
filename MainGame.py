@@ -146,18 +146,20 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
+        #render.ls()
         entry = self.mCollisionQue.getEntry(0)
         pickedObj = entry.getIntoNodePath()
         pickedObj = pickedObj.findNetTag('collectable')
         if not pickedObj.isEmpty():
+            #sibling = pickedObj.getParent().getChild(1)
             if self.node.holding:
                 self.drop(self.node.hand.getChild(0))
             pickedObj.reparentTo(self.node.hand)
+            #sibling.reparentTo(self.node.hand.getChild(0)) 
             pickedObj.setPos(1,1.5,3)
+            #sibling.setPos(pickedObj.getX(), pickedObj.getY(), pickedObj.getZ())
             self.node.holding = True
-        pickedObj = pickedObj.findNetTag('interactable')
-        if not pickedObj.isEmpty():
-	   self.looking.setText(pickedObj.name)
+        
 
     def dropObject(self):
         if self.node.hand.getNumChildren() == 0:
