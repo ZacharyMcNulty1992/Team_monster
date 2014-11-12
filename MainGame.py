@@ -40,21 +40,13 @@ class MainGame(ShowBase):
 
     def __init__(self):
 
-         #Initilize Game Base
+        #Initilize Game Base
         ShowBase.__init__(self)
         
         # Input
         self.getControls()
         
-        # Lighting
-        if self.lighting:
-            alight = AmbientLight('alight')
-            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
-            alnp = render.attachNewNode(alight)
-            
-            render.setShaderAuto()
-            render.clearLight()
-            render.setLight(alnp)
+       
         
         # Task
         taskMgr.add(self.update, 'updateWorld')
@@ -65,7 +57,7 @@ class MainGame(ShowBase):
     def update(self, task):
 
         taskMgr.add(self.PauseUpdate, 'pause-task')
-        taskMgr.add(self.TimeUpdate, 'timer')
+        #taskMgr.add(self.TimeUpdate, 'timer')
 
         return task.cont
     
@@ -221,7 +213,17 @@ class MainGame(ShowBase):
     def loadLevel(self):
         self.level = loader.loadModel("resources/levels/first_floor.egg")
         self.level.reparentTo(render)
-        self.level.setTwoSided(True)
+        self.level.setTwoSided(True) 
+        
+        # Lighting
+        if self.lighting:
+            alight = AmbientLight('alight')
+            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
+            alnp = render.attachNewNode(alight)
+            
+            render.setShaderAuto()
+            render.clearLight()
+            render.setLight(alnp)
 
     def initObjects(self):
         self.monsters = {}
