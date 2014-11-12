@@ -20,6 +20,7 @@ from monster import Monster
 from item import Item
 
 
+
 class MainGame(ShowBase):
 
     # These are default settings in case they are not specified in the config file
@@ -60,6 +61,7 @@ class MainGame(ShowBase):
         base.accept('mouse3', self.dropObject)
 
         taskMgr.add(self.PauseUpdate, 'pause-task')
+        taskMgr.add(self.TimeUpdate, 'timer')
 
         self.initCollision()
 	
@@ -111,16 +113,16 @@ class MainGame(ShowBase):
         base.disableMouse()
 
     def displayFont(self):
-        text = TextNode('node')
-        text.setText("There's supposed to be a file reader. Will recreate soon!")
-        textNodePath = render2d.attachNewNode(text)
+        self.text = TextNode('New_Text')
+        self.text.setText("There's supposed to be a file reader. Will recreate soon!")
+        textNodePath = render2d.attachNewNode(self.text)
         textNodePath.setScale(0.07)
-        text.setAlign(TextNode.ABoxedCenter)
+        self.text.setAlign(TextNode.ABoxedCenter)
         Zccara = loader.loadFont('resources/fonts/Zccara.ttf')
-        text.setFont(Zccara)
+        self.text.setFont(Zccara)
         textNodePath.setPos(0, 0, -.60)
-        text.setWordwrap(20)
-        text.setAlign(text.ACenter)
+        self.text.setWordwrap(20)
+        self.text.setAlign(self.text.ACenter)
 
 
     #Mouse Collision
@@ -306,6 +308,15 @@ class MainGame(ShowBase):
         elif self.isPaused == False and self.alreadyRemoved == False:
             return task.cont
         return task.cont
+      
+    def TimeUpdate(self, task):
+	#A Horrible way to have the text go away at the begining... but it works
+	# -M
+	secondsTime = int(task.time)
+	if secondsTime == 10:
+	    self.text.setText("")
+	
+	return task.cont
 
     def initScripts(self):
         self.scripts = {}
