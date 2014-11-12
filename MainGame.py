@@ -40,61 +40,50 @@ class MainGame(ShowBase):
 
     def __init__(self):
 
-        #checks for the settings file and if it is found it uses the values in it
+         #Initilize Game Base
+        ShowBase.__init__(self)
+        
+        # Input
+        self.getControls()
+        
+        # Lighting
+        if self.lighting:
+            alight = AmbientLight('alight')
+            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
+            alnp = render.attachNewNode(alight)
+            
+            render.setShaderAuto()
+            render.clearLight()
+            render.setLight(alnp)
+        
+        # Task
+        taskMgr.add(self.update, 'updateWorld')
+        
+        # Physics
+        self.setup()
+ 
+    def update(self, task):
+
+        taskMgr.add(self.PauseUpdate, 'pause-task')
+        taskMgr.add(self.TimeUpdate, 'timer')
+
+        return task.cont
+    
+    def getControls(self):
         if not os.path.isfile("settings.cfg"):
             cfgFile = open("settings.cfg", "w")
             cfgFile.close()
         else:
             cfgFile = open("settings.cfg", "r+")
-        
         self.getSettings(cfgFile)
-        #controlStyle = self.welcomeMessage()
-
-        ShowBase.__init__(self)
-        self.windowProps()
-
-        # accepts for various tasks
+        
+         # accepts for various tasks
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
         base.accept("j", self.toggleMonsterBook)
         base.accept('mouse1', self.onMouseTask)
-        base.accept('mouse3', self.dropObject)
-
-        taskMgr.add(self.PauseUpdate, 'pause-task')
-        taskMgr.add(self.TimeUpdate, 'timer')
-
-        self.initCollision()
-	
-        self.node = Player(self.controlStyle)
-        if self.debug:
-            self.node.toggleJump()
-	
-        self.loadSkybox()
-        self.loadLevel()
-        self.initObjects()
-        self.initScripts()
-        self.initMusic()
-
-        self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
-        # Add Mouse Collision to our world
-        self.setupMouseCollision()
-
-        # Displays text on the bottom of the screen
-        self.displayFont()
-
-        #global variables
-        global monsterBook
-        monsterBook = DirectFrame()
-
-        #Lighting Test
-        if self.lighting:
-            alight = AmbientLight('alight')
-            alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
-            alnp = render.attachNewNode(alight)
-            render.setLight(alnp)
-            render.setShaderAuto()
-            self.node.initLight()
-
+        base.accept('mouse3', self.dropObject) 
+    
     def windowProps(self):
     #sets up the window's properties
         # Creates the window properties
@@ -356,6 +345,42 @@ class MainGame(ShowBase):
             while not script.empty():
                 print script.get()
             print '\n'
+            
+    def setup(self):
+        # Collision
+        self.initCollision()
+        
+        #Level
+        self.loadLevel()
+
+        #Player
+        self.node = Player(self.controlStyle)
+               
+	#Player's Flashlight
+        if self.lighting:
+            self.node.initLight()
+        
+        base.setFrameRateMeter(True)
+        self.windowProps()
+
+        if self.debug:
+            self.node.toggleJump()
+	
+        
+        self.initObjects()
+        self.initScripts()
+        self.initMusic()
+
+        self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
+        #Add Mouse Collision to our world
+        self.setupMouseCollision()
+
+        # Displays text on the bottom of the screen
+        self.displayFont()
+
+        #global variables
+        global monsterBook
+        monsterBook = DirectFrame()
 
 game = MainGame()
 game.run()
