@@ -15,7 +15,7 @@ from math import fabs
 
 class Item(object):
 
-    def __init__(self, name, model, posX, posY, posZ, height, width, scale, defiesGravity, isCollectable):
+    def __init__(self, name, model, posX, posY, posZ, height, width, scale, defiesGravity, isCollectable, isInteractable):
         self.name = name
         self.model = Actor("resources/models/" + model)
         self.posX = posX

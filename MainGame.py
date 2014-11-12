@@ -153,7 +153,9 @@ class MainGame(ShowBase):
             pickedObj.reparentTo(self.node.hand)
             pickedObj.setPos(1,1.5,3)
             self.node.holding = True
-        #looking.setText(str(self.node.getMouseOver()))
+        pickedObj = pickedObj.findNetTag('interactable')
+        if not pickedObj.isEmpty():
+	   self.looking.setText(pickedObj.name)
 
     def dropObject(self):
         if self.node.hand.getNumChildren() == 0:
@@ -238,13 +240,14 @@ class MainGame(ShowBase):
         self.kappa.model.setTag('kappa', '1')
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
-        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True)
+        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True, True)
         #Mouse Tag
         self.cucumber.model.setTag('collectable','1')
-        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False)
+        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
-        self.toilet.model.setTag('toilet','1')
-        self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False)
+        self.toilet.model.setTag('interactable','1')
+        #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
+        #self.toilet.model.setTag('interactable','2')
         
     def MonsterUpdate(self, task):
         if self.jumogoro.node.getPos().getX() == 0:

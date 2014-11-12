@@ -311,7 +311,9 @@ class Player(object):
                 base.looking.setText(str(self.getMouseOver()))
             else:
                 self.mouseOver = ""
-            base.looking.setText(str(self.getMouseOver()))
+                base.looking.setText(str(self.getMouseOver()))
+            obj = obj.findNetTag('interactable')
+            
 	    
 	
     def getMyX(self):
