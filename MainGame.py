@@ -244,6 +244,7 @@ class MainGame(ShowBase):
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False)
         taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('toilet','1')
+        self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False)
         
     def MonsterUpdate(self, task):
         if self.jumogoro.node.getPos().getX() == 0:
