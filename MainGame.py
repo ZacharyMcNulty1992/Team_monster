@@ -37,28 +37,21 @@ class MainGame(ShowBase):
     alreadyRemoved = False
     monsterBookOpen = False
     looking = None
+    scripts = {}
 
     def __init__(self):
-
         #Initilize Game Base
         ShowBase.__init__(self)
-        
         # Input
         self.getControls()
-        
-       
-        
         # Task
-        taskMgr.add(self.update, 'updateWorld')
-        
+        taskMgr.add(self.update, 'updateWorld')        
         # Physics
         self.setup()
  
     def update(self, task):
-
         taskMgr.add(self.PauseUpdate, 'pause-task')
         #taskMgr.add(self.TimeUpdate, 'timer')
-
         return task.cont
     
     def getControls(self):
@@ -68,7 +61,6 @@ class MainGame(ShowBase):
         else:
             cfgFile = open("settings.cfg", "r+")
         self.getSettings(cfgFile)
-        
          # accepts for various tasks
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
@@ -239,12 +231,12 @@ class MainGame(ShowBase):
         #Mouse Tag
         self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
-        taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
+        # taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('interactable','1')
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
         
-    def MonsterUpdate(self, task):
+    '''def MonsterUpdate(self, task):
         if self.jumogoro.node.getPos().getX() == 0:
             self.jumogoro.walkForward()
         if (round(self.jumogoro.node.getPos().getX()) == 20 and round(self.jumogoro.node.getPos().getY()) == 30):
@@ -253,7 +245,7 @@ class MainGame(ShowBase):
             self.jumogoro.turn(180, False)
         if round(self.jumogoro.node.getPos().getX()) == -50:
             self.jumogoro.stop()
-        return task.cont
+        return task.cont'''
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
@@ -312,7 +304,6 @@ class MainGame(ShowBase):
 	return task.cont
 
     def initScripts(self):
-        self.scripts = {}
         path = "./resources/scripts/"
         dir = os.listdir(path)
         # First pass reads the scripts file, turning each script into a queue of commands and
@@ -327,7 +318,7 @@ class MainGame(ShowBase):
                             continue
                         keyword, name = line.split(" ", 2)
                         name = name[:-2]
-                        scriptBody = Queue.Queue()
+                        scriptBody = []
                         state = "read"
                     elif state == "read":
                         cmd = line.split(" ")
@@ -340,38 +331,48 @@ class MainGame(ShowBase):
                             self.scripts[name] = scriptBody
                             state = "start"
                         else:
-                            scriptBody.put(cmd)
-        for key in self.scripts:
-            print key
-            script = self.scripts[key]
-            while not script.empty():
-                print script.get()
-            print '\n'
-            
+                            scriptBody.append(cmd)
+    
+    # Runs a selected script (Key is the string that names the script)
+    def runScript(self, key):
+        script = self.scripts[key]
+        for cmd in self.scripts[key]:
+            cmdType = cmd[0]
+            print cmdType
+            if cmdType == "walkforward":
+                print cmd[1] + " walking forward"
+                self.monsters[cmd[1]].walkForward()
+            if cmdType == "stop":
+                print cmd[1] + " stopping"
+                self.monsters[cmd[1]].walkForward()
+            if cmdType == "turn":
+                print cmd[1] + " turning " + cmd[2] + " degrees " + cmd[3]
+                if cmd[3] == "cw":
+                    self.monsters[cmd[1]].turn(cmd[2], True)
+                else:
+                    self.monsters[cmd[1]].turn(cmd[2], False)
+
     def setup(self):
         # Collision
         self.initCollision()
-        
         #Level
         self.loadLevel()
-
         #Player
         self.node = Player(self.controlStyle)
-               
-	#Player's Flashlight
+        #Player's Flashlight
         if self.lighting:
             self.node.initLight()
-        
         base.setFrameRateMeter(True)
         self.windowProps()
-
         if self.debug:
             self.node.toggleJump()
-	
         
-        self.initObjects()
+        # Initialize Objects and scripts
         self.initScripts()
+        self.initObjects()
         self.initMusic()
+        # TEMPORARY
+        self.runScript("jumostartmove")
 
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         #Add Mouse Collision to our world
