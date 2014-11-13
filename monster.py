@@ -43,7 +43,7 @@ class Monster(object):
         #mn for monster node
         mn = CollisionNode('Monster')
         mn.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
-        Solid = self.node.attachNewNode(mn)
+        Solid = self.model.attachNewNode(mn)
         #base.cTrav.addCollider(Solid, base.pusher)
         base.pusher.addCollider(Solid, self.node, base.drive.node())
 

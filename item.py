@@ -39,10 +39,10 @@ class Item(object):
 
     def itemCollision(self):
         #itn for item node
-        collide = CollisionNode('Item')
+        self.collide = CollisionNode('Item')
 	#itn.set_from_collide_mask(0)
-        collide.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
-        Solid = self.node.attachNewNode(collide)
+        self.collide.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
+        Solid = self.model.attachNewNode(self.collide)
         #base.cTrav.addCollider(Solid, base.pusher)
         base.pusher.addCollider(Solid, self.node, base.drive.node())
 
@@ -54,10 +54,10 @@ class Item(object):
         mn.addSolid(ray)
         mn.setFromCollideMask(BitMask32.bit(0))
         mn.setIntoCollideMask(BitMask32.allOff())
-        Solid = self.node.attachNewNode(collide)
+        Solid = self.node.attachNewNode(self.collide)
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(Solid, self.nodeGroundHandler)
-        Solid = self.node.attachNewNode(collide)
+        Solid = self.node.attachNewNode(self.collide)
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(Solid, self.nodeGroundHandler)
 	

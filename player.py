@@ -115,7 +115,7 @@ class Player(object):
         """ create a collision solid and ray for the player """
         cn = CollisionNode('player')
         cn.addSolid(CollisionSphere(0,0,0,3))
-        solid = self.node.attachNewNode(cn)
+        solid = self.model.attachNewNode(cn)
         base.cTrav.addCollider(solid,base.pusher)
         base.pusher.addCollider(solid,self.node, base.drive.node())
         # init players floor collisions
