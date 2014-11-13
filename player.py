@@ -318,12 +318,13 @@ class Player(object):
             
     
 
-    def getMyX(self):
+    def getX(self):
         return self.node.getX()
-    def getMyY(self):
+        
+    def getY(self):
         return self.node.getY()
         
-    def getMyZ(self):
+    def getZ(self):
         return self.node.getZ()
         
     def getMouseOver(self):

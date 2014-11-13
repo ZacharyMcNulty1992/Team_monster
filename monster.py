@@ -89,6 +89,7 @@ class Monster(object):
         self.walking = False
     
     def turn(self, angle, clockwise):
+        angle = self.node.getH() + angle
         if not self.turning:
             if clockwise:
                 taskMgr.add(self.TurnUpdateCW, 'turncwupdate-task', extraArgs = [angle], appendTask = True)
@@ -115,3 +116,12 @@ class Monster(object):
             return task.done
         else:
             return task.cont
+
+    def getX(self):
+        return self.node.getX()
+        
+    def getY(self):
+        return self.node.getY()
+        
+    def getZ(self):
+        return self.node.getZ()

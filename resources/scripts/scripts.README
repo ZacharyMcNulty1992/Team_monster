@@ -1,0 +1,18 @@
+SCRIPTS README
+
+To start a script, begin with following line.
+script [script name]:
+
+When in the script body, you may use any of the following commands.
+walkforward [monster]
+turn [monster] [angle] [cw/ccw]
+stop [monster]
+anim [monster] [animation name] [loop/noloop]
+print [string "text"]
+
+Always make sure to end a script with the following line:
+end [script name]
+
+REMEMBER THAT SYNTAX ERRORS WILL CAUSE THE GAME TO CRASH!
+(If I had the time, I'd love to code an actual parser with error checking,
+but I don't have that time.)

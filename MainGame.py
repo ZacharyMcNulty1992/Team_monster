@@ -18,8 +18,7 @@ from math import fabs
 from player import Player
 from monster import Monster
 from item import Item
-
-
+from trigger import ProxTrigger
 
 class MainGame(ShowBase):
 
@@ -97,7 +96,6 @@ class MainGame(ShowBase):
         self.text.setWordwrap(20)
         self.text.setAlign(self.text.ACenter)
 
-
     #Mouse Collision
     def setupMouseCollision(self):
         self.mPickerTraverser = CollisionTraverser()
@@ -125,25 +123,25 @@ class MainGame(ShowBase):
         pickedObj = pickedObj.findNetTag('collectable')
         if not pickedObj.isEmpty():
             #sibling = pickedObj.getParent().getChild(1)
-            if self.node.holding:
-                self.drop(self.node.hand.getChild(0))
-            pickedObj.reparentTo(self.node.hand)
-            #sibling.reparentTo(self.node.hand.getChild(0)) 
+            if self.player.holding:
+                self.drop(self.player.hand.getChild(0))
+            pickedObj.reparentTo(self.player.hand)
+            #sibling.reparentTo(self.player.hand.getChild(0)) 
             pickedObj.setPos(1,1.5,3)
             #sibling.setPos(pickedObj.getX(), pickedObj.getY(), pickedObj.getZ())
-            self.node.holding = True
+            self.player.holding = True
         
 
     def dropObject(self):
-        if self.node.hand.getNumChildren() == 0:
+        if self.player.hand.getNumChildren() == 0:
             return
         else:
-            self.drop(self.node.hand.getChild(0))
+            self.drop(self.player.hand.getChild(0))
 
     def drop(self, child):     
         child.reparentTo(render)
-        child.setPos(self.node.getMyX(), self.node.getMyY(), self.node.getMyZ())
-        self.node.holding = False
+        child.setPos(self.player.getX(), self.player.getY(), self.player.getZ())
+        self.player.holding = False
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
@@ -231,21 +229,14 @@ class MainGame(ShowBase):
         #Mouse Tag
         self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
-        # taskMgr.add(self.MonsterUpdate, 'MonsterUpdate-task')
         self.toilet.model.setTag('interactable','1')
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
-        
-    '''def MonsterUpdate(self, task):
-        if self.jumogoro.node.getPos().getX() == 0:
-            self.jumogoro.walkForward()
-        if (round(self.jumogoro.node.getPos().getX()) == 20 and round(self.jumogoro.node.getPos().getY()) == 30):
-            self.jumogoro.turn(90, False)
-        if (round(self.jumogoro.node.getPos().getX()) == 27 and round(self.jumogoro.node.getPos().getY()) == 50):
-            self.jumogoro.turn(180, False)
-        if round(self.jumogoro.node.getPos().getX()) == -50:
-            self.jumogoro.stop()
-        return task.cont'''
+        self.jumotrigger = ProxTrigger(self, 0, 30, 5, 10, self.player, "jumostartmove", True)
+        self.jumotrigger1 = ProxTrigger(self, 30, 25, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
+        self.jumotrigger2 = ProxTrigger(self, 35, 50, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
+        self.jumotrigger3 = ProxTrigger(self, -30, 55, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
+        self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
 
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
@@ -281,10 +272,10 @@ class MainGame(ShowBase):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
         if self.isPaused == True and self.alreadyRemoved == False:
-            self.node.removeTasks()
+            self.player.removeTasks()
             self.alreadyRemoved = True
         elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
-            self.node.addTasks()
+            self.player.addTasks()
             self.alreadyRemoved = False
             base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
 	    
@@ -338,19 +329,26 @@ class MainGame(ShowBase):
         script = self.scripts[key]
         for cmd in self.scripts[key]:
             cmdType = cmd[0]
-            print cmdType
             if cmdType == "walkforward":
                 print cmd[1] + " walking forward"
                 self.monsters[cmd[1]].walkForward()
-            if cmdType == "stop":
+            elif cmdType == "stop":
                 print cmd[1] + " stopping"
                 self.monsters[cmd[1]].walkForward()
-            if cmdType == "turn":
+            elif cmdType == "turn":
+                if self.monsters[cmd[1]].turning:
+                    break
                 print cmd[1] + " turning " + cmd[2] + " degrees " + cmd[3]
                 if cmd[3] == "cw":
-                    self.monsters[cmd[1]].turn(cmd[2], True)
-                else:
-                    self.monsters[cmd[1]].turn(cmd[2], False)
+                    self.monsters[cmd[1]].turn(int(cmd[2]), True)
+                elif cmd[3] == "ccw":
+                    self.monsters[cmd[1]].turn(int(cmd[2]), False)
+            elif cmdType == "anim":
+                print cmd[1] + " changing animation to " + cmd[2]
+                if cmd[3] == "loop":
+                    self.monsters[cmd[1]].anim(cmd[2], True)
+                elif cmd[3] == "noloop":
+                    self.monsters[cmd[1]].anim(cmd[2], True)
 
     def setup(self):
         # Collision
@@ -358,21 +356,19 @@ class MainGame(ShowBase):
         #Level
         self.loadLevel()
         #Player
-        self.node = Player(self.controlStyle)
+        self.player = Player(self.controlStyle)
         #Player's Flashlight
         if self.lighting:
-            self.node.initLight()
+            self.player.initLight()
         base.setFrameRateMeter(True)
         self.windowProps()
         if self.debug:
-            self.node.toggleJump()
+            self.player.toggleJump()
         
         # Initialize Objects and scripts
         self.initScripts()
         self.initObjects()
         self.initMusic()
-        # TEMPORARY
-        self.runScript("jumostartmove")
 
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         #Add Mouse Collision to our world

@@ -78,3 +78,12 @@ class Item(object):
             self.model.loop(anim)
         else:
             self.model.play(anim)
+
+    def getX(self):
+        return self.node.getX()
+        
+    def getY(self):
+        return self.node.getY()
+        
+    def getZ(self):
+        return self.node.getZ()
