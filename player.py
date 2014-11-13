@@ -231,7 +231,7 @@ class Player(object):
         for i in range(self.nodeGroundHandler.getNumEntries()):
             entry = self.nodeGroundHandler.getEntry(i)
             z = entry.getSurfacePoint(render).getZ()
-            if z > highestZ and entry.getIntoNode().getName() == "Floor":
+            if z > highestZ and entry.getIntoNode().getName() == "COLLISION":
                 highestZ = z
 
         # gravity effects and jumps

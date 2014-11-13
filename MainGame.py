@@ -197,9 +197,13 @@ class MainGame(ShowBase):
     def loadLevel(self):
 	self.loadSkybox()
 
-        self.level = loader.loadModel("resources/levels/first_floor.egg")
+	#Loads the Collision Faces
+        self.level = loader.loadModel("resources/levels/first_floor_COLLISION.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True) 
+
+	self.floor = loader.loadModel("resources/levels/first_floor.egg")
+	self.floor.reparentTo(self.level)
         
         # Lighting
         if self.lighting:
