@@ -8,7 +8,7 @@ walkforward [monster]
 turn [monster] [angle] [cw/ccw]
 stop [monster]
 anim [monster] [animation name] [loop/noloop]
-print [string "text"]
+print [filename (Located in resources/text directory)] [normal/garbled] [x] [y] [z] [word wrap] [display time]
 
 Always make sure to end a script with the following line:
 end [script name]

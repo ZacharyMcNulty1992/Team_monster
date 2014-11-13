@@ -84,6 +84,7 @@ class MainGame(ShowBase):
         # Disables the mouse from moving the camera (can still look around)
         base.disableMouse()
 
+    '''
     def displayFont(self):
         self.text = TextNode('New_Text')
         self.text.setText("There's supposed to be a file reader. Will recreate soon!")
@@ -95,6 +96,7 @@ class MainGame(ShowBase):
         textNodePath.setPos(0, 0, -.60)
         self.text.setWordwrap(20)
         self.text.setAlign(self.text.ACenter)
+    '''
 
     #Mouse Collision
     def setupMouseCollision(self):
@@ -184,14 +186,6 @@ class MainGame(ShowBase):
                     self.lighting = False
             elif option == "brightness":
                 self.brightness = float(value)
-
-    # Shows subtitles at the bottom of the screen
-    def showSubs(self):
-        subFile = open("subs.txt", "r")
-        subline = subFile.read()
-        font = loader.loadFont("resources/fonts/Zccara.tff")
-        OnscreenText(text = subline, pos = (0, -.8), scale = .06, fg = (1, 1, 1, 1), shadow = (0, 0, 0, 1),
-        align = TextNode.ACenter, wordwrap = 50)
 
     def initCollision(self):
         base.cTrav = CollisionTraverser()
@@ -351,18 +345,39 @@ class MainGame(ShowBase):
                     self.monsters[cmd[1]].anim(cmd[2], True)
                 elif cmd[3] == "noloop":
                     self.monsters[cmd[1]].anim(cmd[2], True)
+            elif cmdType == "print":
+                print "Printing " + cmd[1] + " with " + cmd[2] + " font for " + cmd[7] + " seconds"
+                path = "./resources/text/"
+                dir = os.listdir(path)
+                for filename in dir:
+                    if filename == cmd[1]:
+                        filetext = open(path + filename, "r").read()
+                        self.text = TextNode('New_Text')
+                        self.text.setText(filetext)
+                        textNodePath = render2d.attachNewNode(self.text)
+                        textNodePath.setScale(0.07)
+                        self.text.setAlign(TextNode.ABoxedCenter)
+                        if cmd[2] == "normal":
+                            font = loader.loadFont("resources/fonts/CTS.ttf")
+                        elif cmd[2] == "garbled":
+                            font = loader.loadFont("resources/fonts/Zccara.ttf")
+                        self.text.setFont(font)
+                        textNodePath.setPos(float(cmd[3]), float(cmd[4]), float(cmd[5]))
+                        self.text.setWordwrap(int(cmd[6]))
+                        self.text.setAlign(self.text.ACenter)
 
     def setup(self):
         # Collision
         self.initCollision()
-        #Level
+        # Level
         self.loadLevel()
-        #Player
+        # Player
         self.player = Player(self.controlStyle)
-        #Player's Flashlight
+        # Player's Flashlight
         if self.lighting:
             self.player.initLight()
-        base.setFrameRateMeter(True)
+        if self.debug:
+            base.setFrameRateMeter(True)
         self.windowProps()
         if self.debug:
             self.player.toggleJump()
@@ -371,13 +386,15 @@ class MainGame(ShowBase):
         self.initScripts()
         self.initObjects()
         self.initMusic()
-
+        
+        self.runScript("initprint")
+        
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
-        #Add Mouse Collision to our world
+        # Add Mouse Collision to our world
         self.setupMouseCollision()
 
         # Displays text on the bottom of the screen
-        self.displayFont()
+        # self.displayFont()
 
         #global variables
         global monsterBook

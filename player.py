@@ -48,7 +48,8 @@ class Player(object):
         self.setUpCamera()
         self.createCollisions()
         self.attachControls(controlStyle)
-        self.initCoords()
+        if base.debug:
+            self.initCoords()
         self.attachHand()
         #self.initCoords()
         # init mouse update task
@@ -56,7 +57,8 @@ class Player(object):
         taskMgr.add(self.moveUpdate, 'move-task')
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
-        taskMgr.add(self.CoordsTask, 'Coords-task')
+        if base.debug:
+            taskMgr.add(self.CoordsTask, 'Coords-task')
 
     def attachHand(self):
         self.hand = NodePath("Hand")
@@ -115,7 +117,7 @@ class Player(object):
         """ create a collision solid and ray for the player """
         cn = CollisionNode('player')
         cn.addSolid(CollisionSphere(0,0,0,3))
-        solid = self.model.attachNewNode(cn)
+        solid = self.node.attachNewNode(cn)
         base.cTrav.addCollider(solid,base.pusher)
         base.pusher.addCollider(solid,self.node, base.drive.node())
         # init players floor collisions
