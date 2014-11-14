@@ -20,6 +20,7 @@ class Player(object):
         Player is the main actor in the fps game
     """
     speed = .995
+    run = False
     FORWARD = Vec3(0,1,0)
     BACK = Vec3(0,-1,0)
     LEFT = Vec3(-10,0,0)
@@ -40,7 +41,7 @@ class Player(object):
     mouseOver = None
     clickable = False
     holding = False
-
+    runSpeedApplied = False
 
     def __init__(self, controlStyle):
         """ inits the player """
@@ -57,6 +58,7 @@ class Player(object):
         taskMgr.add(self.moveUpdate, 'move-task')
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
+        taskMgr.add(self.sprintUpdate, 'sprint-task')
         if base.debug:
             taskMgr.add(self.CoordsTask, 'Coords-task')
 
@@ -90,7 +92,7 @@ class Player(object):
         self.slight.setScene(render)
         self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
         self.slight.setAttenuation(Point3(0, 0, 0.00005))
-        self.slight.getLens().setFov(100,80)
+        self.slight.getLens().setFov(90,70)
         self.slight.getLens().setNearFar(1, 5)
         self.slight.setShadowCaster(True, 1024, 1024)
         self.dlnp = self.node.attachNewNode(self.slight)
@@ -141,6 +143,8 @@ class Player(object):
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
         #base.accept("f", self.toggleFlashLight)
         base.accept("`", self.keyRespawn)
+        base.accept("shift", self.__setattr__, ["run", True])
+        base.accept("shift-up", self.__setattr__, ["run", False])
         
         if (controlStyle == "wasd"):
             # WASD Controls
@@ -211,7 +215,19 @@ class Player(object):
             self.Movement = True
 
         return task.cont
-        
+
+    def sprintUpdate(self,task):
+        """used for adding speed when the shift button is pressed"""
+        if self.run == True and self.runSpeedApplied == False:
+            self.speed += .9
+            self.runSpeedApplied = True
+        elif self.run == False and self.runSpeedApplied == True:
+            self.speed = .995
+            self.runSpeedApplied = False
+        elif self.run == True and self.runSpeedApplied == True:
+            return task.cont
+        return task.cont
+
     def toggleJump(self):
         if self.canJump:
             self.canJump = False
@@ -270,6 +286,7 @@ class Player(object):
         taskMgr.add(self.moveUpdate, 'move-task')
 
     def toggleFlashLight(self):
+        """used to toggle the flashlight when/if we need to do that"""
         if self.Light == False:
             self.Light = True
             self.firstLightPass = True
