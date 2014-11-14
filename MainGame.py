@@ -124,13 +124,12 @@ class MainGame(ShowBase):
         pickedObj = entry.getIntoNodePath()
         pickedObj = pickedObj.findNetTag('collectable')
         if not pickedObj.isEmpty():
-            #sibling = pickedObj.getParent().getChild(1)
             if self.player.holding:
                 self.drop(self.player.hand.getChild(0))
             pickedObj.reparentTo(self.player.hand)
-            #sibling.reparentTo(self.player.hand.getChild(0)) 
+	    pickedObj.getChild(1).stash()
+	    
             pickedObj.setPos(1,1.5,3)
-            #sibling.setPos(pickedObj.getX(), pickedObj.getY(), pickedObj.getZ())
             self.player.holding = True
         
 
@@ -143,6 +142,7 @@ class MainGame(ShowBase):
     def drop(self, child):     
         child.reparentTo(render)
         child.setPos(self.player.getX(), self.player.getY(), self.player.getZ())
+	child.unstashAll()
         self.player.holding = False
 	
     #Creates and Loads the Skybox
@@ -190,6 +190,7 @@ class MainGame(ShowBase):
     def initCollision(self):
         base.cTrav = CollisionTraverser()
         base.pusher = CollisionHandlerPusher()
+	base.cQue = CollisionHandlerQueue()
         #for debugging purposes
         if self.debug:
             base.cTrav.showCollisions(render)
@@ -200,8 +201,9 @@ class MainGame(ShowBase):
 	#Loads the Collision Faces
         self.level = loader.loadModel("resources/levels/first_floor_COLLISION.egg")
         self.level.reparentTo(render)
-        self.level.setTwoSided(True) 
-
+        self.level.setTwoSided(True)
+ 
+	#Loads the Level
 	self.floor = loader.loadModel("resources/levels/first_floor.egg")
 	self.floor.reparentTo(self.level)
         
