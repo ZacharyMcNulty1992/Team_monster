@@ -111,7 +111,8 @@ class MainGame(ShowBase):
 
         self.mPickNode = CollisionNode('pickRay')
         self.mPickNode.addSolid(self.mPickRay)
-
+	self.mPickNode.setFromCollideMask(BitMask32.bit(0))
+        self.mPickNode.setIntoCollideMask(BitMask32.allOff())
         self.mPickNP = self.camera.attachNewNode(self.mPickNode)
 
         self.mPickNode.setFromCollideMask(GeomNode.getDefaultCollideMask())
