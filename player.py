@@ -19,7 +19,7 @@ class Player(object):
     """
         Player is the main actor in the fps game
     """
-    speed = .75
+    speed = .995
     FORWARD = Vec3(0,1,0)
     BACK = Vec3(0,-1,0)
     LEFT = Vec3(-10,0,0)
