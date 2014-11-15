@@ -148,7 +148,7 @@ class MainGame(ShowBase):
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
-        self.skybox = loader.loadModel("resources/models/skybox.egg")
+        self.skybox = loader.loadModel("resources/levels/skybox.egg")
         self.skybox.setScale(1000.0,1000.0,1000.0)
         self.skybox.setPos(2,2,2)
         self.skybox.reparentTo(base.cam)
@@ -200,12 +200,12 @@ class MainGame(ShowBase):
 	self.loadSkybox()
 
 	#Loads the Collision Faces
-        self.level = loader.loadModel("resources/levels/first_floor_COLLISION.egg")
+        self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
  
 	#Loads the Level
-	self.floor = loader.loadModel("resources/levels/first_floor.egg")
+	self.floor = loader.loadModel("resources/levels/firstFloor.egg")
 	self.floor.reparentTo(self.level)
         
         # Lighting
