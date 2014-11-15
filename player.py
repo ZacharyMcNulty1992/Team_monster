@@ -21,6 +21,8 @@ class Player(object):
     """
     speed = .995
     run = False
+    stamina = 0
+    recovering = 10
     FORWARD = Vec3(0,1,0)
     BACK = Vec3(0,-1,0)
     LEFT = Vec3(-10,0,0)
@@ -31,7 +33,7 @@ class Player(object):
     readyToJump = False
     canJump = False
     jump = 0
-    cameraHeight = 5
+    cameraHeight = 3
     Light = False
     firstLightPass = False
     onscreen = False
@@ -42,6 +44,9 @@ class Player(object):
     clickable = False
     holding = False
     runSpeedApplied = False
+    staminaMeterNeedsToBeUpdated = False
+    outOfStamina = False
+
 
     def __init__(self, controlStyle):
         """ inits the player """
@@ -59,6 +64,7 @@ class Player(object):
         taskMgr.add(self.jumpUpdate, 'jump-task')
         taskMgr.add(self.respawnUpdate, 'respawn-task')
         taskMgr.add(self.sprintUpdate, 'sprint-task')
+        taskMgr.add(self.staminaMeterTask, 'staminaMeter-task')
         if base.debug:
             taskMgr.add(self.CoordsTask, 'Coords-task')
 
@@ -216,16 +222,58 @@ class Player(object):
 
         return task.cont
 
+    def initStamina(self):
+        """global variables for things like onscreen text for the player"""
+        global staminaMeter
+        self.stamina = 100
+
     def sprintUpdate(self,task):
-        """used for adding speed when the shift button is pressed"""
-        if self.run == True and self.runSpeedApplied == False:
-            self.speed += .9
+        """used for adding speed when the shift button is pressed and handles stamina and its meter"""
+        if self.run == True and self.runSpeedApplied == False and self.outOfStamina == False:
+            self.speed = 2.495
             self.runSpeedApplied = True
+            self.stamina -= 1
+
+        elif self.run == True and self.runSpeedApplied == True and  self.outOfStamina == False:
+            self.speed = 2.495
+            if self.stamina >= 0:
+                self.stamina -= 2
+            elif self.stamina <= 0:
+                self.outOfStamina = True
+
+        elif self.run == True and self.runSpeedApplied == True and self.outOfStamina == True:
+            self.speed = .995
+            self.stamina = 0
+
         elif self.run == False and self.runSpeedApplied == True:
             self.speed = .995
             self.runSpeedApplied = False
-        elif self.run == True and self.runSpeedApplied == True:
-            return task.cont
+
+        elif self.run == False and self.runSpeedApplied == False and self.outOfStamina == True:
+            if self.stamina <= 100:
+                self.stamina += .5
+            elif self.stamina >= 25:
+                self.outOfStamina = False
+            elif self.stamina >= 100:
+                self.stamina = 100
+
+        elif self.run == False and self.runSpeedApplied == False and self.outOfStamina == False:
+            if self.stamina <= 100:
+                self.stamina += .5
+            elif self.stamina >= 25:
+                self.outOfStamina = False
+            elif self.stamina >= 100:
+                self.stamina = 100
+
+        return task.cont
+
+    def staminaMeterTask(self,task):
+        if self.staminaMeterNeedsToBeUpdated == False:
+            self.staminaMeter = OnscreenText(str(self.stamina),pos = (-0.9,0.6),scale = (0.07), fg = (1.0, 1.0, 1.0, 1.0))
+            self.staminaMeterNeedsToBeUpdated = True
+        elif self.staminaMeterNeedsToBeUpdated == True:
+            self.staminaMeter.setText("")
+            self.staminaMeterNeedsToBeUpdated = False
         return task.cont
 
     def toggleJump(self):
