@@ -13,7 +13,7 @@
 }
 
 <Texture> Tex {
-  "../textures/toilettex.png"
+  "./textures/toilet.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }

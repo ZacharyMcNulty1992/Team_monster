@@ -109,7 +109,7 @@ class Player(object):
         
     def loadModel(self):
         """ make the nodepath for player """
-        self.node = NodePath("resources/models/player1v2.egg")
+        self.node = NodePath("resources/models/player.egg")
         self.node.reparentTo(render)
         self.node.setPos(0,0,.5)
         self.node.setScale(1)

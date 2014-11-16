@@ -13,7 +13,7 @@
 }
 
 <Texture> Tex {
-  "../textures/kappatex.png"
+  "./textures/kappa.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }

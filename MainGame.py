@@ -19,7 +19,7 @@ from player import Player
 from monster import Monster
 from item import Item
 from trigger import ProxTrigger
-from GUI import GUI
+from journal import Journal
 
 class MainGame(ShowBase):
 
@@ -35,6 +35,7 @@ class MainGame(ShowBase):
     # Global Variables
     isPaused = False
     alreadyRemoved = False
+    #monsterBookOpen = False
     looking = None
     scripts = {}
     sounds = []
@@ -44,7 +45,6 @@ class MainGame(ShowBase):
     def __init__(self):
         #Initilize Game Base
         ShowBase.__init__(self)
-        self.initSounds()
         # Input
         self.getControls()
         # Task
@@ -65,14 +65,15 @@ class MainGame(ShowBase):
             cfgFile = open("settings.cfg", "r+")
         self.getSettings(cfgFile)
          # accepts for various tasks
+        journalFrame = DirectFrame()
+        journal = Journal(journalFrame, self.winYSize, -self.winYSize)
+
         base.accept("escape", sys.exit)
+        base.accept("p", self.togglePause)
+        base.accept("j", journal.toggleJournal)
         base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject)
 
-    # Sets controls for opening and closing the various guis
-    def guiControls(self):
-        base.accept("j", self.gui.toggleMonsterBook, extraArgs = [self.sounds[0], self.sounds[1]])
-        
     def windowProps(self):
     # sets up the window's properties
         # Creates the window properties
@@ -154,7 +155,7 @@ class MainGame(ShowBase):
 	
     #Creates and Loads the Skybox
     def loadSkybox(self):
-        self.skybox = loader.loadModel("resources/models/skybox.egg")
+        self.skybox = loader.loadModel("resources/levels/skybox.egg")
         self.skybox.setScale(1000.0,1000.0,1000.0)
         self.skybox.setPos(2,2,2)
         self.skybox.reparentTo(base.cam)
@@ -206,12 +207,12 @@ class MainGame(ShowBase):
 	self.loadSkybox()
 
 	#Loads the Collision Faces
-        self.level = loader.loadModel("resources/levels/first_floor_COLLISION.egg")
+        self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(True)
  
 	#Loads the Level
-	self.floor = loader.loadModel("resources/levels/first_floor.egg")
+	self.floor = loader.loadModel("resources/levels/firstFloor.egg")
 	self.floor.reparentTo(self.level)
         
         # Lighting
@@ -226,7 +227,7 @@ class MainGame(ShowBase):
 
     def initObjects(self):
         self.monsters = {}
-        self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
+        self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
         self.jumogoro.model.setTag('jumogoro', '1')
         self.jumogoro.anim("Walk", True)
         self.monsters["jumogoro"] = self.jumogoro
@@ -249,39 +250,49 @@ class MainGame(ShowBase):
 
     # Initializes music
     def initMusic(self):
-        music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
+        music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
+	music.setVolume(0.25)
         music.setLoop(True)
         music.play()
 
-    # Initializes sounds and adds them to a list for future use
-    def initSounds(self):
-        bookOpen = base.loader.loadSfx("resources/sounds/MonsterBookOpen.ogg")
-        bookClose = base.loader.loadSfx("resources/sounds/MonsterBookClose.ogg")
-        self.sounds.append(bookOpen)
-        self.sounds.append(bookClose)
-
     # Pausing is now handled by the gui object, the task will call
     # that object's toggle pause method
+    def toggleJournal(self):
+        
+	""" set visiblity for monster book, currently rough """
+        if self.monsterBookOpen == True:
+            self.monsterBookOpen = False
+            Journal(False, self.winYSize, -self.winYSize)	    
+        else:
+            self.monsterBookOpen = True
+	    self.journal(True, self.winYSize, -self.winYSize)
+
+    def togglePause(self):
+        #used to toggle the pausing so the player can use the same button to pause and unpause
+        if self.isPaused == True:
+            self.isPaused = False
+        elif self.isPaused == False:
+            self.isPaused = True
+
     def PauseUpdate(self, task):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
-        if self.gui.isPaused == True and self.gui.alreadyRemoved == False:
+        if self.isPaused == True and self.alreadyRemoved == False:
             self.player.removeTasks()
-            self.gui.alreadyRemoved = True
-        elif self.gui.isPaused == False and self.gui.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
+            self.alreadyRemoved = True
+        elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
             self.player.addTasks()
-            self.gui.alreadyRemoved = False
+            self.alreadyRemoved = False
             base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
 	    
-        elif self.gui.isPaused == True and self.gui.alreadyRemoved == True:
+        elif self.isPaused == True and self.alreadyRemoved == True:
             return task.cont
-        elif self.gui.isPaused == False and self.gui.alreadyRemoved == False:
+        elif self.isPaused == False and self.alreadyRemoved == False:
             return task.cont
         return task.cont
       
     def TimeUpdate(self, task):
 	#A Horrible way to have the text go away at the begining... but it works
-	# -M
 	secondsTime = int(task.time)
 	if secondsTime == 10:
 	    self.text.setText("")
@@ -378,14 +389,10 @@ class MainGame(ShowBase):
         if self.debug:
             base.setFrameRateMeter(True)
         self.windowProps()
-        self.gui = GUI(self.winYSize, self.winXSize, self.winProps)
-        self.guiControls()
         if self.debug:
             self.player.toggleJump()
         
         # Initialize Objects and scripts
-        self.guiControls()
-        self.initSounds()
         self.initScripts()
         self.initObjects()
         self.initMusic()
@@ -398,6 +405,7 @@ class MainGame(ShowBase):
 
         # Displays text on the bottom of the screen
         # self.displayFont()
+
 
 game = MainGame()
 game.run()
