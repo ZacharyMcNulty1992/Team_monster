@@ -242,7 +242,8 @@ class MainGame(ShowBase):
         self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
 
     def initMusic(self):
-        music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
+        music = base.loader.loadSfx("resources/music/soundEffects/CreaturesDark.mp3")
+	music.setVolume(0.25)
         music.setLoop(True)
         music.play()
 
