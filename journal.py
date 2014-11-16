@@ -36,7 +36,6 @@ class Journal(object):
 	    self.journal['image_scale'] = (0, 0, 0)
 	    self.journal['frameColor'] = (0, 0, 0, 0)
 	    self.journal['text'] = ""
-	    currentPos = 0
+        self.currentPos = 0
 
-   def movePos(self):
-		   
+   #def movePos(self):
