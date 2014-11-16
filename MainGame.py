@@ -376,7 +376,7 @@ class MainGame(ShowBase):
                         self.text.setAlign(self.text.ACenter)
 
     def setup(self):
-        self.initSounds()
+        #self.initSounds()
         # Collision
         self.initCollision()
         # Level
