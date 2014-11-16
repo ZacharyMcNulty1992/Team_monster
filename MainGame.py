@@ -224,7 +224,7 @@ class MainGame(ShowBase):
 
     def initObjects(self):
         self.monsters = {}
-        self.jumogoro = Monster("Jumogoro", "spiderlady.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
+        self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
         self.jumogoro.model.setTag('jumogoro', '1')
         self.jumogoro.anim("Walk", True)
         self.monsters["jumogoro"] = self.jumogoro
@@ -246,7 +246,7 @@ class MainGame(ShowBase):
         self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
 
     def initMusic(self):
-        music = base.loader.loadSfx("resources/music/soundEffects/CreaturesDark.mp3")
+        music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
 	music.setVolume(0.25)
         music.setLoop(True)
         music.play()
