@@ -1,7 +1,7 @@
 #-------------------------------------------#
 # Class Name: 100Monsters
 # Created By: Team Monster
-# Last Updated: 11/08/14
+# Last Updated: 11/15/14
 # Updated By: Joseph
 # Note(s): This class will be used to run
 # 100 Monsters, implementing other classes
@@ -19,6 +19,7 @@ from player import Player
 from monster import Monster
 from item import Item
 from trigger import ProxTrigger
+from GUI import GUI
 
 class MainGame(ShowBase):
 
@@ -34,13 +35,16 @@ class MainGame(ShowBase):
     # Global Variables
     isPaused = False
     alreadyRemoved = False
-    monsterBookOpen = False
     looking = None
     scripts = {}
+    sounds = []
+    gui = 0
+    winProps = 0
 
     def __init__(self):
         #Initilize Game Base
         ShowBase.__init__(self)
+        self.initSounds()
         # Input
         self.getControls()
         # Task
@@ -62,25 +66,27 @@ class MainGame(ShowBase):
         self.getSettings(cfgFile)
          # accepts for various tasks
         base.accept("escape", sys.exit)
-        base.accept("p", self.togglePause)
-        base.accept("j", self.toggleMonsterBook)
         base.accept('mouse1', self.onMouseTask)
-        base.accept('mouse3', self.dropObject) 
-    
+        base.accept('mouse3', self.dropObject)
+
+    # Sets controls for opening and closing the various guis
+    def guiControls(self):
+        base.accept("j", self.gui.toggleMonsterBook, extraArgs = [self.sounds[0], self.sounds[1]])
+        
     def windowProps(self):
-    #sets up the window's properties
+    # sets up the window's properties
         # Creates the window properties
-        winProps = WindowProperties()
+        self.winProps = WindowProperties()
         # Set the window's resolution
-        winProps.setSize(self.winXSize, self.winYSize)
+        self.winProps.setSize(self.winXSize, self.winYSize)
         # Sets the cursor so that it's hidden
-        winProps.setCursorHidden(True)
+        self.winProps.setCursorHidden(True)
         # Changes the window name
-        winProps.setTitle("100 Monsters")
+        self.winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        winProps.setFullscreen(self.fullscreen)
+        self.winProps.setFullscreen(self.fullscreen)
         # Gives the set properties to the window
-        base.win.requestProperties(winProps)
+        base.win.requestProperties(self.winProps)
         # Disables the mouse from moving the camera (can still look around)
         base.disableMouse()
 
@@ -241,50 +247,35 @@ class MainGame(ShowBase):
         self.jumotrigger3 = ProxTrigger(self, -30, 55, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
         self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
 
+    # Initializes music
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/LooseSpirits.ogg")
         music.setLoop(True)
         music.play()
 
-    def toggleMonsterBook(self):
-        """ set visiblity for monster book, currently rough """
-        if self.monsterBookOpen == True:
-            self.monsterBookOpen = False
-            monsterBook['image_scale'] = (0, 0, 0)
-            monsterBook['frameColor'] = (0, 0, 0, 0)
-            monsterBook['text'] = ""
-        else:
-            self.monsterBookOpen = True
-            monsterBook['frameColor'] = (0, 0, 0, 1)
-            monsterBook['frameSize'] = (1, -1, self.winYSize, -self.winYSize)
-            monsterBook['image'] = 'resources/GUI_Assets/Monster_Book/PNG_Files/Book.png'
-            monsterBook['image_scale'] = (1, 1, 1)
-            monsterBook['text'] = "Monster Book"
-            monsterBook['text_fg'] = (20, 0, 0, 1)
-            monsterBook['text_pos'] = (0, 0)
-            monsterBook['text_scale'] = (0.2, 0.2)
+    # Initializes sounds and adds them to a list for future use
+    def initSounds(self):
+        bookOpen = base.loader.loadSfx("resources/sounds/MonsterBookOpen.ogg")
+        bookClose = base.loader.loadSfx("resources/sounds/MonsterBookClose.ogg")
+        self.sounds.append(bookOpen)
+        self.sounds.append(bookClose)
 
-    def togglePause(self):
-        #used to toggle the pausing so the player can use the same button to pause and unpause
-        if self.isPaused == True:
-            self.isPaused = False
-        elif self.isPaused == False:
-            self.isPaused = True
-
+    # Pausing is now handled by the gui object, the task will call
+    # that object's toggle pause method
     def PauseUpdate(self, task):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
-        if self.isPaused == True and self.alreadyRemoved == False:
+        if self.gui.isPaused == True and self.gui.alreadyRemoved == False:
             self.player.removeTasks()
-            self.alreadyRemoved = True
-        elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
+            self.gui.alreadyRemoved = True
+        elif self.gui.isPaused == False and self.gui.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
             self.player.addTasks()
-            self.alreadyRemoved = False
+            self.gui.alreadyRemoved = False
             base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
 	    
-        elif self.isPaused == True and self.alreadyRemoved == True:
+        elif self.gui.isPaused == True and self.gui.alreadyRemoved == True:
             return task.cont
-        elif self.isPaused == False and self.alreadyRemoved == False:
+        elif self.gui.isPaused == False and self.gui.alreadyRemoved == False:
             return task.cont
         return task.cont
       
@@ -374,6 +365,7 @@ class MainGame(ShowBase):
                         self.text.setAlign(self.text.ACenter)
 
     def setup(self):
+        self.initSounds()
         # Collision
         self.initCollision()
         # Level
@@ -386,10 +378,14 @@ class MainGame(ShowBase):
         if self.debug:
             base.setFrameRateMeter(True)
         self.windowProps()
+        self.gui = GUI(self.winYSize, self.winXSize, self.winProps)
+        self.guiControls()
         if self.debug:
             self.player.toggleJump()
         
         # Initialize Objects and scripts
+        self.guiControls()
+        self.initSounds()
         self.initScripts()
         self.initObjects()
         self.initMusic()
@@ -402,10 +398,6 @@ class MainGame(ShowBase):
 
         # Displays text on the bottom of the screen
         # self.displayFont()
-
-        #global variables
-        global monsterBook
-        monsterBook = DirectFrame()
 
 game = MainGame()
 game.run()
