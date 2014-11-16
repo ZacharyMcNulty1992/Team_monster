@@ -45,7 +45,7 @@ class Player(object):
     holding = False
     runSpeedApplied = False
     staminaMeterNeedsToBeUpdated = False
-    outOfStamina = False
+    outOfStamina = True
 
 
     def __init__(self, controlStyle):
@@ -229,6 +229,9 @@ class Player(object):
 
     def sprintUpdate(self,task):
         """used for adding speed when the shift button is pressed and handles stamina and its meter"""
+        #tests to see if the player can run, if the player can run it increases the players speed
+        #if the player has run out of stamina then the player can no longer run and must wait
+        #for their stamina to refill
         if self.run == True and self.runSpeedApplied == False and self.outOfStamina == False:
             self.speed = 2.495
             self.runSpeedApplied = True
@@ -243,28 +246,29 @@ class Player(object):
 
         elif self.run == True and self.runSpeedApplied == True and self.outOfStamina == True:
             self.speed = .995
-            self.stamina = 0
+            #self.stamina = 0
 
         elif self.run == False and self.runSpeedApplied == True:
             self.speed = .995
             self.runSpeedApplied = False
 
         elif self.run == False and self.runSpeedApplied == False and self.outOfStamina == True:
+            self.speed = .995
             if self.stamina <= 100:
                 self.stamina += .5
-            elif self.stamina >= 25:
-                self.outOfStamina = False
             elif self.stamina >= 100:
                 self.stamina = 100
 
         elif self.run == False and self.runSpeedApplied == False and self.outOfStamina == False:
             if self.stamina <= 100:
                 self.stamina += .5
-            elif self.stamina >= 25:
-                self.outOfStamina = False
             elif self.stamina >= 100:
                 self.stamina = 100
 
+        if self.outOfStamina == False and self.stamina <= 0:
+            self.outOfStamina = True
+        elif self.outOfStamina == True and self.stamina >= 25:
+            self.outOfStamina = False
         return task.cont
 
     def staminaMeterTask(self,task):
