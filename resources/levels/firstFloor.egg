@@ -257,7 +257,7 @@
 }
 
 <Texture> Texture.001 {
-  "./tex/wood_texture.jpg"
+  "./textures/entry/EntryFloor.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
@@ -305,7 +305,7 @@
 }
 
 <Texture> Texture.017 {
-  "./tex/Wall_Upper.png"
+  "./textures/lobby/Boards.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
@@ -369,7 +369,7 @@
 }
 
 <Texture> Texture.008 {
-  "./tex/Pool_DUMMY.png"
+  "./textures/pool/PoolSide.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
@@ -377,7 +377,7 @@
 }
 
 <Texture> Texture.015 {
-  "./tex/Moon.png"
+  "./textures/lobby/Moon.png"
   <Scalar> envtype { MODULATE }
   <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
   <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
