@@ -19,6 +19,7 @@ from player import Player
 from monster import Monster
 from item import Item
 from trigger import ProxTrigger
+from journal import Journal
 
 class MainGame(ShowBase):
 
@@ -34,7 +35,7 @@ class MainGame(ShowBase):
     # Global Variables
     isPaused = False
     alreadyRemoved = False
-    monsterBookOpen = False
+    #monsterBookOpen = False
     looking = None
     scripts = {}
 
@@ -61,9 +62,12 @@ class MainGame(ShowBase):
             cfgFile = open("settings.cfg", "r+")
         self.getSettings(cfgFile)
          # accepts for various tasks
+        journalFrame = DirectFrame()
+        journal = Journal(journalFrame, self.winYSize, -self.winYSize)
+
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
-        base.accept("j", self.toggleMonsterBook)
+        base.accept("j", journal.toggleJournal)
         base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject) 
     
@@ -247,23 +251,27 @@ class MainGame(ShowBase):
         music.setLoop(True)
         music.play()
 
-    def toggleMonsterBook(self):
-        """ set visiblity for monster book, currently rough """
+    def toggleJournal(self):
+        
+	""" set visiblity for monster book, currently rough """
         if self.monsterBookOpen == True:
             self.monsterBookOpen = False
-            monsterBook['image_scale'] = (0, 0, 0)
-            monsterBook['frameColor'] = (0, 0, 0, 0)
-            monsterBook['text'] = ""
+            Journal(False, self.winYSize, -self.winYSize)	    
+           # monsterBook['image_scale'] = (0, 0, 0)
+           # monsterBook['frameColor'] = (0, 0, 0, 0)
+           # monsterBook['text'] = ""
         else:
             self.monsterBookOpen = True
-            monsterBook['frameColor'] = (0, 0, 0, 1)
-            monsterBook['frameSize'] = (1, -1, self.winYSize, -self.winYSize)
-            monsterBook['image'] = 'resources/GUI_Assets/Monster_Book/PNG_Files/Book.png'
-            monsterBook['image_scale'] = (1, 1, 1)
-            monsterBook['text'] = "Monster Book"
-            monsterBook['text_fg'] = (20, 0, 0, 1)
-            monsterBook['text_pos'] = (0, 0)
-            monsterBook['text_scale'] = (0.2, 0.2)
+	    self.journal(True, self.winYSize, -self.winYSize)
+           # monsterBook['frameColor'] = (0, 0, 0, 1)
+           # monsterBook['frameSize'] = (1, -1, self.winYSize, -self.winYSize)
+           # monsterBook['image'] = 'resources/GUI_Assets/Monster_Book/PNG_Files/Book.png'
+           # monsterBook['image_scale'] = (1, 1, 1)
+           # monsterBook['text'] = "Monster Book"
+           # monsterBook['text_fg'] = (20, 0, 0, 1)
+           # monsterBook['text_pos'] = (0, 0)
+           # monsterBook['text_scale'] = (0.2, 0.2) 
+
 
     def togglePause(self):
         #used to toggle the pausing so the player can use the same button to pause and unpause
@@ -271,7 +279,7 @@ class MainGame(ShowBase):
             self.isPaused = False
         elif self.isPaused == False:
             self.isPaused = True
-
+	
     def PauseUpdate(self, task):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
@@ -405,8 +413,8 @@ class MainGame(ShowBase):
         # self.displayFont()
 
         #global variables
-        global monsterBook
-        monsterBook = DirectFrame()
+       # global monsterBook
+       # monsterBook = DirectFrame()
 
 game = MainGame()
 game.run()
