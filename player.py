@@ -95,16 +95,24 @@ class Player(object):
 
     def initLight(self):
         self.slight = Spotlight('player light')
-        self.slight.setScene(render)
-        self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
-        self.slight.setAttenuation(Point3(0, 0, 0.00005))
+        #self.slight.setScene(render)
+        #self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
+        self.slight.setAttenuation(Point3(0, 0, 0.00003))
+        #self.slight.set_exponent(.1)
         self.slight.getLens().setFov(90,70)
-        self.slight.getLens().setNearFar(1, 5)
-        self.slight.setShadowCaster(True, 1024, 1024)
+        self.slight.getLens().setNearFar(299, 300)
+        #self.slight.set_priority(0)
+        self.slight.setShadowCaster(True, 10000, 10000)
+
+
         self.dlnp = self.node.attachNewNode(self.slight)
         self.dlnp.reparentTo(self.node)
         render.setLight(self.dlnp)
         self.node.setLight(self.dlnp)
+
+        self.dlnp.setTexProjector(TextureStage.getDefault(),self.dlnp,self.dlnp)
+        self.dlnp.projectTexture(TextureStage.get_default(), self.slight.make_spot(9500, 1000, VBase4(0.7),VBase4(0.7)), self.dlnp)
+
         taskMgr.add(self.LightTask, 'light-task')
         
     def loadModel(self):
@@ -269,6 +277,7 @@ class Player(object):
             self.outOfStamina = True
         elif self.outOfStamina == True and self.stamina >= 25:
             self.outOfStamina = False
+
         return task.cont
 
     def staminaMeterTask(self,task):
@@ -387,8 +396,6 @@ class Player(object):
             obj = obj.findNetTag('interactable')
             if not obj.isEmpty():
                 print "interactable"
-            
-    
 
     def getX(self):
         return self.node.getX()
@@ -401,5 +408,3 @@ class Player(object):
         
     def getMouseOver(self):
         return self.mouseOver
-
-
