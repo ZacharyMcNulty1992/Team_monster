@@ -209,7 +209,7 @@ class MainGame(ShowBase):
 	#Loads the Collision Faces
         self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
-        self.level.setTwoSided(True)
+        self.level.setTwoSided(False)
  
 	#Loads the Level
 	self.floor = loader.loadModel("resources/levels/firstFloor.egg")
