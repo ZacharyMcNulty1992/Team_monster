@@ -100,10 +100,11 @@ class Player(object):
         self.slight.setAttenuation(Point3(0, 0, 0.00003))
         #self.slight.set_exponent(.1)
         self.slight.getLens().setFov(90,70)
-        self.slight.getLens().setNearFar(299, 300)
+        self.slight.getLens().setNearFar(1, 300)
         #self.slight.set_priority(0)
-        self.slight.setShadowCaster(True, 10000, 10000)
-
+        self.slight.setShadowCaster(True)
+        render.setShaderAuto()
+        #self.pssm = ParallelSplitShadowMap.ParallelSplitShadowMap(Vec3(0, -1, -1), lightsQuality = [2048, 2048, 1024], pssmBias = 0.8, pushBias = 0.03, lightColor = VBase3(0.125, 0.149, 0.160), lightIntensity = 0.8)
 
         self.dlnp = self.node.attachNewNode(self.slight)
         self.dlnp.reparentTo(self.node)
@@ -111,7 +112,7 @@ class Player(object):
         self.node.setLight(self.dlnp)
 
         self.dlnp.setTexProjector(TextureStage.getDefault(),self.dlnp,self.dlnp)
-        self.dlnp.projectTexture(TextureStage.get_default(), self.slight.make_spot(9500, 1000, VBase4(0.7),VBase4(0.7)), self.dlnp)
+        self.dlnp.projectTexture(TextureStage.get_default(), self.slight.make_spot(250, 200, VBase4(0.7),VBase4(0.7)), self.dlnp)
 
         taskMgr.add(self.LightTask, 'light-task')
         
@@ -357,6 +358,8 @@ class Player(object):
 
     def LightTask(self, task):
         self.dlnp.setPos(0, 0, self.cameraHeight -1)
+        #self.pssm.update()
+
         if self.Light == True and self.firstLightPass == True:
             self.node.setLight(dlnp)
             self.firstLightPass = False
