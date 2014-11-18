@@ -99,10 +99,10 @@ class Player(object):
         #self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
         self.slight.setAttenuation(Point3(0, 0, 0.00003))
         #self.slight.set_exponent(.1)
-        self.slight.getLens().setFov(90,70)
-        self.slight.getLens().setNearFar(1, 300)
+        self.slight.getLens().setFov(80,70)
+        self.slight.getLens().setNearFar(1, 100)
         #self.slight.set_priority(0)
-        self.slight.setShadowCaster(True)
+        self.slight.setShadowCaster(True, 1024, 1024)
         render.setShaderAuto()
         #self.pssm = ParallelSplitShadowMap.ParallelSplitShadowMap(Vec3(0, -1, -1), lightsQuality = [2048, 2048, 1024], pssmBias = 0.8, pushBias = 0.03, lightColor = VBase3(0.125, 0.149, 0.160), lightIntensity = 0.8)
 
