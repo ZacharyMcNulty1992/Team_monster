@@ -30,6 +30,7 @@ class Monster(object):
         self.loadMonster()
         self.monsterCollision()
         self.node.setShaderAuto()
+        self.initLOD()
         taskMgr.add(self.GravityUpdate, 'gravity-task')
 
     def loadMonster(self): #need to test to see what model to load for what type of monster
@@ -38,6 +39,15 @@ class Monster(object):
         self.model.reparentTo(self.node)
         self.node.setPos(self.posX, self.posY, self.posZ)
         self.node.setScale(self.scale)
+
+
+    def initLOD(self):
+        lod = LODNode("lodNode")
+        lodNode = NodePath(lod)
+        lodNode.reparentTo(render)
+        lod.add_switch(190.0, 0.0)
+        self.node.reparentTo(lodNode)
+
 
     def monsterCollision(self):
         #mn for monster node
