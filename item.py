@@ -27,6 +27,7 @@ class Item(object):
 	self.isCollectable = isCollectable
         self.loadItem()
         self.itemCollision()
+        self.initLOD()
         if not defiesGravity:
             taskMgr.add(self.GravityUpdate, 'gravity-task')
 
@@ -36,6 +37,14 @@ class Item(object):
         self.model.reparentTo(self.node)
         self.node.setPos(self.posX, self.posY, self.posZ)
         self.node.setScale(self.scale)
+
+
+    def initLOD(self):
+        lod = LODNode("lodNode")
+        lodNode = NodePath(lod)
+        lodNode.reparentTo(render)
+        lod.add_switch(190.0, 0.0)
+        self.node.reparentTo(lodNode)
 
     def itemCollision(self):
         #itn for item node
