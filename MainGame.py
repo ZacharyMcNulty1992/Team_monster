@@ -75,7 +75,7 @@ class MainGame(ShowBase):
         base.accept('mouse3', self.dropObject)
 
     def windowProps(self):
-    # sets up the window's properties
+        # sets up the window's properties
         # Creates the window properties
         self.winProps = WindowProperties()
         # Set the window's resolution
@@ -118,7 +118,7 @@ class MainGame(ShowBase):
 
         self.mPickNode = CollisionNode('pickRay')
         self.mPickNode.addSolid(self.mPickRay)
-	self.mPickNode.setFromCollideMask(BitMask32.bit(0))
+        self.mPickNode.setFromCollideMask(BitMask32.bit(0))
         self.mPickNode.setIntoCollideMask(BitMask32.allOff())
         self.mPickNP = self.camera.attachNewNode(self.mPickNode)
 
@@ -136,10 +136,8 @@ class MainGame(ShowBase):
                 self.drop(self.player.hand.getChild(0))
             pickedObj.reparentTo(self.player.hand)
 	    pickedObj.getChild(1).stash()
-	    
-            pickedObj.setPos(1,1.5,3)
-            self.player.holding = True
-        
+        pickedObj.setPos(1,1.5,3)
+        self.player.holding = True
 
     def dropObject(self):
         if self.player.hand.getNumChildren() == 0:
@@ -150,7 +148,7 @@ class MainGame(ShowBase):
     def drop(self, child):     
         child.reparentTo(render)
         child.setPos(self.player.getX(), self.player.getY(), self.player.getZ())
-	child.unstashAll()
+        child.unstashAll()
         self.player.holding = False
 	
     #Creates and Loads the Skybox
@@ -198,22 +196,22 @@ class MainGame(ShowBase):
     def initCollision(self):
         base.cTrav = CollisionTraverser()
         base.pusher = CollisionHandlerPusher()
-	base.cQue = CollisionHandlerQueue()
+        base.cQue = CollisionHandlerQueue()
         #for debugging purposes
         if self.debug:
             base.cTrav.showCollisions(render)
 
     def loadLevel(self):
-	self.loadSkybox()
+        self.loadSkybox()
 
-	#Loads the Collision Faces
+        #Loads the Collision Faces
         self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(False)
  
-	#Loads the Level
-	self.floor = loader.loadModel("resources/levels/firstFloor.egg")
-	self.floor.reparentTo(self.level)
+        #Loads the Level
+        self.floor = loader.loadModel("resources/levels/firstFloor.egg")
+        self.floor.reparentTo(self.level)
         
         # Lighting
         if self.lighting:
@@ -251,7 +249,7 @@ class MainGame(ShowBase):
     # Initializes music
     def initMusic(self):
         music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
-	music.setVolume(0.25)
+        music.setVolume(0.25)
         music.setLoop(True)
         music.play()
 
@@ -259,7 +257,7 @@ class MainGame(ShowBase):
     # that object's toggle pause method
     def toggleJournal(self):
         
-	""" set visiblity for monster book, currently rough """
+        """ set visiblity for monster book, currently rough """
         if self.monsterBookOpen == True:
             self.monsterBookOpen = False
             Journal(False, self.winYSize, -self.winYSize)	    
@@ -292,12 +290,11 @@ class MainGame(ShowBase):
         return task.cont
       
     def TimeUpdate(self, task):
-	#A Horrible way to have the text go away at the begining... but it works
-	secondsTime = int(task.time)
-	if secondsTime == 10:
-	    self.text.setText("")
-	
-	return task.cont
+        #A Horrible way to have the text go away at the begining... but it works
+        secondsTime = int(task.time)
+        if secondsTime == 10:
+            self.text.setText("")
+        return task.cont
 
     def initScripts(self):
         path = "./resources/scripts/"
