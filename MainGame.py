@@ -54,7 +54,6 @@ class MainGame(ShowBase):
  
     def update(self, task):
         taskMgr.add(self.PauseUpdate, 'pause-task')
-        #taskMgr.add(self.TimeUpdate, 'timer')
         return task.cont
     
     def getControls(self):
@@ -71,7 +70,7 @@ class MainGame(ShowBase):
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
         base.accept("j", journal.toggleJournal)
-        base.accept('mouse1', self.onMouseTask)
+        #base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject)
 
     def windowProps(self):
@@ -238,6 +237,7 @@ class MainGame(ShowBase):
         self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
         self.toilet.model.setTag('interactable','1')
+        self.monster_book = Item("Monster_Book", "monster_book", -66, -17, .25, 1, 1, 1, False, False, False)
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
         self.jumotrigger = ProxTrigger(self, 0, 30, 5, 10, self.player, "jumostartmove", True)
