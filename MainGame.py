@@ -211,6 +211,8 @@ class MainGame(ShowBase):
 
     def initObjects(self):
         self.monsters = {}
+        self.items = {}
+        self.triggers = {}
         self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
         self.jumogoro.model.setTag('jumogoro', '1')
         self.jumogoro.anim("Walk", True)
@@ -227,14 +229,6 @@ class MainGame(ShowBase):
         self.monster_book = Item("Monster_Book", "monster_book", -66, -17, .25, 1, 1, 1, False, False, False)
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
-        self.jumotrigger = ProxTrigger(self, 0, 30, 5, 10, self.player, "jumostartmove", True)
-        self.jumotrigger1 = ProxTrigger(self, 30, 25, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger2 = ProxTrigger(self, 35, 50, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger3 = ProxTrigger(self, -30, 55, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.musictrigger1 = ProxTrigger(self, 0, -30, 5, 5, self.player, "music1", True)
-        self.musictrigger2 = ProxTrigger(self, 0, 40, 5, 5, self.player, "music2", True)
-        self.screamtrigger = ProxTrigger(self, 0, 40, 5, 5, self.player, "scream", True)
 
     # Initializes music and sound
     def initSound(self):
@@ -341,6 +335,23 @@ class MainGame(ShowBase):
                     self.monsters[cmd[1]].anim(cmd[2], True)
                 elif cmd[3] == "noloop":
                     self.monsters[cmd[1]].anim(cmd[2], True)
+            elif cmdType == "spawnmonster":
+                print "Spawning monster "
+            elif cmdType == "spawnitem":
+                print "Spawning item "
+            elif cmdType == "spawnproxtrigger":
+                print "Spawning trigger for script " + cmd[1] + " at x = " + cmd[2] + " y = " + cmd[3] + " z = " + cmd[4] + " with range " + cmd[5] + " with target " + cmd[6] + " of type " + cmd[7] + " running " + cmd[8] + " with a refresh delay of " + cmd[9]
+                runOnce = False
+                if cmd[8] == "runonce":
+                    runOnce = True
+                if cmd[7] == "monster":
+                    target = self.monsters[cmd[6]]
+                if cmd[7] == "item":
+                    target = self.items[cmd[6]]
+                if cmd[7] == "player":
+                    target = self.player
+                trigger = ProxTrigger(self, float(cmd[2]), float(cmd[3]), float(cmd[4]), float(cmd[5]), target, cmd[1], runOnce, int(cmd[9]))
+                self.triggers[cmd[1]] = trigger
             elif cmdType == "print":
                 print "Printing " + cmd[1] + " with " + cmd[2] + " font for " + cmd[7] + " seconds"
                 path = "./resources/text/"
@@ -414,7 +425,7 @@ class MainGame(ShowBase):
         self.initObjects()
         self.initSound()
         
-        self.runScript("initprint")
+        self.runScript("init")
         
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         # Add Mouse Collision to our world
