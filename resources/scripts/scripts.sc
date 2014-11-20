@@ -1,6 +1,10 @@
 script init:
 print init.txt normal 0 0 .60 20 60
 spawnmonster jorogumo jorogumo.egg 0 30 5 4 4 1.25 0.1
+spawnmonster kappa kappa.egg 0 10 5 5 1.5 1.25 0.1
+anim kappa Idle loop
+spawnitem cucumber cucumber.egg 10 10 5 1 1 1 false true true
+spawnitem toilet toilet.egg 20 10 5 2 1.5 1.5 false false true
 spawnproxtrigger scream 0 40 5 5 player player norunonce 100
 spawnproxtrigger jorostartmove 0 30 5 10 player player runonce 0
 spawnproxtrigger joroturn 30 25 5 5 jorogumo monster norunonce 100

@@ -189,22 +189,18 @@ class MainGame(ShowBase):
 
     def loadLevel(self):
         self.loadSkybox()
-
         #Loads the Collision Faces
         self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(False)
- 
         #Loads the Level
         self.floor = loader.loadModel("resources/levels/firstFloor.egg")
         self.floor.reparentTo(self.level)
-        
         # Lighting
         if self.lighting:
             alight = AmbientLight('alight')
             alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
             alnp = render.attachNewNode(alight)
-            
             render.setShaderAuto()
             render.clearLight()
             render.setLight(alnp)
@@ -213,18 +209,6 @@ class MainGame(ShowBase):
         self.monsters = {}
         self.items = {}
         self.triggers = {}
-        #self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
-        #self.jumogoro.model.setTag('jumogoro', '1')
-        #self.jumogoro.anim("Walk", True)
-        #self.monsters["jumogoro"] = self.jumogoro
-        self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
-        self.kappa.model.setTag('kappa', '1')
-        self.kappa.anim("Idle", True)
-        self.monsters["kappa"] = self.kappa
-        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True, True)
-        self.cucumber.model.setTag('collectable','1')
-        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
-        self.toilet.model.setTag('interactable','1')
         self.monster_book = Item("Monster_Book", "monster_book", -66, -17, .25, 1, 1, 1, False, False, False)
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
@@ -340,7 +324,26 @@ class MainGame(ShowBase):
                 monster.model.setTag(cmd[1], '1')
                 self.monsters[cmd[1]] = monster
             elif cmdType == "spawnitem":
-                print "Spawning item "
+                print "Spawning item " + cmd[1] + " with model filename " + cmd[2] + " x = " + cmd[3] + " y = " + cmd[4] + " z = " + cmd[5] + " height of " + cmd[6] + " width of " + cmd[7] + " scale of " + cmd[8] + " defiesGravity set to " + cmd[9] + " isCollectable set to " + cmd[10] + " isInteractable set to " + cmd[11]
+                if cmd[9] == "true":
+                    gravity = True
+                else:
+                    gravity = False
+                if cmd[10] == "true":
+                    collect = True
+                else:
+                    collect = False
+                if cmd[11] == "true":
+                    interact = True
+                else:
+                    interact = False
+                item = Item(cmd[1], cmd[2], float(cmd[3]), float(cmd[4]), float(cmd[5]), float(cmd[6]), float(cmd[7]), float(cmd[8]), gravity, collect, interact)
+                if collect:
+                    item.model.setTag('collectable', '1')
+                elif interact:
+                    item.model.setTag('interactable', '1')
+                else:
+                    item.model.setTag(cmd[1], '1')
             elif cmdType == "spawnproxtrigger":
                 print "Spawning trigger for script " + cmd[1] + " at x = " + cmd[2] + " y = " + cmd[3] + " z = " + cmd[4] + " with range " + cmd[5] + " with target " + cmd[6] + " of type " + cmd[7] + " running " + cmd[8] + " with a refresh delay of " + cmd[9]
                 runOnce = False
