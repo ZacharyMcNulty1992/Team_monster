@@ -1,22 +1,24 @@
 script init:
 print init.txt normal 0 0 .60 20 60
+spawnmonster jorogumo jorogumo.egg 0 30 5 4 4 1.25 0.1
 spawnproxtrigger scream 0 40 5 5 player player norunonce 100
-spawnproxtrigger jumostartmove 0 30 5 10 player player runonce 0
-spawnproxtrigger jumoturn 30 25 5 5 jumogoro monster norunonce 100
-spawnproxtrigger jumoturn 35 50 5 5 jumogoro monster norunonce 100
-spawnproxtrigger jumoturn -30 55 5 5 jumogoro monster norunonce 100
-spawnproxtrigger jumoturn -35 30 5 5 jumogoro monster norunonce 100
+spawnproxtrigger jorostartmove 0 30 5 10 player player runonce 0
+spawnproxtrigger joroturn 30 25 5 5 jorogumo monster norunonce 100
+spawnproxtrigger joroturn 35 50 5 5 jorogumo monster norunonce 100
+spawnproxtrigger joroturn -30 55 5 5 jorogumo monster norunonce 100
+spawnproxtrigger joroturn -35 30 5 5 jorogumo monster norunonce 100
 spawnproxtrigger music1 0 -30 5 5 player player norunonce 100
 spawnproxtrigger music2 0 40 5 5 player player norunonce 100
 end init
 
-script jumostartmove:
-walkforward jumogoro
-end jumostartmove
+script jorostartmove:
+anim jorogumo Walk loop
+walkforward jorogumo
+end jorostartmove
 
-script jumoturn:
-turn jumogoro 90 ccw
-end jumoturn1
+script joroturn:
+turn jorogumo 90 ccw
+end joroturn1
 
 script music1:
 changemusic MountainsOfMadness.mp3 0.8

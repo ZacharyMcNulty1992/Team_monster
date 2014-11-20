@@ -213,16 +213,15 @@ class MainGame(ShowBase):
         self.monsters = {}
         self.items = {}
         self.triggers = {}
-        self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
-        self.jumogoro.model.setTag('jumogoro', '1')
-        self.jumogoro.anim("Walk", True)
-        self.monsters["jumogoro"] = self.jumogoro
+        #self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
+        #self.jumogoro.model.setTag('jumogoro', '1')
+        #self.jumogoro.anim("Walk", True)
+        #self.monsters["jumogoro"] = self.jumogoro
         self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
         self.kappa.model.setTag('kappa', '1')
         self.kappa.anim("Idle", True)
         self.monsters["kappa"] = self.kappa
         self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True, True)
-        #Mouse Tag
         self.cucumber.model.setTag('collectable','1')
         self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
         self.toilet.model.setTag('interactable','1')
@@ -336,7 +335,10 @@ class MainGame(ShowBase):
                 elif cmd[3] == "noloop":
                     self.monsters[cmd[1]].anim(cmd[2], True)
             elif cmdType == "spawnmonster":
-                print "Spawning monster "
+                print "Spawning monster " + cmd[1] + " with model filename " + cmd[2] + " at x = " + cmd[3] + " y = " + cmd[4] + " z = " + cmd[5] + " with height " + cmd[6] + " and width " + cmd[7] + " and scale " + cmd[8] + " and speed " + cmd[9]
+                monster = Monster(cmd[1], cmd[2], float(cmd[3]), float(cmd[4]), float(cmd[5]), float(cmd[6]), float(cmd[7]), float(cmd[8]), float(cmd[9]))
+                monster.model.setTag(cmd[1], '1')
+                self.monsters[cmd[1]] = monster
             elif cmdType == "spawnitem":
                 print "Spawning item "
             elif cmdType == "spawnproxtrigger":
