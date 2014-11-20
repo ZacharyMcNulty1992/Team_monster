@@ -8,7 +8,9 @@ walkforward [monster]
 turn [monster] [angle] [cw/ccw]
 stop [monster]
 anim [monster] [animation name] [loop/noloop]
-print [filename (Located in resources/text directory)] [normal/garbled] [x] [y] [z] [word wrap] [display time]
+print [filename (Located in resources/text directory)] [normal/garbled] [x] [y] [z] [word wrap] [display time (0 for infinite)]
+playsound [sound filename (Located in music/soundEffects)] [volume] [channel] [loop/noloop]
+changemusic [music filename (Located in music/background/] [volume]
 
 Always make sure to end a script with the following line:
 end [script name]
