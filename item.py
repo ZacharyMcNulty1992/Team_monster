@@ -24,7 +24,7 @@ class Item(object):
         self.height = height
         self.width = width
         self.scale = scale
-	self.isCollectable = isCollectable
+        self.isCollectable = isCollectable
         self.loadItem()
         self.itemCollision()
         self.initLOD()
@@ -49,7 +49,7 @@ class Item(object):
     def itemCollision(self):
         #itn for item node
         self.collide = CollisionNode('Item')
-	#itn.set_from_collide_mask(0)
+        #itn.set_from_collide_mask(0)
         self.collide.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
         Solid = self.model.attachNewNode(self.collide)
         #base.cTrav.addCollider(Solid, base.pusher)

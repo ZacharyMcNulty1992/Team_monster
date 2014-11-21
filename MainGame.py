@@ -41,6 +41,7 @@ class MainGame(ShowBase):
     sounds = []
     gui = 0
     winProps = 0
+    numSoundChannels = 8
 
     def __init__(self):
         #Initilize Game Base
@@ -89,20 +90,6 @@ class MainGame(ShowBase):
         base.win.requestProperties(self.winProps)
         # Disables the mouse from moving the camera (can still look around)
         base.disableMouse()
-
-    '''
-    def displayFont(self):
-        self.text = TextNode('New_Text')
-        self.text.setText("There's supposed to be a file reader. Will recreate soon!")
-        textNodePath = render2d.attachNewNode(self.text)
-        textNodePath.setScale(0.07)
-        self.text.setAlign(TextNode.ABoxedCenter)
-        Zccara = loader.loadFont('resources/fonts/Zccara.ttf')
-        self.text.setFont(Zccara)
-        textNodePath.setPos(0, 0, -.60)
-        self.text.setWordwrap(20)
-        self.text.setAlign(self.text.ACenter)
-    '''
 
     #Mouse Collision
     def setupMouseCollision(self):
@@ -153,7 +140,7 @@ class MainGame(ShowBase):
     #Creates and Loads the Skybox
     def loadSkybox(self):
         self.skybox = loader.loadModel("resources/levels/skybox.egg")
-        self.skybox.setScale(1000.0,1000.0,1000.0)
+        self.skybox.setScale(300.0,200.0,75.0)
         self.skybox.setPos(2,2,2)
         self.skybox.reparentTo(base.cam)
         self.skybox.setEffect(CompassEffect.make(self.render, CompassEffect.PRot))
@@ -202,56 +189,43 @@ class MainGame(ShowBase):
 
     def loadLevel(self):
         self.loadSkybox()
-
         #Loads the Collision Faces
         self.level = loader.loadModel("resources/levels/firstFloorCollision.egg")
         self.level.reparentTo(render)
         self.level.setTwoSided(False)
- 
         #Loads the Level
         self.floor = loader.loadModel("resources/levels/firstFloor.egg")
         self.floor.reparentTo(self.level)
-        
         # Lighting
         if self.lighting:
             alight = AmbientLight('alight')
             alight.setColor(VBase4(self.brightness, self.brightness, self.brightness, 1))
             alnp = render.attachNewNode(alight)
-            
             render.setShaderAuto()
             render.clearLight()
             render.setLight(alnp)
 
     def initObjects(self):
         self.monsters = {}
-        self.jumogoro = Monster("Jumogoro", "jorogumo.egg", 0, 30, 5, 4, 4, 1.25, 0.1)
-        self.jumogoro.model.setTag('jumogoro', '1')
-        self.jumogoro.anim("Walk", True)
-        self.monsters["jumogoro"] = self.jumogoro
-        self.kappa = Monster("Kappa", "kappa.egg", 0, 10, 5, 5, 1.5, 1.25, 0.1)
-        self.kappa.model.setTag('kappa', '1')
-        self.kappa.anim("Idle", True)
-        self.monsters["kappa"] = self.kappa
-        self.cucumber = Item("Cucumber", "cucumber.egg", 10, 10, 5, 1, 1, 1, False, True, True)
-        #Mouse Tag
-        self.cucumber.model.setTag('collectable','1')
-        self.toilet = Item("Toilet", "toilet.egg", 20, 10, 5, 2, 1.5, 1.5, False, False, True)
-        self.toilet.model.setTag('interactable','1')
+        self.items = {}
+        self.triggers = {}
         self.monster_book = Item("Monster_Book", "monster_book", -66, -17, .25, 1, 1, 1, False, False, False)
         #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
         #self.toilet.model.setTag('interactable','2')
-        self.jumotrigger = ProxTrigger(self, 0, 30, 5, 10, self.player, "jumostartmove", True)
-        self.jumotrigger1 = ProxTrigger(self, 30, 25, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger2 = ProxTrigger(self, 35, 50, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger3 = ProxTrigger(self, -30, 55, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
-        self.jumotrigger4 = ProxTrigger(self, -35, 30, 5, 5, self.monsters["jumogoro"], "jumoturn1", False)
 
-    # Initializes music
-    def initMusic(self):
-        music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
-        music.setVolume(0.25)
-        music.setLoop(True)
-        music.play()
+    # Initializes music and sound
+    def initSound(self):
+        self.music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
+        self.music.setVolume(0.25)
+        self.music.setLoop(True)
+        self.music.play()
+        # This initializes the sound system with a number of channels.
+        # Each channel is a dict containing sound effects, which
+        # can be manipulated with the scripting language.
+        self.soundSystem = []
+        for i in range(0, self.numSoundChannels):
+            channel = {}
+            self.soundSystem.append(channel)
 
     # Pausing is now handled by the gui object, the task will call
     # that object's toggle pause method
@@ -287,13 +261,6 @@ class MainGame(ShowBase):
             return task.cont
         elif self.isPaused == False and self.alreadyRemoved == False:
             return task.cont
-        return task.cont
-      
-    def TimeUpdate(self, task):
-        #A Horrible way to have the text go away at the begining... but it works
-        secondsTime = int(task.time)
-        if secondsTime == 10:
-            self.text.setText("")
         return task.cont
 
     def initScripts(self):
@@ -351,10 +318,51 @@ class MainGame(ShowBase):
                     self.monsters[cmd[1]].anim(cmd[2], True)
                 elif cmd[3] == "noloop":
                     self.monsters[cmd[1]].anim(cmd[2], True)
+            elif cmdType == "spawnmonster":
+                print "Spawning monster " + cmd[1] + " with model filename " + cmd[2] + " at x = " + cmd[3] + " y = " + cmd[4] + " z = " + cmd[5] + " with height " + cmd[6] + " and width " + cmd[7] + " and scale " + cmd[8] + " and speed " + cmd[9]
+                monster = Monster(cmd[1], cmd[2], float(cmd[3]), float(cmd[4]), float(cmd[5]), float(cmd[6]), float(cmd[7]), float(cmd[8]), float(cmd[9]))
+                monster.model.setTag(cmd[1], '1')
+                self.monsters[cmd[1]] = monster
+            elif cmdType == "spawnitem":
+                print "Spawning item " + cmd[1] + " with model filename " + cmd[2] + " x = " + cmd[3] + " y = " + cmd[4] + " z = " + cmd[5] + " height of " + cmd[6] + " width of " + cmd[7] + " scale of " + cmd[8] + " defiesGravity set to " + cmd[9] + " isCollectable set to " + cmd[10] + " isInteractable set to " + cmd[11]
+                if cmd[9] == "true":
+                    gravity = True
+                else:
+                    gravity = False
+                if cmd[10] == "true":
+                    collect = True
+                else:
+                    collect = False
+                if cmd[11] == "true":
+                    interact = True
+                else:
+                    interact = False
+                item = Item(cmd[1], cmd[2], float(cmd[3]), float(cmd[4]), float(cmd[5]), float(cmd[6]), float(cmd[7]), float(cmd[8]), gravity, collect, interact)
+                if collect:
+                    item.model.setTag('collectable', '1')
+                elif interact:
+                    item.model.setTag('interactable', '1')
+                else:
+                    item.model.setTag(cmd[1], '1')
+            elif cmdType == "spawnproxtrigger":
+                print "Spawning trigger for script " + cmd[1] + " at x = " + cmd[2] + " y = " + cmd[3] + " z = " + cmd[4] + " with range " + cmd[5] + " with target " + cmd[6] + " of type " + cmd[7] + " running " + cmd[8] + " with a refresh delay of " + cmd[9]
+                runOnce = False
+                if cmd[8] == "runonce":
+                    runOnce = True
+                if cmd[7] == "monster":
+                    target = self.monsters[cmd[6]]
+                if cmd[7] == "item":
+                    target = self.items[cmd[6]]
+                if cmd[7] == "player":
+                    target = self.player
+                trigger = ProxTrigger(self, float(cmd[2]), float(cmd[3]), float(cmd[4]), float(cmd[5]), target, cmd[1], runOnce, int(cmd[9]))
+                self.triggers[cmd[1]] = trigger
             elif cmdType == "print":
                 print "Printing " + cmd[1] + " with " + cmd[2] + " font for " + cmd[7] + " seconds"
                 path = "./resources/text/"
                 dir = os.listdir(path)
+                # This parses the text file supplied and then maps it to a textNode, which is then displayed
+                # for an amount of time
                 for filename in dir:
                     if filename == cmd[1]:
                         filetext = open(path + filename, "r").read()
@@ -371,6 +379,35 @@ class MainGame(ShowBase):
                         textNodePath.setPos(float(cmd[3]), float(cmd[4]), float(cmd[5]))
                         self.text.setWordwrap(int(cmd[6]))
                         self.text.setAlign(self.text.ACenter)
+            elif cmdType == "playsound":
+                print "Playing sound " + cmd[1] + " set to volume " + cmd[2] + " on channel " + cmd[3] + " on " + cmd[4]
+                channel = self.soundSystem[int(cmd[3])]
+                # If the channel already has this sound, stop it if it's playing and then play it
+                if cmd[1] in channel:
+                    channel[cmd[1]].stop()
+                    channel[cmd[1]].setVolume(float(cmd[2]))
+                    if cmd[4] == "loop":
+                        channel[cmd[1]].setLoop(True)
+                    elif cmd[4] == "noloop":
+                        channel[cmd[1]].setLoop(False)
+                    channel[cmd[1]].play()
+                # Otherwise, create a new sound object and plop it in the channel
+                else:
+                    sound = base.loader.loadSfx("resources/music/soundEffects/" + cmd[1])
+                    sound.setVolume(float(cmd[2]))
+                    if cmd[4] == "loop":
+                        sound.setLoop(True)
+                    elif cmd[4] == "noloop":
+                        sound.setLoop(False)
+                    sound.play()
+                    channel[cmd[1]] = sound
+            elif cmdType == "changemusic":
+                print "Changing music to " + cmd[1] + " set to volume " + cmd[2]
+                self.music.stop()
+                self.music = base.loader.loadSfx("resources/music/background/" + cmd[1])
+                self.music.setVolume(float(cmd[2]))
+                self.music.setLoop(True)
+                self.music.play()
 
     def setup(self):
         # Collision
@@ -391,9 +428,9 @@ class MainGame(ShowBase):
         # Initialize Objects and scripts
         self.initScripts()
         self.initObjects()
-        self.initMusic()
+        self.initSound()
         
-        self.runScript("initprint")
+        self.runScript("init")
         
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         # Add Mouse Collision to our world
