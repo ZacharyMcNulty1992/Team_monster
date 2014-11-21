@@ -140,7 +140,7 @@ class MainGame(ShowBase):
     #Creates and Loads the Skybox
     def loadSkybox(self):
         self.skybox = loader.loadModel("resources/levels/skybox.egg")
-        self.skybox.setScale(1000.0,1000.0,1000.0)
+        self.skybox.setScale(300.0,200.0,75.0)
         self.skybox.setPos(2,2,2)
         self.skybox.reparentTo(base.cam)
         self.skybox.setEffect(CompassEffect.make(self.render, CompassEffect.PRot))
