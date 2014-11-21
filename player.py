@@ -34,7 +34,7 @@ class Player(object):
     canJump = False
     jump = 0
     cameraHeight = 3
-    Light = False
+    Light = True
     firstLightPass = False
     onscreen = False
     hasBeenRemoved = True
@@ -97,10 +97,11 @@ class Player(object):
         self.slight = Spotlight('player light')
         #self.slight.setScene(render)
         #self.slight.setColor(VBase4(0.7, 0.7, 0.5, 1))
-        self.slight.setAttenuation(Point3(0, 0, 0.00003))
+        #self.slight.setPos(0, -1, 1)
+        self.slight.setAttenuation(Point3(0, 0, 0.000005))
         #self.slight.set_exponent(.1)
         self.slight.getLens().setFov(80,70)
-        self.slight.getLens().setNearFar(1, 100)
+        self.slight.getLens().setNearFar(1, 50)
         #self.slight.set_priority(0)
         self.slight.setShadowCaster(True, 1024, 1024)
         render.setShaderAuto()
@@ -108,8 +109,9 @@ class Player(object):
 
         self.dlnp = self.node.attachNewNode(self.slight)
         self.dlnp.reparentTo(self.node)
-        render.setLight(self.dlnp)
-        self.node.setLight(self.dlnp)
+        self.dlnp.setPos(0, -1, 0)
+        #render.setLight(self.dlnp)
+        #self.node.setLight(self.dlnp)
 
         self.dlnp.setTexProjector(TextureStage.getDefault(),self.dlnp,self.dlnp)
         self.dlnp.projectTexture(TextureStage.get_default(), self.slight.make_spot(250, 200, VBase4(0.7),VBase4(0.7)), self.dlnp)
@@ -156,7 +158,7 @@ class Player(object):
         # These are the tenative jump commands, will be taken out, being used for debugging
         base.accept("space", self.__setattr__, ["readyToJump",True])
         base.accept("space-up", self.__setattr__, ["readyToJump",False])
-        #base.accept("f", self.toggleFlashLight)
+        base.accept("f", self.toggleFlashLight)
         base.accept("`", self.keyRespawn)
         base.accept("shift", self.__setattr__, ["run", True])
         base.accept("shift-up", self.__setattr__, ["run", False])
@@ -351,21 +353,25 @@ class Player(object):
         """used to toggle the flashlight when/if we need to do that"""
         if self.Light == False:
             self.Light = True
-            self.firstLightPass = True
+            #self.firstLightPass = True
         elif self.Light == True:
             self.Light = False
-            self.firstLightPass = False
+            #self.firstLightPass = False
 
+        if self.firstLightPass == True:
+            self.firstLightPass = False
+        elif self.firstLightPass == False:
+            self.firstLightPass = True
     def LightTask(self, task):
         self.dlnp.setPos(0, 0, self.cameraHeight -1)
         #self.pssm.update()
 
         if self.Light == True and self.firstLightPass == True:
-            self.node.setLight(dlnp)
+            render.setLight(self.dlnp)
             self.firstLightPass = False
             return task.cont
         elif self.Light == False and self.firstLightPass == True:
-            self.node.clearLight(dlnp)
+            render.clearLight(self.dlnp)
             self.firstLightPass = False
             return task.cont
         elif self.Light == True and self.firstLightPass == False:
