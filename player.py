@@ -34,7 +34,7 @@ class Player(object):
     canJump = False
     jump = 0
     cameraHeight = 3
-    Light = True
+    Light = False
     firstLightPass = False
     onscreen = False
     hasBeenRemoved = True
