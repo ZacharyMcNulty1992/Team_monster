@@ -8,10 +8,13 @@ walkforward [monster]
 turn [monster] [angle] [cw/ccw]
 stop [monster]
 anim [monster] [animation name] [loop/noloop]
+despawn [monster]
 
 spawnproxtrigger [script] [x] [y] [z] [range] [target name (If type is player, this is player] [target type (monster/item/player)] [runonce/norunonce] [refresh delay]
+spawnmonster [name] [model filename] [x] [y] [z] [height] [width] [scale] [speed]
+spawnitem [name] [model filename] [x] [y] [z] [height] [width] [scale] [defiesGravity (true/false)] [isCollectable (true/false)] [isInteractable (true/false)]
 
-print [filename (Located in resources/text directory)] [normal/garbled] [x] [y] [z] [word wrap] [display time (0 for infinite)]
+print [filename (Located in resources/text directory)] [normal/garbled] [x] [y] [z] [word wrap] [display time in tics (negative int for infinite)]
 
 playsound [sound filename (Located in music/soundEffects)] [volume] [channel] [loop/noloop]
 changemusic [music filename (Located in music/background/] [volume]

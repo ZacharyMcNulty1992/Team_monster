@@ -1,5 +1,5 @@
 script init:
-print init.txt normal 0 0 .60 20 60
+print init.txt normal 0 0 .60 20 -1
 spawnmonster jorogumo jorogumo.egg 0 30 5 4 4 1.25 0.1
 spawnmonster kappa kappa.egg 0 10 5 5 1.5 1.25 0.1
 anim kappa Idle loop
@@ -11,6 +11,7 @@ spawnproxtrigger joroturn 30 25 5 5 jorogumo monster norunonce 100
 spawnproxtrigger joroturn 35 50 5 5 jorogumo monster norunonce 100
 spawnproxtrigger joroturn -30 55 5 5 jorogumo monster norunonce 100
 spawnproxtrigger joroturn -35 30 5 5 jorogumo monster norunonce 100
+spawnproxtrigger jorodelete 0 -40 5 5 player player runonce 100
 spawnproxtrigger music1 0 -30 5 5 player player norunonce 100
 spawnproxtrigger music2 0 40 5 5 player player norunonce 100
 end init
@@ -23,6 +24,11 @@ end jorostartmove
 script joroturn:
 turn jorogumo 90 ccw
 end joroturn1
+
+script jorodelete:
+despawn jorogumo
+print why.txt normal 0 0 -.30 30 80
+end jorodelete
 
 script music1:
 changemusic MountainsOfMadness.ogg 0.8

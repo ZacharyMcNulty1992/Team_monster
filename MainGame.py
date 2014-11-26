@@ -20,6 +20,7 @@ from monster import Monster
 from item import Item
 from trigger import ProxTrigger
 from journal import Journal
+from textRender import TextRender
 
 class MainGame(ShowBase):
 
@@ -299,25 +300,44 @@ class MainGame(ShowBase):
         for cmd in self.scripts[key]:
             cmdType = cmd[0]
             if cmdType == "walkforward":
-                print cmd[1] + " walking forward"
-                self.monsters[cmd[1]].walkForward()
+                if cmd[1] not in self.monsters:
+                    print cmd[1] + " does not currently exist."
+                else:
+                    print cmd[1] + " walking forward"
+                    self.monsters[cmd[1]].walkForward()
             elif cmdType == "stop":
-                print cmd[1] + " stopping"
-                self.monsters[cmd[1]].walkForward()
+                if cmd[1] not in self.monsters:
+                    print cmd[1] + " does not currently exist."
+                else:
+                    print cmd[1] + " stopping"
+                    self.monsters[cmd[1]].walkForward()
             elif cmdType == "turn":
-                if self.monsters[cmd[1]].turning:
-                    break
-                print cmd[1] + " turning " + cmd[2] + " degrees " + cmd[3]
-                if cmd[3] == "cw":
-                    self.monsters[cmd[1]].turn(int(cmd[2]), True)
-                elif cmd[3] == "ccw":
-                    self.monsters[cmd[1]].turn(int(cmd[2]), False)
+                if cmd[1] not in self.monsters:
+                    print cmd[1] + " does not currently exist."
+                else:
+                    if self.monsters[cmd[1]].turning:
+                        break
+                    print cmd[1] + " turning " + cmd[2] + " degrees " + cmd[3]
+                    if cmd[3] == "cw":
+                        self.monsters[cmd[1]].turn(int(cmd[2]), True)
+                    elif cmd[3] == "ccw":
+                        self.monsters[cmd[1]].turn(int(cmd[2]), False)
             elif cmdType == "anim":
-                print cmd[1] + " changing animation to " + cmd[2]
-                if cmd[3] == "loop":
-                    self.monsters[cmd[1]].anim(cmd[2], True)
-                elif cmd[3] == "noloop":
-                    self.monsters[cmd[1]].anim(cmd[2], True)
+                if cmd[1] not in self.monsters:
+                    print cmd[1] + " does not currently exist."
+                else:
+                    print cmd[1] + " changing animation to " + cmd[2]
+                    if cmd[3] == "loop":
+                        self.monsters[cmd[1]].anim(cmd[2], True)
+                    elif cmd[3] == "noloop":
+                        self.monsters[cmd[1]].anim(cmd[2], True)
+            elif cmdType == "despawn":
+                if cmd[1] in self.monsters:
+                    print "Despawning " + cmd[1]
+                    self.monsters[cmd[1]].model.delete()
+                    del self.monsters[cmd[1]]
+                else:
+                    print cmd[1] + " does not currently exist."
             elif cmdType == "spawnmonster":
                 print "Spawning monster " + cmd[1] + " with model filename " + cmd[2] + " at x = " + cmd[3] + " y = " + cmd[4] + " z = " + cmd[5] + " with height " + cmd[6] + " and width " + cmd[7] + " and scale " + cmd[8] + " and speed " + cmd[9]
                 monster = Monster(cmd[1], cmd[2], float(cmd[3]), float(cmd[4]), float(cmd[5]), float(cmd[6]), float(cmd[7]), float(cmd[8]), float(cmd[9]))
@@ -358,27 +378,15 @@ class MainGame(ShowBase):
                 trigger = ProxTrigger(self, float(cmd[2]), float(cmd[3]), float(cmd[4]), float(cmd[5]), target, cmd[1], runOnce, int(cmd[9]))
                 self.triggers[cmd[1]] = trigger
             elif cmdType == "print":
-                print "Printing " + cmd[1] + " with " + cmd[2] + " font for " + cmd[7] + " seconds"
+                print "Printing " + cmd[1] + " with " + cmd[2] + " font for " + cmd[7] + " tics"
                 path = "./resources/text/"
                 dir = os.listdir(path)
                 # This parses the text file supplied and then maps it to a textNode, which is then displayed
                 # for an amount of time
                 for filename in dir:
                     if filename == cmd[1]:
-                        filetext = open(path + filename, "r").read()
-                        self.text = TextNode('New_Text')
-                        self.text.setText(filetext)
-                        textNodePath = render2d.attachNewNode(self.text)
-                        textNodePath.setScale(0.07)
-                        self.text.setAlign(TextNode.ABoxedCenter)
-                        if cmd[2] == "normal":
-                            font = loader.loadFont("resources/fonts/CTS.ttf")
-                        elif cmd[2] == "garbled":
-                            font = loader.loadFont("resources/fonts/Zccara.ttf")
-                        self.text.setFont(font)
-                        textNodePath.setPos(float(cmd[3]), float(cmd[4]), float(cmd[5]))
-                        self.text.setWordwrap(int(cmd[6]))
-                        self.text.setAlign(self.text.ACenter)
+                        textRender = TextRender(open(path + filename, "r").read(), cmd)
+                        
             elif cmdType == "playsound":
                 print "Playing sound " + cmd[1] + " set to volume " + cmd[2] + " on channel " + cmd[3] + " on " + cmd[4]
                 channel = self.soundSystem[int(cmd[3])]
