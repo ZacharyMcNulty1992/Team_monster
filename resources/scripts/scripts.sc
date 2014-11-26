@@ -25,13 +25,13 @@ turn jorogumo 90 ccw
 end joroturn1
 
 script music1:
-changemusic MountainsOfMadness.mp3 0.8
+changemusic MountainsOfMadness.ogg 0.8
 end music1
 
 script music2:
-changemusic CreaturesDark.mp3 0.8
+changemusic CreaturesDark.ogg 0.8
 end music2
 
 script scream:
-playsound FemaleScream5.mp3 0.7 0 noloop
+playsound FemaleScream5.ogg 0.7 0 noloop
 end scream

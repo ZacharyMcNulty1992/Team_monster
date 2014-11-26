@@ -215,7 +215,7 @@ class MainGame(ShowBase):
 
     # Initializes music and sound
     def initSound(self):
-        self.music = base.loader.loadSfx("resources/music/background/CreaturesDark.mp3")
+        self.music = base.loader.loadSfx("resources/music/background/CreaturesDark.ogg")
         self.music.setVolume(0.25)
         self.music.setLoop(True)
         self.music.play()
