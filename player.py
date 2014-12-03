@@ -109,7 +109,8 @@ class Player(object):
 
         self.dlnp = self.node.attachNewNode(self.slight)
         self.dlnp.reparentTo(self.node)
-        self.dlnp.setPos(0, -1, 0)
+        self.dlnp.setPos(0, -3, 0)
+        self.dlnp.setHpr(0, 0, 0)
         #render.setLight(self.dlnp)
         #self.node.setLight(self.dlnp)
 
@@ -308,7 +309,7 @@ class Player(object):
         """ this task simulates gravity and makes the player jump """
         # get the highest Z from the down casting ray
 
-        highestZ = -500 # do not make this a positive value it will spawn the camera outside of the map
+        highestZ = 3 # do not make this a positive value it will spawn the camera outside of the map
         for i in range(self.nodeGroundHandler.getNumEntries()):
             entry = self.nodeGroundHandler.getEntry(i)
             z = entry.getSurfacePoint(render).getZ()
