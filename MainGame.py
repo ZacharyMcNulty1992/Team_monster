@@ -70,13 +70,9 @@ class MainGame(ShowBase):
         journal = Journal(journalFrame, self.winYSize, -self.winYSize)
 
         base.accept("escape", sys.exit)
-<<<<<<< HEAD
         base.accept("p", self.togglePause)
         base.accept("j", journal.toggleJournal)
         base.accept('mouse1', self.onMouseTask)
-=======
-        #base.accept('mouse1', self.onMouseTask)
->>>>>>> 6d3d8e79bd6851722659b97ad5e6bcf49cbd6f38
         base.accept('mouse3', self.dropObject)
         base.accept('mouse2', self.printRender)
 
