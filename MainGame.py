@@ -40,7 +40,7 @@ class MainGame(ShowBase):
     looking = None
     scripts = {}
     sounds = []
-    gui = 0
+    journal = 0
     winProps = 0
     numSoundChannels = 8
 
@@ -70,11 +70,18 @@ class MainGame(ShowBase):
         journal = Journal(journalFrame, self.winYSize, -self.winYSize)
 
         base.accept("escape", sys.exit)
+<<<<<<< HEAD
         base.accept("p", self.togglePause)
         base.accept("j", journal.toggleJournal)
         base.accept('mouse1', self.onMouseTask)
+=======
+        #base.accept('mouse1', self.onMouseTask)
+>>>>>>> 6d3d8e79bd6851722659b97ad5e6bcf49cbd6f38
         base.accept('mouse3', self.dropObject)
         base.accept('mouse2', self.printRender)
+
+    def openJournal(self):
+        base.accept("j", self.journal.openJournal)
 
     def windowProps(self):
         # sets up the window's properties
@@ -87,7 +94,7 @@ class MainGame(ShowBase):
         # Changes the window name
         self.winProps.setTitle("100 Monsters")
         # Sets the game so it's fullscreen
-        self.winProps.setFullscreen(self.fullscreen)
+        #self.winProps.setFullscreen(self.fullscreen)
         # Gives the set properties to the window
         base.win.requestProperties(self.winProps)
         # Disables the mouse from moving the camera (can still look around)
@@ -246,37 +253,20 @@ class MainGame(ShowBase):
 
     # Pausing is now handled by the gui object, the task will call
     # that object's toggle pause method
-    def toggleJournal(self):
-        
-        """ set visiblity for monster book, currently rough """
-        if self.monsterBookOpen == True:
-            self.monsterBookOpen = False
-            Journal(False, self.winYSize, -self.winYSize)	    
-        else:
-            self.monsterBookOpen = True
-	    self.journal(True, self.winYSize, -self.winYSize)
-
-    def togglePause(self):
-        #used to toggle the pausing so the player can use the same button to pause and unpause
-        if self.isPaused == True:
-            self.isPaused = False
-        elif self.isPaused == False:
-            self.isPaused = True
-
     def PauseUpdate(self, task):
         #pausing task this will remove all tasks it needs to and then when the player
         #decides to unpause the task will add the tasks it removed back to the task manager
-        if self.isPaused == True and self.alreadyRemoved == False:
+        if self.journal.isPaused == True and self.journal.alreadyRemoved == False:
             self.player.removeTasks()
-            self.alreadyRemoved = True
-        elif self.isPaused == False and self.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
+            self.journal.alreadyRemoved = True
+        elif self.journal.isPaused == False and self.journal.alreadyRemoved == True: #needs to be changed so that the tasks are not added every time the task is called
             self.player.addTasks()
-            self.alreadyRemoved = False
+            self.journal.alreadyRemoved = False
             base.win.movePointer(0, base.win.getXSize() / 2, base.win.getYSize() / 2) 
 	    
-        elif self.isPaused == True and self.alreadyRemoved == True:
+        elif self.journal.isPaused == True and self.journal.alreadyRemoved == True:
             return task.cont
-        elif self.isPaused == False and self.alreadyRemoved == False:
+        elif self.journal.isPaused == False and self.journal.alreadyRemoved == False:
             return task.cont
         return task.cont
 
@@ -454,7 +444,8 @@ class MainGame(ShowBase):
         self.initScripts()
         self.initObjects()
         self.initSound()
-        
+        self.journal = Journal(self.winYSize, self.winXSize, self.winProps)
+        self.openJournal()
         self.runScript("init")
         
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
