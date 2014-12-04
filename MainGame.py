@@ -72,8 +72,9 @@ class MainGame(ShowBase):
         base.accept("escape", sys.exit)
         base.accept("p", self.togglePause)
         base.accept("j", journal.toggleJournal)
-        #base.accept('mouse1', self.onMouseTask)
+        base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject)
+        base.accept('mouse2', self.printRender)
 
     def windowProps(self):
         # sets up the window's properties
@@ -114,17 +115,31 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
-        #render.ls()
+        self.holdingTask()
+        self.collectTask() 
+        
+    def printRender(self):
+        render.ls()
+        
+    def holdingTask(self):
         entry = self.mCollisionQue.getEntry(0)
         pickedObj = entry.getIntoNodePath()
         pickedObj = pickedObj.findNetTag('collectable')
         if not pickedObj.isEmpty():
             if self.player.holding:
-                self.drop(self.player.hand.getChild(0))
+                print "Holding Something"
+                #self.drop(self.player.hand.getChild(0))
             pickedObj.reparentTo(self.player.hand)
-	    pickedObj.getChild(1).stash()
-        pickedObj.setPos(1,1.5,3)
+            pickedObj.getChild(1).stash()
+            pickedObj.setPos(1,1.5,3)
         self.player.holding = True
+        
+    def collectTask(self):
+        entry = self.mCollisionQue.getEntry(0)
+        pickedObj = entry.getIntoNodePath()
+        pickedObj = pickedObj.findNetTag('interactable')
+        if not pickedObj.isEmpty():
+            print pickedObj.getName()
 
     def dropObject(self):
         if self.player.hand.getNumChildren() == 0:
@@ -133,6 +148,8 @@ class MainGame(ShowBase):
             self.drop(self.player.hand.getChild(0))
 
     def drop(self, child):     
+        if not self.player.holding:
+            return
         child.reparentTo(render)
         child.setPos(self.player.getX(), self.player.getY(), self.player.getZ())
         child.unstashAll()
@@ -210,9 +227,8 @@ class MainGame(ShowBase):
         self.monsters = {}
         self.items = {}
         self.triggers = {}
-        self.monster_book = Item("Monster_Book", "monster_book", -66, -17, .25, 1, 1, 1, False, False, False)
-        #self.door_test = Item("Door_Test", "door_test.egg", 0, 0, 6.0, 1,1,1,False, False, True)
-        #self.toilet.model.setTag('interactable','2')
+        self.collected = {}
+       
 
     # Initializes music and sound
     def initSound(self):
@@ -363,7 +379,8 @@ class MainGame(ShowBase):
                 elif interact:
                     item.model.setTag('interactable', '1')
                 else:
-                    item.model.setTag(cmd[1], '1')
+                    print "else"
+                    #item.model.setTag(cmd[1], '1')
             elif cmdType == "spawnproxtrigger":
                 print "Spawning trigger for script " + cmd[1] + " at x = " + cmd[2] + " y = " + cmd[3] + " z = " + cmd[4] + " with range " + cmd[5] + " with target " + cmd[6] + " of type " + cmd[7] + " running " + cmd[8] + " with a refresh delay of " + cmd[9]
                 runOnce = False

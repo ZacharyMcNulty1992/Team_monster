@@ -20,7 +20,8 @@
   <Scalar> wrap { REPEAT }
 }
 
-  <Group> Plane {
+  <Group> Page {
+    <Dart> { 1 }
     <Transform> {
       <Matrix4> {
         1.000000 0.000000 0.000000 0.000000 
@@ -30,7 +31,7 @@
       }
     }
     
-    <VertexPool> Plane {
+    <VertexPool> Page {
     
       <Vertex> 0 {
         -1.0 -1.0 0.0
@@ -66,6 +67,6 @@
       <TRef> { Texture }
       <MRef> { Page }
       <Normal> {0.000000 0.000000 1.000000}
-      <VertexRef> { 0 1 2 3 <Ref> { Plane }}
+      <VertexRef> { 0 1 2 3 <Ref> { Page }}
     }
   }

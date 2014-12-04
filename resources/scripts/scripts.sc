@@ -5,6 +5,13 @@ spawnmonster kappa kappa.egg 0 10 5 5 1.5 1.25 0.1
 anim kappa Idle loop
 spawnitem cucumber cucumber.egg 10 10 5 1 1 1 false true true
 spawnitem toilet toilet.egg 20 10 5 2 1.5 1.5 false false true
+spawnitem the_book monster_book.egg -66 -17 .25 1 1 1 false false true
+spawnitem page1 monster_book_page.egg -19 85 0.3 1 1 1 true false true
+spawnitem page2 monster_book_page.egg 53 170 0.3 1 1 1 true false true
+spawnitem page3 monster_book_page.egg 37 265 0.3 1 1 1 true false true
+spawnitem page4 monster_book_page.egg -202 62 0.3 1 1 1 true false true
+spawnitem page5 monster_book_page.egg 188 27 0.3 1 1 1 true false true
+spawnitem page6 monster_book_page.egg 190 182 0.3 1 1 1 true false true
 spawnproxtrigger scream 0 40 5 5 player player norunonce 100
 spawnproxtrigger jorostartmove 0 30 5 10 player player runonce 0
 spawnproxtrigger joroturn 30 25 5 5 jorogumo monster norunonce 100

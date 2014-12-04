@@ -21,6 +21,7 @@
 }
 
   <Group> Monster_Book {
+    <Dart> { 1 }
     <Transform> {
       <Matrix4> {
         -0.000000 0.000000 -0.250000 0.000000 

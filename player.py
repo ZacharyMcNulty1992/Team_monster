@@ -403,9 +403,15 @@ class Player(object):
             else:
                 self.mouseOver = ""
                 base.looking.setText(str(self.getMouseOver()))
+            
             obj = obj.findNetTag('interactable')
             if not obj.isEmpty():
-                print "interactable"
+                self.mouseOver = "Left Click to INTERACT WITH"
+                base.looking.setText(str(self.getMouseOver()))
+            else:
+                self.mouseOver = ""
+                base.looking.setText(str(self.getMouseOver()))     
+           
 
     def getX(self):
         return self.node.getX()
