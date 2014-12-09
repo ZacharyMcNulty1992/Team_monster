@@ -48,7 +48,7 @@ class Item(object):
 
     def itemCollision(self):
         #itn for item node
-        self.collide = CollisionNode('Item')
+        self.collide = CollisionNode(self.name)
         #itn.set_from_collide_mask(0)
         self.collide.addSolid(CollisionSphere(0, 0, self.height/2, self.width))
         Solid = self.model.attachNewNode(self.collide)
