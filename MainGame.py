@@ -43,6 +43,7 @@ class MainGame(ShowBase):
     journal = 0
     winProps = 0
     numSoundChannels = 8
+    
 
     def __init__(self):
         #Initilize Game Base
@@ -56,6 +57,7 @@ class MainGame(ShowBase):
  
     def update(self, task):
         taskMgr.add(self.PauseUpdate, 'pause-task')
+	taskMgr.add(self.CollectionComplete, 'collection-task')
         return task.cont
     
     def getControls(self):
@@ -118,11 +120,14 @@ class MainGame(ShowBase):
 
     #Mouse Task
     def onMouseTask(self):
+	
         self.holdingTask()
-        self.collectTask() 
+        self.collectTask()
+	print self.pageCollected 
         
     def printRender(self):
         render.ls()
+	render.getChildren().removeDuplicatePaths()
         
     def holdingTask(self):
         entry = self.mCollisionQue.getEntry(0)
@@ -132,9 +137,13 @@ class MainGame(ShowBase):
             if self.player.holding:
                 print "Holding Something"
                 #self.drop(self.player.hand.getChild(0))
-            pickedObj.reparentTo(self.player.hand)
+            pickedObj.getParent().getChild(1).stash()
+	    pickedObj.reparentTo(self.player.hand)
             pickedObj.getChild(1).stash()
-            pickedObj.setPos(1,1.5,3)
+	    
+	    loc = render.getRelativeVector(camera, Vec3(0,1,0))
+	    
+            pickedObj.setPos(loc.getX()+.5,loc.getY()+1.5,loc.getZ())
         self.player.holding = True
         
     def collectTask(self):
@@ -142,7 +151,23 @@ class MainGame(ShowBase):
         pickedObj = entry.getIntoNodePath()
         pickedObj = pickedObj.findNetTag('interactable')
         if not pickedObj.isEmpty():
-            print pickedObj.getChild(1).getName()
+	    name = pickedObj.getChild(1).getName()
+	    if name.startswith( 'page' ):
+		print pickedObj.getX()
+		print pickedObj.getY()
+	    	pickedObj.getChild(1).stash()
+		pickedObj.getParent().getChild(1).stash()
+		pickedObj.stash()
+		pickedObj.getParent().stash()
+   	        self.pageCollected[(int(''.join(ele for ele in name if ele.isdigit())))-1] = True
+	    elif name.startswith( 'the_book'):
+		pickedObj.getChild(1).stash()
+	        pickedObj.getParent().getChild(1).stash()
+		pickedObj.stash()
+		pickedObj.getParent().stash()		
+		self.openJournal()
+
+		
 
     def dropObject(self):
         if self.player.hand.getNumChildren() == 0:
@@ -441,8 +466,8 @@ class MainGame(ShowBase):
         self.initObjects()
         self.initSound()
         self.journal = Journal(self.winYSize, self.winXSize, self.winProps)
-        self.openJournal()
         self.runScript("init")
+	self.pageCollected = [None, None, None, None, None, None]
         
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         # Add Mouse Collision to our world
@@ -450,6 +475,14 @@ class MainGame(ShowBase):
 
         # Displays text on the bottom of the screen
         # self.displayFont()
+
+    def	CollectionComplete(self, task):
+	comparasion = [True, True, True, True, True, True]
+	if not comparasion == self.pageCollected:
+	    return task.cont
+	else:
+	    self.looking.setText("YOU HAVE COLLECTED ALL THE PAGES")
+	task.cont
 
 
 game = MainGame()
