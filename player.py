@@ -70,7 +70,7 @@ class Player(object):
 
     def attachHand(self):
         self.hand = NodePath("Hand")
-        self.hand.reparentTo(self.node)
+        self.hand.reparentTo(base.camera)
 
     def initCoords(self):
         global playerX
