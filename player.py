@@ -46,7 +46,7 @@ class Player(object):
     runSpeedApplied = False
     staminaMeterNeedsToBeUpdated = False
     outOfStamina = True
-    whileJumping = False
+
 
     def __init__(self, controlStyle):
         """ inits the player """
@@ -152,10 +152,6 @@ class Player(object):
         solid = self.node.attachNewNode(cn)
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(solid, self.nodeGroundHandler)
-
-        base.pusher.addInPattern('Jorogumo-into-player')
-        base.accept('Jorogumo-into-player', self.respawnCollide)
-
 
     # Attaches events to key presses and if the key is lifted
     def attachControls(self, controlStyle):
@@ -338,11 +334,6 @@ class Player(object):
             self.node.setPos(0,0,self.cameraHeight)
             base.camera.setPos(0,0,self.cameraHeight)
         return task.cont
-
-    #called when the player collides with a monster used as a placement holder for now
-    def respawnCollide(self, entry):
-        self.node.setPos(0,0,self.cameraHeight)
-        base.camera.setPos(0,0,self.cameraHeight)
       
     #By Pressing the '`' key the player will move back to the origin
     def keyRespawn(self):
