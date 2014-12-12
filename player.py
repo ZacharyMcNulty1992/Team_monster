@@ -153,6 +153,12 @@ class Player(object):
         self.nodeGroundHandler = CollisionHandlerQueue()
         base.cTrav.addCollider(solid, self.nodeGroundHandler)
 
+        base.pusher.addInPattern('monster-into-player')
+        base.accept('monster-into-player', self.printEvent)
+
+    def printEvent(self, event):
+        print event
+
     # Attaches events to key presses and if the key is lifted
     def attachControls(self, controlStyle):
         
