@@ -13,7 +13,7 @@ from direct.gui.OnscreenText import OnscreenText
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
 from math import fabs
-
+from direct.gui.OnscreenImage import OnscreenImage
 
 class Player(object):
     """
@@ -58,6 +58,10 @@ class Player(object):
             self.initCoords()
         self.attachHand()
         #self.initCoords()
+
+	self.imageObject = OnscreenImage(image = './resources/reticle.png', scale = .15)
+	self.imageObject.setTransparency(TransparencyAttrib.MAlpha)		
+
         # init mouse update task
         taskMgr.add(self.mouseUpdate, 'mouse-task')
         taskMgr.add(self.moveUpdate, 'move-task')
