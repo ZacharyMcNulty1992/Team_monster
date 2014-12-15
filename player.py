@@ -59,7 +59,8 @@ class Player(object):
         self.attachHand()
         #self.initCoords()
 
-	self.imageObject = OnscreenImage(image = './resources/reticle.png', scale = .15)
+	# Gives the player a reticle, to see where the middle screen is
+	self.imageObject = OnscreenImage(image = './resources/HUD/eye.png', scale = .03)
 	self.imageObject.setTransparency(TransparencyAttrib.MAlpha)		
 
         # init mouse update task
