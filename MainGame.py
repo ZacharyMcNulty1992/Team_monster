@@ -136,7 +136,7 @@ class MainGame(ShowBase):
         if not pickedObj.isEmpty():
             if self.player.holding:
                 print "Holding Something"
-                #self.drop(self.player.hand.getChild(0))
+            #self.drop(self.player.hand.getChild(0))
             pickedObj.getParent().getChild(1).stash()
 	    pickedObj.reparentTo(self.player.hand)
             pickedObj.getChild(1).stash()
@@ -159,8 +159,12 @@ class MainGame(ShowBase):
 		pickedObj.getParent().getChild(1).stash()
 		pickedObj.stash()
 		pickedObj.getParent().stash()
-   	        self.pageCollected[(int(''.join(ele for ele in name if ele.isdigit())))-1] = True
-	    elif name.startswith( 'the_book'):
+		for x in range (0, 3):
+		    if self.pageCollected[x] == None:
+			self.pageCollected[x] = True
+		        break
+   	       # self.pageCollected[(int(''.join(ele for ele in name if ele.isdigit())))-1] = True
+	    elif name.startswith('the_book'):
 		pickedObj.getChild(1).stash()
 	        pickedObj.getParent().getChild(1).stash()
 		pickedObj.stash()
@@ -467,7 +471,7 @@ class MainGame(ShowBase):
         self.initSound()
         self.journal = Journal(self.winYSize, self.winXSize, self.winProps)
         self.runScript("init")
-	self.pageCollected = [None, None, None, None, None, None]
+	self.pageCollected = [None, None, None]
         
         self.looking = OnscreenText(pos = (-0.6, 0.8), scale = (0.04), fg = (1.0, 1.0, 1.0, 1.0))
         # Add Mouse Collision to our world
@@ -477,11 +481,12 @@ class MainGame(ShowBase):
         # self.displayFont()
 
     def	CollectionComplete(self, task):
-	comparasion = [True, True, True, True, True, True]
+	comparasion = [True, True, True]
 	if not comparasion == self.pageCollected:
 	    return task.cont
 	else:
 	    self.looking.setText("YOU HAVE COLLECTED ALL THE PAGES")
+	    
 	task.cont
 
 
