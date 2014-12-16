@@ -46,7 +46,7 @@ class Journal:
         self.winXSize = winX
         self.winYSize = winY
         self.gameWinProps = wProps
-        for i in range (1, 4):
+        for i in range (1, 6):
             self.pages.append('resources/GUI_Assets/Monster_Book/PNG_Files/pg' + str(i) + '.png')
         self.currentPage = self.pages[0]
         
@@ -110,8 +110,8 @@ class Journal:
     # Button command: Will go to the next page in the book if
     # not already at the end of the list
     def gotoNextPage(self):
-        if self.currentPage is self.pages[2]:
-            self.currentPage = self.pages[2]
+        if self.currentPage is self.pages[4]:
+            self.currentPage = self.pages[4]
             self.gui['image'] = self.currentPage
             self.closeJournal()
             self.openJournal()
