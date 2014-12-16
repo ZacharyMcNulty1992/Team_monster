@@ -418,7 +418,6 @@ class MainGame(ShowBase):
                 for filename in dir:
                     if filename == cmd[1]:
                         textRender = TextRender(open(path + filename, "r").read(), cmd)
-                        
             elif cmdType == "playsound":
                 print "Playing sound " + cmd[1] + " set to volume " + cmd[2] + " on channel " + cmd[3] + " on " + cmd[4]
                 channel = self.soundSystem[int(cmd[3])]
@@ -448,6 +447,89 @@ class MainGame(ShowBase):
                 self.music.setVolume(float(cmd[2]))
                 self.music.setLoop(True)
                 self.music.play()
+            elif cmdType == "dialogue":
+                print "Displaying dialogue script with prompt " + cmd[1] + " and " + cmd[2] + " options"
+                print " - Option 1 - : " + cmd[3]
+                if int(cmd[2]) > 4 or int(cmd[2]) < 1:
+                    print "Invalid number of options"
+                    break
+                if int(cmd[2]) > 1:
+                    print " - Option 2 - : " + cmd[4]
+                    if int(cmd[2]) > 2:
+                        print " - Option 3 - : " + cmd[5]
+                        if int(cmd[2]) == 4:
+                            print " - Option 4 - : " + cmd[6]
+                self.isPaused = True
+                path = "./resources/text/"
+                dir = os.listdir(path)
+                # This parses the text file supplied and then maps it to a textNode, which is then displayed
+                # for an amount of time
+                for filename in dir:
+                    if filename == cmd[1]:
+                        textcmd = []
+                        textcmd.append(cmd[0])
+                        textcmd.append(cmd[1])
+                        textcmd.append('normal')
+                        textcmd.append(0)
+                        textcmd.append(0)
+                        textcmd.append(-.1)
+                        textcmd.append(20)
+                        textcmd.append(-1)
+                        textRender = TextRender(open(path + filename, "r").read(), textcmd)
+                if int(cmd[2]) >= 1:
+                    for filename in dir:
+                        if filename == cmd[3]:
+                            textcmd1 = []
+                            textcmd1.append(cmd[0])
+                            textcmd1.append(cmd[1])
+                            textcmd1.append('normal')
+                            textcmd1.append(0)
+                            textcmd1.append(0)
+                            textcmd1.append(-.3)
+                            textcmd1.append(20)
+                            textcmd1.append(-1)
+                            textRender1 = TextRender(open(path + filename, "r").read(), textcmd1)
+                if int(cmd[2]) >= 2:
+                    for filename in dir:
+                        if filename == cmd[4]:
+                            textcmd2 = []
+                            textcmd2.append(cmd[0])
+                            textcmd2.append(cmd[1])
+                            textcmd2.append('normal')
+                            textcmd2.append(0)
+                            textcmd2.append(0)
+                            textcmd2.append(-.5)
+                            textcmd2.append(20)
+                            textcmd2.append(-1)
+                            textRender2 = TextRender(open(path + filename, "r").read(), textcmd2)
+                if int(cmd[2]) >= 3:
+                    for filename in dir:
+                        if filename == cmd[5]:
+                            textcmd3 = []
+                            textcmd3.append(cmd[0])
+                            textcmd3.append(cmd[1])
+                            textcmd3.append('normal')
+                            textcmd3.append(0)
+                            textcmd3.append(0)
+                            textcmd3.append(-.7)
+                            textcmd3.append(20)
+                            textcmd3.append(-1)
+                            textRender3 = TextRender(open(path + filename, "r").read(), textcmd3)
+                if int(cmd[2]) == 4:
+                    for filename in dir:
+                        if filename == cmd[6]:
+                            textcmd4 = []
+                            textcmd4.append(cmd[0])
+                            textcmd4.append(cmd[1])
+                            textcmd4.append('normal')
+                            textcmd4.append(0)
+                            textcmd4.append(0)
+                            textcmd4.append(-.7)
+                            textcmd4.append(20)
+                            textcmd4.append(-1)
+                            textRender4 = TextRender(open(path + filename, "r").read(), textcmd4)
+                self.isPaused = True
+
 
     def setup(self):
         # Collision
