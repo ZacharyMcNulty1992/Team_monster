@@ -449,7 +449,6 @@ class MainGame(ShowBase):
                 self.music.setLoop(True)
                 self.music.play()
 
-
     def setup(self):
         # Collision
         self.initCollision()
