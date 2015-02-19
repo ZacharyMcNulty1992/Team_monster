@@ -2,7 +2,7 @@
 # Class Name: Player
 # Created By: Team Monster
 # Last Updated: 10/29/14
-# Updated By: Zach
+# Updated By: Kevin
 # Notes: This class will be in charge of
 # the player/camera "object"
 #------------------------------------------#
