@@ -72,8 +72,6 @@ class MainGame(ShowBase):
         journal = Journal(journalFrame, self.winYSize, -self.winYSize)
 
         base.accept("escape", sys.exit)
-        #base.accept("p", self.togglePause)
-        #base.accept("j", journal.toggleJournal)
         base.accept('mouse1', self.onMouseTask)
         base.accept('mouse3', self.dropObject)
         base.accept('mouse2', self.printRender)
@@ -264,7 +262,7 @@ class MainGame(ShowBase):
 
     # Initializes music and sound
     def initSound(self):
-        self.music = base.loader.loadSfx("resources/music/background/CreaturesDark.ogg")
+        self.music = base.loader.loadSfx("resources/music/background/InTheDark.ogg")
         self.music.setVolume(0.25)
         self.music.setLoop(True)
         self.music.play()
